@@ -1,0 +1,29 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Direct3D Win32 Game</Name>
+    <Description>A project for a Win32 desktop game that uses Direct3D11</Description>
+    <ProjectType>VC</ProjectType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Direct3D Win32 Game</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+    <PreviewImage>preview.png</PreviewImage>
+  </TemplateData>
+  <TemplateContent>
+    <Project ReplaceParameters="true" File="Direct3DWin32Game.vcxproj">
+      <ProjectItem ReplaceParameters="true" TargetFileName="$projectname$.vcxproj.filters">Direct3DWin32Game.vcxproj.filters</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="Game.cpp" OpenInEditor="true">Game.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Main.cpp">Main.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="pch.cpp">pch.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="Game.h">Game.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="pch.h">pch.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="StepTimer.h">StepTimer.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="resource.rc">resource.rc</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="directx.ico">directx.ico</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="settings.manifest">settings.manifest</ProjectItem>
+    </Project>
+  </TemplateContent>
+</VSTemplate>

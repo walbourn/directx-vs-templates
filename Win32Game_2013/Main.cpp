@@ -40,7 +40,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
         wcex.hbrBackground = (HBRUSH) (COLOR_WINDOW + 1);
         wcex.lpszMenuName = nullptr;
-        wcex.lpszClassName = L"Direct3DWin32GameWindowClass";
+        wcex.lpszClassName = L"$safeprojectname$WindowClass";
         wcex.hIconSm = LoadIcon(wcex.hInstance, L"IDI_ICON");
         if (!RegisterClassEx(&wcex))
             return 1;
@@ -54,7 +54,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         rc.left = 0;
         rc.right = static_cast<LONG>( w ); 
         rc.bottom = static_cast<LONG>( h );
-        HWND hwnd = CreateWindow(L"Direct3DWin32GameWindowClass", L"Direct3DWin32Game", WS_OVERLAPPEDWINDOW,
+        HWND hwnd = CreateWindow(L"$safeprojectname$WindowClass", L"$projectname$", WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
         if (!hwnd)
