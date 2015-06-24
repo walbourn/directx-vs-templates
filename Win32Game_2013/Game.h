@@ -16,7 +16,7 @@ public:
     Game();
 
     // Initialization and management
-    void Initialize(HWND window);
+    void Initialize(HWND window, int width, int height);
 
     // Basic game loop
     void Tick();
@@ -31,10 +31,10 @@ public:
     void OnDeactivated();
     void OnSuspending();
     void OnResuming();
-    void OnWindowSizeChanged();
+    void OnWindowSizeChanged(int width, int height);
 
     // Properites
-    void GetDefaultSize( size_t& width, size_t& height ) const;
+    void GetDefaultSize( int& width, int& height ) const;
 
 private:
 
@@ -47,6 +47,8 @@ private:
 
     // Application state
     HWND                                            m_window;
+    int                                             m_outputWidth;
+    int                                             m_outputHeight;
 
     // Direct3D Objects
     D3D_FEATURE_LEVEL                               m_featureLevel;

@@ -12,14 +12,18 @@ using Microsoft::WRL::ComPtr;
 // Constructor.
 Game::Game() :
     m_window(0),
-    m_featureLevel( D3D_FEATURE_LEVEL_9_1 )
+    m_outputWidth(800),
+    m_outputHeight(600),
+    m_featureLevel(D3D_FEATURE_LEVEL_9_1)
 {
 }
 
 // Initialize the Direct3D resources required to run.
-void Game::Initialize(HWND window)
+void Game::Initialize(HWND window, int width, int height)
 {
     m_window = window;
+    m_outputWidth = std::max( width, 1 );
+    m_outputHeight = std::max( height, 1 );
 
     CreateDevice();
 
@@ -59,6 +63,9 @@ void Game::Render()
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
         return;
+
+    CD3D11_VIEWPORT viewPort(0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight));
+    m_d3dContext->RSSetViewports(1, &viewPort);
 
     Clear();
 
@@ -118,15 +125,18 @@ void Game::OnResuming()
     // TODO: Game is being power-resumed (or returning from minimize)
 }
 
-void Game::OnWindowSizeChanged()
+void Game::OnWindowSizeChanged(int width, int height)
 {
+    m_outputWidth = std::max(width, 1);
+    m_outputHeight = std::max(height, 1);
+
     CreateResources();
 
     // TODO: Game window is being resized
 }
 
 // Properties
-void Game::GetDefaultSize(size_t& width, size_t& height) const
+void Game::GetDefaultSize(int& width, int& height) const
 {
     // TODO: Change to desired default window size (note minimum size is 320x200)
     width = 800;
@@ -169,13 +179,13 @@ void Game::CreateDevice()
         m_d3dContext.ReleaseAndGetAddressOf()   // returns the device immediate context
         );
 
-    if ( hr == E_INVALIDARG )
+    if (hr == E_INVALIDARG)
     {
         // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
-        hr = D3D11CreateDevice( nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
+        hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
                                 creationFlags, &featureLevels[1], _countof(featureLevels) - 1,
                                 D3D11_SDK_VERSION, m_d3dDevice.ReleaseAndGetAddressOf(),
-                                &m_featureLevel, m_d3dContext.ReleaseAndGetAddressOf() );
+                                &m_featureLevel, m_d3dContext.ReleaseAndGetAddressOf());
     }
 
     DX::ThrowIfFailed(hr);
@@ -220,13 +230,10 @@ void Game::CreateResources()
     m_depthStencilView.Reset();
     m_d3dContext->Flush();
 
-    RECT rc;
-    GetWindowRect( m_window, &rc );
-
-    UINT backBufferWidth = std::max<UINT>( rc.right - rc.left, 1 );
-    UINT backBufferHeight = std::max<UINT>( rc.bottom - rc.top, 1);
+    UINT backBufferWidth = static_cast<UINT>(m_outputWidth);
+    UINT backBufferHeight = static_cast<UINT>(m_outputHeight);
     DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
-    DXGI_FORMAT depthBufferFormat = (m_featureLevel >= D3D_FEATURE_LEVEL_10_0) ? DXGI_FORMAT_D32_FLOAT : DXGI_FORMAT_D16_UNORM;
+    DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
     // If the swap chain already exists, resize it, otherwise create one.
     if (m_swapChain)
@@ -266,8 +273,8 @@ void Game::CreateResources()
         if (SUCCEEDED(hr))
         {
             // DirectX 11.1 or later
-            m_d3dDevice.As( &m_d3dDevice1 );
-            m_d3dContext.As( &m_d3dContext1 );
+            m_d3dDevice.As(&m_d3dDevice1);
+            m_d3dContext.As(&m_d3dContext1);
 
             // Create a descriptor for the swap chain.
             DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
@@ -283,12 +290,12 @@ void Game::CreateResources()
             fsSwapChainDesc.Windowed = TRUE;
 
             // Create a SwapChain from a CoreWindow.
-            DX::ThrowIfFailed( dxgiFactory2->CreateSwapChainForHwnd(
+            DX::ThrowIfFailed(dxgiFactory2->CreateSwapChainForHwnd(
                 m_d3dDevice.Get(), m_window, &swapChainDesc,
                 &fsSwapChainDesc,
-                nullptr, m_swapChain1.ReleaseAndGetAddressOf() ) );
+                nullptr, m_swapChain1.ReleaseAndGetAddressOf()));
 
-            m_swapChain1.As( &m_swapChain );
+            m_swapChain1.As(&m_swapChain);
         }
         else
         {
@@ -303,7 +310,7 @@ void Game::CreateResources()
             swapChainDesc.SampleDesc.Quality = 0;
             swapChainDesc.Windowed = TRUE;
 
-            DX::ThrowIfFailed( dxgiFactory->CreateSwapChain( m_d3dDevice.Get(), &swapChainDesc, m_swapChain.ReleaseAndGetAddressOf() ) );
+            DX::ThrowIfFailed(dxgiFactory->CreateSwapChain(m_d3dDevice.Get(), &swapChainDesc, m_swapChain.ReleaseAndGetAddressOf()));
         }
 
         // This template does not support 'full-screen' mode and prevents the ALT+ENTER shortcut from working
@@ -326,12 +333,6 @@ void Game::CreateResources()
 
     CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
     DX::ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(depthStencil.Get(), &depthStencilViewDesc, m_depthStencilView.ReleaseAndGetAddressOf()));
-
-    // Create a viewport descriptor of the full window size.
-    CD3D11_VIEWPORT viewPort(0.0f, 0.0f, static_cast<float>(backBufferWidth), static_cast<float>(backBufferHeight));
-
-    // Set the current viewport using the descriptor.
-    m_d3dContext->RSSetViewports(1, &viewPort);
 
     // TODO: Initialize windows-size dependent objects here
 }

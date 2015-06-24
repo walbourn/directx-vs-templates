@@ -24,7 +24,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     if (FAILED(hr))
         return 1;
 
-    g_game.reset( new Game() );
+    g_game.reset(new Game);
 
     // Register class and create window
     {
@@ -46,14 +46,17 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
             return 1;
 
         // Create window
-        size_t w, h;
-        g_game->GetDefaultSize( w, h );
+        int w, h;
+        g_game->GetDefaultSize(w, h);
 
         RECT rc;
         rc.top = 0;
         rc.left = 0;
-        rc.right = static_cast<LONG>( w ); 
-        rc.bottom = static_cast<LONG>( h );
+        rc.right = static_cast<LONG>(w); 
+        rc.bottom = static_cast<LONG>(h);
+
+        AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
+
         HWND hwnd = CreateWindow(L"$safeprojectname$WindowClass", L"$projectname$", WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
@@ -63,7 +66,9 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
         ShowWindow(hwnd, nCmdShow);
         SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(g_game.get()) );
 
-        g_game->Initialize( hwnd );
+        GetClientRect(hwnd, &rc);
+
+        g_game->Initialize(hwnd, rc.right - rc.left, rc.bottom - rc.top);
     }
 
     // Main message loop
@@ -98,7 +103,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static bool s_in_suspend = false;
     static bool s_minimized = false;
 
-    auto game = reinterpret_cast<Game*>( GetWindowLongPtr(hWnd, GWLP_USERDATA) );
+    auto game = reinterpret_cast<Game*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
     switch (message)
     {
@@ -125,8 +130,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 game->OnResuming();
             s_in_suspend = false;
         }
-        else if ( !s_in_sizemove && game )
-            game->OnWindowSizeChanged();
+        else if (!s_in_sizemove && game)
+        {
+            game->OnWindowSizeChanged(LOWORD(lParam), HIWORD(lParam));
+        }
         break;
 
     case WM_ENTERSIZEMOVE:
@@ -136,7 +143,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_EXITSIZEMOVE:
         s_in_sizemove = false;
         if (game)
-            game->OnWindowSizeChanged();
+        {
+            RECT rc;
+            GetClientRect(hWnd, &rc);
+
+            game->OnWindowSizeChanged(rc.right - rc.left, rc.bottom - rc.top);
+        }
         break;
 
     case WM_GETMINMAXINFO:
