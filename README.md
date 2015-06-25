@@ -1,4 +1,4 @@
-#Direct3D Game Visual Studio templates
+#Direct3D Game VS project templates
 This repo contains simplified Visual C++ project templates. They are primarily intended for developer education, samples, and tutorials.
 
 See [this blog post](http://blogs.msdn.com/b/chuckw/archive/2015/01/06/direct3d-win32-game-visual-studio-template.aspx)
