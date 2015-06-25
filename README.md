@@ -1,4 +1,8 @@
-# Win32Game_2013
+#Direct3D Game Visual Studio templates
+This repo contains simplified Visual C++ project templates. They are primarily intended for developer education, samples, and tutorials.
 
-Contains the Visual Studio 2013 files for the [Direct3D Win32 Game Visual Studio template](http://blogs.msdn.com/b/chuckw/archive/2015/01/06/direct3d-win32-game-visual-studio-template.aspx)
+See [this blog post](http://blogs.msdn.com/b/chuckw/archive/2015/01/06/direct3d-win32-game-visual-studio-template.aspx)
 
+``VSIX\Direct3DWin32Game.vsix`` installs the Direct3D Win32 Game template for VS 2013
+
+``VSIX\Direct3DUWPGame.vsix`` installs the Direct3D UWP Game template and the Direct3D Win32 Game template for VS 2015
