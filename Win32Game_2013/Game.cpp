@@ -64,10 +64,10 @@ void Game::Render()
     if (m_timer.GetFrameCount() == 0)
         return;
 
+    Clear();
+
     CD3D11_VIEWPORT viewPort(0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight));
     m_d3dContext->RSSetViewports(1, &viewPort);
-
-    Clear();
 
     // TODO: Add your rendering code here
 
