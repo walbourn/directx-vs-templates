@@ -64,9 +64,6 @@ void Game::Render()
     if (m_timer.GetFrameCount() == 0)
         return;
 
-    CD3D11_VIEWPORT viewPort(0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight));
-    m_d3dContext->RSSetViewports(1, &viewPort);
-
     Clear();
 
     // TODO: Add your rendering code here
@@ -80,7 +77,11 @@ void Game::Clear()
     // Clear the views
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), Colors::CornflowerBlue);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+
     m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
+
+    CD3D11_VIEWPORT viewPort(0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight));
+    m_d3dContext->RSSetViewports(1, &viewPort);
 }
 
 // Presents the backbuffer contents to the screen
