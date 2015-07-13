@@ -27,11 +27,11 @@
       <ProjectItem ReplaceParameters="false" TargetFileName="StepTimer.h">StepTimer.h</ProjectItem>
       <ProjectItem ReplaceParameters="true" TargetFileName="Package.appxmanifest">Package.appxmanifest</ProjectItem>
 
-      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\Logo.scale-100.png">Logo.scale-100.png</ProjectItem>
-      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\SmallLogo.scale-100.png">SmallLogo.scale-100.png</ProjectItem>
-      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\StoreLogo.scale-100.png">StoreLogo.scale-100.png</ProjectItem>
-      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\SplashScreen.scale-100.png">SplashScreen.scale-100.png</ProjectItem>
-      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\WideLogo.scale-100.png">WideLogo.scale-100.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\Logo.scale-200.png">Logo.scale-200.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\SmallLogo.scale-200.png">SmallLogo.scale-200.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\StoreLogo.png">StoreLogo.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\SplashScreen.scale-200.png">SplashScreen.scale-200.png</ProjectItem>
+      <ProjectItem OpenInEditor="false" ReplaceParameters="false" TargetFileName="Assets\WideLogo.scale-200.png">WideLogo.scale-200.png</ProjectItem>
 
       <ProjectItem ReplaceParameters="false" TargetFileName="$projectname$_TemporaryKey.pfx">Direct3DUWPGame_TemporaryKey.pfx</ProjectItem>
     </Project>
