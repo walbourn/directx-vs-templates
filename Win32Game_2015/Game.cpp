@@ -147,7 +147,6 @@ void Game::GetDefaultSize(int& width, int& height) const
 // These are the resources that depend on the device.
 void Game::CreateDevice()
 {
-    // This flag adds support for surfaces with a different color channel ordering than the API default.
     UINT creationFlags = 0;
 
 #ifdef _DEBUG
