@@ -217,6 +217,11 @@ void Game::CreateDevice()
     }
 #endif
 
+    // DirectX 11.1 if present
+    hr = m_d3dDevice.As(&m_d3dDevice1);
+    if (SUCCEEDED(hr))
+        (void)m_d3dContext.As(&m_d3dContext1);
+
     // TODO: Initialize device dependent objects here (independent of window size)
 }
 
@@ -266,15 +271,13 @@ void Game::CreateResources()
 
         // And obtain the factory object that created it.
         ComPtr<IDXGIFactory1> dxgiFactory;
-        DX::ThrowIfFailed(dxgiAdapter->GetParent(__uuidof(IDXGIFactory1), &dxgiFactory));
+        DX::ThrowIfFailed(dxgiAdapter->GetParent( IID_PPV_ARGS( &dxgiFactory ) ) );
 
         ComPtr<IDXGIFactory2> dxgiFactory2;
         HRESULT hr = dxgiFactory.As(&dxgiFactory2);
         if (SUCCEEDED(hr))
         {
             // DirectX 11.1 or later
-            m_d3dDevice.As(&m_d3dDevice1);
-            m_d3dContext.As(&m_d3dContext1);
 
             // Create a descriptor for the swap chain.
             DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
@@ -289,7 +292,7 @@ void Game::CreateResources()
             DXGI_SWAP_CHAIN_FULLSCREEN_DESC fsSwapChainDesc = { 0 };
             fsSwapChainDesc.Windowed = TRUE;
 
-            // Create a SwapChain from a CoreWindow.
+            // Create a SwapChain from a Win32 window.
             DX::ThrowIfFailed(dxgiFactory2->CreateSwapChainForHwnd(
                 m_d3dDevice.Get(), m_window, &swapChainDesc,
                 &fsSwapChainDesc,

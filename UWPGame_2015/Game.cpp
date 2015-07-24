@@ -14,6 +14,7 @@ Game::Game() :
     m_window(0),
     m_outputWidth(800),
     m_outputHeight(600),
+    m_outputRotation(DXGI_MODE_ROTATION_IDENTITY),
     m_featureLevel(D3D_FEATURE_LEVEL_9_1)
 {
 }
@@ -352,11 +353,12 @@ void Game::CreateResources()
         swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
         ComPtr<IDXGISwapChain1> swapChain;
-        dxgiFactory->CreateSwapChainForCoreWindow(m_d3dDevice.Get(),
-                                                  m_window, &swapChainDesc,
-                                                  nullptr, swapChain.GetAddressOf());
+        HRESULT hr = dxgiFactory->CreateSwapChainForCoreWindow(m_d3dDevice.Get(),
+                                                               m_window, &swapChainDesc,
+                                                               nullptr, swapChain.GetAddressOf());
+        DX::ThrowIfFailed(hr);
 
-        HRESULT hr = swapChain.As(&m_swapChain);
+        hr = swapChain.As(&m_swapChain);
         DX::ThrowIfFailed(hr);
 
         hr = dxgiDevice->SetMaximumFrameLatency(1);
