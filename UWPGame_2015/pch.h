@@ -19,6 +19,10 @@
 #include <exception>
 #include <memory>
 
+#ifdef _DEBUG
+#include <dxgidebug.h>
+#endif
+
 namespace DX
 {
     inline void ThrowIfFailed(HRESULT hr)

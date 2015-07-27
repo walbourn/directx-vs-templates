@@ -288,6 +288,17 @@ void Game::CreateDevice()
     }
 #endif
 
+#ifdef _DEBUG
+    {
+        ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
+        if ( SUCCEEDED( DXGIGetDebugInterface1( 0, IID_PPV_ARGS( dxgiInfoQueue.GetAddressOf() ) ) ) )
+        {
+            dxgiInfoQueue->SetBreakOnSeverity( DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true );
+            dxgiInfoQueue->SetBreakOnSeverity( DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true );
+        }
+    }
+#endif
+
     // TODO: Initialize device dependent objects here (independent of window size)
 }
 
