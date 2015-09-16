@@ -94,6 +94,14 @@ void Game::Present()
     // frames that will never be displayed to the screen.
     HRESULT hr = m_swapChain->Present(1, 0);
 
+    // Discard the contents of the render target.
+    // This is a valid operation only when the existing contents will be entirely
+    // overwritten. If dirty or scroll rects are used, this call should be removed.
+    m_d3dContext->DiscardView(m_renderTargetView.Get());
+
+    // Discard the contents of the depth stencil.
+    m_d3dContext->DiscardView(m_depthStencilView.Get());
+
     // If the device was reset we must completely reinitialize the renderer.
     if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
     {
