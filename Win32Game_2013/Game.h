@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "pch.h"
 #include "StepTimer.h"
 
 // A basic game implementation that creates a D3D11 device and
