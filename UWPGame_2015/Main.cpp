@@ -125,10 +125,18 @@ protected:
         int w, h;
         m_game->GetDefaultSize(w, h);
 
-        // TODO - ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode_PreferredLaunchViewSize);
-        // TODO - ApplicationView::PreferredLaunchViewSize(Size(w, h));
+        m_DPI = DisplayInformation::GetForCurrentView()->LogicalDpi;
+
+        ApplicationView::PreferredLaunchWindowingMode = ApplicationViewWindowingMode::PreferredLaunchViewSize;
+
+        auto desiredSize = Size( ConvertPixelsToDips( w ),
+                                 ConvertPixelsToDips( h ) ); 
+
+        ApplicationView::PreferredLaunchViewSize = desiredSize;
 
         CoreWindow::GetForCurrentThread()->Activate();
+
+        ApplicationView::GetForCurrentView()->TryResizeView(desiredSize);
     }
 
     void OnSuspending(Platform::Object^ sender, SuspendingEventArgs^ args)
@@ -203,6 +211,11 @@ private:
     inline int ConvertDipsToPixels(float dips) const
     {
         return int(dips * m_DPI / 96.f + 0.5f);
+    }
+
+    inline float ConvertPixelsToDips(int pixels) const
+    {
+        return (float(pixels) * 96.f / m_DPI);
     }
 
     DXGI_MODE_ROTATION ComputeDisplayRotation() const
