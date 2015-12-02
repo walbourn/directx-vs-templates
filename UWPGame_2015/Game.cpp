@@ -172,7 +172,7 @@ void Game::ValidateDevice()
         DX::ThrowIfFailed(hr);
 
         ComPtr<IDXGIFactory2> dxgiFactory;
-        hr = deviceAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory));
+        hr = deviceAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf()));
         DX::ThrowIfFailed(hr);
 
         ComPtr<IDXGIAdapter1> previousDefaultAdapter;
@@ -186,7 +186,7 @@ void Game::ValidateDevice()
     DXGI_ADAPTER_DESC currentDesc;
     {
         ComPtr<IDXGIFactory2> currentFactory;
-        HRESULT hr = CreateDXGIFactory1(IID_PPV_ARGS(&currentFactory));
+        HRESULT hr = CreateDXGIFactory1(IID_PPV_ARGS(currentFactory.GetAddressOf()));
         DX::ThrowIfFailed(hr);
 
         ComPtr<IDXGIAdapter1> currentDefaultAdapter;
@@ -356,7 +356,7 @@ void Game::CreateResources()
 
         // And obtain the factory object that created it.
         ComPtr<IDXGIFactory2> dxgiFactory;
-        DX::ThrowIfFailed(dxgiAdapter->GetParent( IID_PPV_ARGS(&dxgiFactory) ) );
+        DX::ThrowIfFailed(dxgiAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
 
         // Create a descriptor for the swap chain.
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = { 0 };
@@ -389,7 +389,7 @@ void Game::CreateResources()
 
     // Obtain the backbuffer for this window which will be the final 3D rendertarget.
     ComPtr<ID3D11Texture2D> backBuffer;
-    DX::ThrowIfFailed(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), &backBuffer));
+    DX::ThrowIfFailed(m_swapChain->GetBuffer(0, IID_PPV_ARGS(backBuffer.GetAddressOf())));
 
     // Create a view interface on the rendertarget to use on bind.
     DX::ThrowIfFailed(m_d3dDevice->CreateRenderTargetView(backBuffer.Get(), nullptr, m_renderTargetView.ReleaseAndGetAddressOf()));
