@@ -167,9 +167,9 @@ void Game::CreateDevice()
 
     // Create the DX11 API device object, and get a corresponding context.
     HRESULT hr = D3D11CreateDevice(
-        nullptr,                                // specify null to use the default adapter
+        nullptr,                                // specify nullptr to use the default adapter
         D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,                                // leave as nullptr unless software device
+        nullptr,
         creationFlags,                          // optionally set debug and Direct2D compatibility flags
         featureLevels,                          // list of feature levels this app can support
         _countof(featureLevels),                // number of entries in above list

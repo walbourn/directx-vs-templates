@@ -190,7 +190,7 @@ void Game::ValidateDevice()
         DX::ThrowIfFailed(hr);
 
         ComPtr<IDXGIAdapter1> currentDefaultAdapter;
-        hr = currentFactory->EnumAdapters1(0, &currentDefaultAdapter);
+        hr = currentFactory->EnumAdapters1(0, currentDefaultAdapter.GetAddressOf());
         DX::ThrowIfFailed(hr);
 
         hr = currentDefaultAdapter->GetDesc(&currentDesc);
@@ -249,9 +249,9 @@ void Game::CreateDevice()
     ComPtr<ID3D11Device> d3dDevice;
     ComPtr<ID3D11DeviceContext> d3dContext;
     HRESULT hr = D3D11CreateDevice(
-        nullptr,                    // specify null to use the default adapter
+        nullptr,                    // specify nullptr to use the default adapter
         D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,                    // leave as nullptr unless software device
+        nullptr,
         creationFlags,              // optionally set debug and Direct2D compatibility flags
         featureLevels,              // list of feature levels this app can support
         _countof(featureLevels),    // number of entries in above list

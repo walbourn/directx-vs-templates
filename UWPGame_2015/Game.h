@@ -43,7 +43,7 @@ private:
 
     void CreateDevice();
     void CreateResources();
-    
+
     void OnDeviceLost();
 
     // Application state
