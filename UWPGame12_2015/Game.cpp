@@ -318,7 +318,21 @@ void Game::CreateResources()
     // If the swap chain already exists, resize it, otherwise create one.
     if (m_swapChain)
     {
-        DX::ThrowIfFailed(m_swapChain->ResizeBuffers(2, 0, 0, backBufferFormat, 0));
+        HRESULT hr = m_swapChain->ResizeBuffers(c_swapBufferCount, backBufferWidth, backBufferHeight, backBufferFormat, 0);
+
+        if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
+        {
+            // If the device was removed for any reason, a new device and swap chain will need to be created.
+            OnDeviceLost();
+
+            // Everything is set up now. Do not continue execution of this method. OnDeviceLost will reenter this method 
+            // and correctly set up the new device.
+            return;
+        }
+        else
+        {
+            DX::ThrowIfFailed(hr);
+        }
     }
     else
     {

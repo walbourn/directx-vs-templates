@@ -239,11 +239,12 @@ void Game::CreateResources()
     UINT backBufferHeight = static_cast<UINT>(m_outputHeight);
     DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
     DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    UINT backBufferCount = 2;
 
     // If the swap chain already exists, resize it, otherwise create one.
     if (m_swapChain)
     {
-        HRESULT hr = m_swapChain->ResizeBuffers(2, backBufferWidth, backBufferHeight, backBufferFormat, 0);
+        HRESULT hr = m_swapChain->ResizeBuffers(backBufferCount, backBufferWidth, backBufferHeight, backBufferFormat, 0);
 
         if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
         {
@@ -287,7 +288,7 @@ void Game::CreateResources()
             swapChainDesc.SampleDesc.Count = 1;
             swapChainDesc.SampleDesc.Quality = 0;
             swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-            swapChainDesc.BufferCount = 2;
+            swapChainDesc.BufferCount = backBufferCount;
 
             DXGI_SWAP_CHAIN_FULLSCREEN_DESC fsSwapChainDesc = { 0 };
             fsSwapChainDesc.Windowed = TRUE;
@@ -298,12 +299,12 @@ void Game::CreateResources()
                 &fsSwapChainDesc,
                 nullptr, m_swapChain1.ReleaseAndGetAddressOf()));
 
-            m_swapChain1.As(&m_swapChain);
+            DX::ThrowIfFailed(m_swapChain1.As(&m_swapChain));
         }
         else
         {
             DXGI_SWAP_CHAIN_DESC swapChainDesc = { 0 };
-            swapChainDesc.BufferCount = 2;
+            swapChainDesc.BufferCount = backBufferCount;
             swapChainDesc.BufferDesc.Width = backBufferWidth;
             swapChainDesc.BufferDesc.Height = backBufferHeight;
             swapChainDesc.BufferDesc.Format = backBufferFormat;
@@ -317,7 +318,7 @@ void Game::CreateResources()
         }
 
         // This template does not support 'full-screen' mode and prevents the ALT+ENTER shortcut from working
-        dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER);
+        DX::ThrowIfFailed(dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
     }
 
     // Obtain the backbuffer for this window which will be the final 3D rendertarget.

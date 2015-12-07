@@ -273,7 +273,21 @@ void Game::CreateResources()
     // If the swap chain already exists, resize it, otherwise create one.
     if (m_swapChain)
     {
-        DX::ThrowIfFailed(m_swapChain->ResizeBuffers(2, 0, 0, backBufferFormat, 0));
+        HRESULT hr = m_swapChain->ResizeBuffers(c_swapBufferCount, backBufferWidth, backBufferHeight, backBufferFormat, 0);
+
+        if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
+        {
+            // If the device was removed for any reason, a new device and swap chain will need to be created.
+            OnDeviceLost();
+
+            // Everything is set up now. Do not continue execution of this method. OnDeviceLost will reenter this method 
+            // and correctly set up the new device.
+            return;
+        }
+        else
+        {
+            DX::ThrowIfFailed(hr);
+        }
     }
     else
     {
@@ -304,7 +318,7 @@ void Game::CreateResources()
         DX::ThrowIfFailed(swapChain.As(&m_swapChain));
 
         // This template does not support 'full-screen' mode and prevents the ALT+ENTER shortcut from working.
-        m_dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER);
+        DX::ThrowIfFailed(m_dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
     }
 
     // Obtain the back buffers for this window which will be the final render targets
