@@ -62,7 +62,9 @@ void Game::Render()
 {
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
+    {
         return;
+    }
 
     // Prepare the command list to render a new frame.
     Clear();
@@ -202,8 +204,7 @@ void Game::CreateDevice()
     {
         // Try WARP12 instead (only available if the Graphics Tools feature-on-demand is enabled).
         ComPtr<IDXGIAdapter> warpAdapter;
-        hr = m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter));
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter)));
 
         hr = D3D12CreateDevice(warpAdapter.Get(), m_featureLevel, IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf()));
     }
@@ -309,11 +310,14 @@ void Game::CreateResources()
 
         // Create a swap chain for the window.
         ComPtr<IDXGISwapChain1> swapChain;
-        HRESULT hr = m_dxgiFactory->CreateSwapChainForHwnd(m_commandQueue.Get(),
-                                                           m_window, &swapChainDesc, &fsSwapChainDesc,
-                                                           nullptr,
-                                                           swapChain.GetAddressOf());
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(m_dxgiFactory->CreateSwapChainForHwnd(
+            m_commandQueue.Get(),
+            m_window,
+            &swapChainDesc,
+            &fsSwapChainDesc,
+            nullptr,
+            swapChain.GetAddressOf()
+            ));
 
         DX::ThrowIfFailed(swapChain.As(&m_swapChain));
 

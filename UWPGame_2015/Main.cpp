@@ -1,5 +1,5 @@
 //
-// Main.cpp -
+// Main.cpp
 //
 
 #include "pch.h"

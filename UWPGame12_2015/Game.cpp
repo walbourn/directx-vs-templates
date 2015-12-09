@@ -64,7 +64,9 @@ void Game::Render()
 {
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
+    {
         return;
+    }
 
     // Prepare the command list to render a new frame.
     Clear();
@@ -170,34 +172,28 @@ void Game::ValidateDevice()
     DXGI_ADAPTER_DESC previousDesc;
     {
         ComPtr<IDXGIAdapter1> previousDefaultAdapter;
-        HRESULT hr = m_dxgiFactory->EnumAdapters1(0, previousDefaultAdapter.GetAddressOf());
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(m_dxgiFactory->EnumAdapters1(0, previousDefaultAdapter.GetAddressOf()));
 
-        hr = previousDefaultAdapter->GetDesc(&previousDesc);
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(previousDefaultAdapter->GetDesc(&previousDesc));
     }
 
     DXGI_ADAPTER_DESC currentDesc;
     {
         ComPtr<IDXGIFactory2> currentFactory;
-        HRESULT hr = CreateDXGIFactory1(IID_PPV_ARGS(currentFactory.GetAddressOf()));
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(currentFactory.GetAddressOf())));
 
         ComPtr<IDXGIAdapter1> currentDefaultAdapter;
-        hr = currentFactory->EnumAdapters1(0, currentDefaultAdapter.GetAddressOf());
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(currentFactory->EnumAdapters1(0, currentDefaultAdapter.GetAddressOf()));
 
-        hr = currentDefaultAdapter->GetDesc(&currentDesc);
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(currentDefaultAdapter->GetDesc(&currentDesc));
     }
 
     // If the adapter LUIDs don't match, or if the device reports that it has been removed,
     // a new D3D device must be created.
 
-    HRESULT hr = m_d3dDevice->GetDeviceRemovedReason();
     if (previousDesc.AdapterLuid.LowPart != currentDesc.AdapterLuid.LowPart
         || previousDesc.AdapterLuid.HighPart != currentDesc.AdapterLuid.HighPart
-        || FAILED(hr))
+        || FAILED(m_d3dDevice->GetDeviceRemovedReason()))
     {
         // Create a new device and swap chain.
         OnDeviceLost();
@@ -247,8 +243,7 @@ void Game::CreateDevice()
     {
         // Try WARP12 instead (only available if the Graphics Tools feature-on-demand is enabled).
         ComPtr<IDXGIAdapter> warpAdapter;
-        hr = m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter));
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter)));
 
         hr = D3D12CreateDevice(warpAdapter.Get(), m_featureLevel, IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf()));
     }
@@ -351,16 +346,18 @@ void Game::CreateResources()
 
         // Create a swap chain for the window.
         ComPtr<IDXGISwapChain1> swapChain;
-        HRESULT hr = m_dxgiFactory->CreateSwapChainForCoreWindow(m_commandQueue.Get(),
-                                                                 m_window, &swapChainDesc,
-                                                                 nullptr, swapChain.GetAddressOf());
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(m_dxgiFactory->CreateSwapChainForCoreWindow(
+            m_commandQueue.Get(),
+            m_window,
+            &swapChainDesc,
+            nullptr,
+            swapChain.GetAddressOf()
+            ));
 
         DX::ThrowIfFailed(swapChain.As(&m_swapChain));
     }
 
-    HRESULT hr = m_swapChain->SetRotation(m_outputRotation);
-    DX::ThrowIfFailed(hr);
+    DX::ThrowIfFailed(m_swapChain->SetRotation(m_outputRotation));
 
     // Obtain the back buffers for this window which will be the final render targets
     // and create render target views for each of them.

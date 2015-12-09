@@ -1,5 +1,5 @@
 //
-// Game.cpp -
+// Game.cpp
 //
 
 #include "pch.h"
@@ -9,7 +9,6 @@ using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
 
-// Constructor.
 Game::Game() :
     m_window(0),
     m_outputWidth(800),
@@ -37,7 +36,7 @@ void Game::Initialize(HWND window, int width, int height)
     */
 }
 
-// Executes basic game loop.
+// Executes the basic game loop.
 void Game::Tick()
 {
     m_timer.Tick([&]()
@@ -48,30 +47,32 @@ void Game::Tick()
     Render();
 }
 
-// Updates the world
+// Updates the world.
 void Game::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
-    // TODO: Add your game logic here
+    // TODO: Add your game logic here.
     elapsedTime;
 }
 
-// Draws the scene
+// Draws the scene.
 void Game::Render()
 {
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
+    {
         return;
+    }
 
     Clear();
 
-    // TODO: Add your rendering code here
+    // TODO: Add your rendering code here.
 
     Present();
 }
 
-// Helper method to clear the backbuffers
+// Helper method to clear the back buffers.
 void Game::Clear()
 {
     // Clear the views
@@ -80,11 +81,12 @@ void Game::Clear()
 
     m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
 
+    // Set the viewport.
     CD3D11_VIEWPORT viewPort(0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight));
     m_d3dContext->RSSetViewports(1, &viewPort);
 }
 
-// Presents the backbuffer contents to the screen
+// Presents the back buffer contents to the screen.
 void Game::Present()
 {
     // The first argument instructs DXGI to block until VSync, putting the application
@@ -106,24 +108,24 @@ void Game::Present()
 // Message handlers
 void Game::OnActivated()
 {
-    // TODO: Game is becoming active window
+    // TODO: Game is becoming active window.
 }
 
 void Game::OnDeactivated()
 {
-    // TODO: Game is becoming background window
+    // TODO: Game is becoming background window.
 }
 
 void Game::OnSuspending()
 {
-    // TODO: Game is being power-suspended (or minimized)
+    // TODO: Game is being power-suspended (or minimized).
 }
 
 void Game::OnResuming()
 {
     m_timer.ResetElapsedTime();
 
-    // TODO: Game is being power-resumed (or returning from minimize)
+    // TODO: Game is being power-resumed (or returning from minimize).
 }
 
 void Game::OnWindowSizeChanged(int width, int height)
@@ -133,13 +135,13 @@ void Game::OnWindowSizeChanged(int width, int height)
 
     CreateResources();
 
-    // TODO: Game window is being resized
+    // TODO: Game window is being resized.
 }
 
 // Properties
 void Game::GetDefaultSize(int& width, int& height) const
 {
-    // TODO: Change to desired default window size (note minimum size is 320x200)
+    // TODO: Change to desired default window size (note minimum size is 320x200).
     width = 800;
     height = 600;
 }
@@ -155,7 +157,7 @@ void Game::CreateDevice()
 
     static const D3D_FEATURE_LEVEL featureLevels [] =
     {
-        // TODO: Modify for supported Direct3D feature levels (see code below related to 11.1 fallback handling)
+        // TODO: Modify for supported Direct3D feature levels (see code below related to 11.1 fallback handling).
         D3D_FEATURE_LEVEL_11_1,
         D3D_FEATURE_LEVEL_11_0,
         D3D_FEATURE_LEVEL_10_1,
@@ -170,9 +172,9 @@ void Game::CreateDevice()
         nullptr,                                // specify nullptr to use the default adapter
         D3D_DRIVER_TYPE_HARDWARE,
         nullptr,
-        creationFlags,                          // optionally set debug and Direct2D compatibility flags
-        featureLevels,                          // list of feature levels this app can support
-        _countof(featureLevels),                // number of entries in above list
+        creationFlags,
+        featureLevels,
+        _countof(featureLevels),
         D3D11_SDK_VERSION,                      // always set this to D3D11_SDK_VERSION
         m_d3dDevice.ReleaseAndGetAddressOf(),   // returns the Direct3D device created
         &m_featureLevel,                        // returns feature level of device created
@@ -182,22 +184,27 @@ void Game::CreateDevice()
     if (hr == E_INVALIDARG)
     {
         // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
-        hr = D3D11CreateDevice(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr,
-                                creationFlags, &featureLevels[1], _countof(featureLevels) - 1,
-                                D3D11_SDK_VERSION, m_d3dDevice.ReleaseAndGetAddressOf(),
-                                &m_featureLevel, m_d3dContext.ReleaseAndGetAddressOf());
+        hr = D3D11CreateDevice(nullptr,
+                               D3D_DRIVER_TYPE_HARDWARE,
+                               nullptr,
+                               creationFlags,
+                               &featureLevels[1],
+                               _countof(featureLevels) - 1,
+                               D3D11_SDK_VERSION,
+                               m_d3dDevice.ReleaseAndGetAddressOf(),
+                               &m_featureLevel,
+                               m_d3dContext.ReleaseAndGetAddressOf()
+                               );
     }
 
     DX::ThrowIfFailed(hr);
 
 #ifndef NDEBUG
     ComPtr<ID3D11Debug> d3dDebug;
-    hr = m_d3dDevice.As(&d3dDebug);
-    if (SUCCEEDED(hr))
+    if (SUCCEEDED(m_d3dDevice.As(&d3dDebug)))
     {
         ComPtr<ID3D11InfoQueue> d3dInfoQueue;
-        hr = d3dDebug.As(&d3dInfoQueue);
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(d3dDebug.As(&d3dInfoQueue)))
         {
 #ifdef _DEBUG
             d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, true);
@@ -206,7 +213,7 @@ void Game::CreateDevice()
             D3D11_MESSAGE_ID hide [] =
             {
                 D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
-                // TODO: Add more message IDs here as needed 
+                // TODO: Add more message IDs here as needed.
             };
             D3D11_INFO_QUEUE_FILTER filter;
             memset(&filter, 0, sizeof(filter));
@@ -218,11 +225,10 @@ void Game::CreateDevice()
 #endif
 
     // DirectX 11.1 if present
-    hr = m_d3dDevice.As(&m_d3dDevice1);
-    if (SUCCEEDED(hr))
+    if (SUCCEEDED(m_d3dDevice.As(&m_d3dDevice1)))
         (void)m_d3dContext.As(&m_d3dContext1);
 
-    // TODO: Initialize device dependent objects here (independent of window size)
+    // TODO: Initialize device dependent objects here (independent of window size).
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -295,9 +301,12 @@ void Game::CreateResources()
 
             // Create a SwapChain from a Win32 window.
             DX::ThrowIfFailed(dxgiFactory2->CreateSwapChainForHwnd(
-                m_d3dDevice.Get(), m_window, &swapChainDesc,
+                m_d3dDevice.Get(),
+                m_window,
+                &swapChainDesc,
                 &fsSwapChainDesc,
-                nullptr, m_swapChain1.ReleaseAndGetAddressOf()));
+                nullptr,
+                m_swapChain1.ReleaseAndGetAddressOf()));
 
             DX::ThrowIfFailed(m_swapChain1.As(&m_swapChain));
         }
@@ -338,12 +347,12 @@ void Game::CreateResources()
     CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
     DX::ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(depthStencil.Get(), &depthStencilViewDesc, m_depthStencilView.ReleaseAndGetAddressOf()));
 
-    // TODO: Initialize windows-size dependent objects here
+    // TODO: Initialize windows-size dependent objects here.
 }
 
 void Game::OnDeviceLost()
 {
-    // TODO: Add Direct3D resource cleanup here
+    // TODO: Add Direct3D resource cleanup here.
 
     m_depthStencil.Reset();
     m_depthStencilView.Reset();

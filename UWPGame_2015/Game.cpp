@@ -1,5 +1,5 @@
 //
-// Game.cpp -
+// Game.cpp
 //
 
 #include "pch.h"
@@ -9,7 +9,6 @@ using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
 
-// Constructor.
 Game::Game() :
     m_window(0),
     m_outputWidth(800),
@@ -39,7 +38,7 @@ void Game::Initialize(IUnknown* window, int width, int height, DXGI_MODE_ROTATIO
     */
 }
 
-// Executes basic game loop.
+// Executes the basic game loop.
 void Game::Tick()
 {
     m_timer.Tick([&]()
@@ -50,30 +49,32 @@ void Game::Tick()
     Render();
 }
 
-// Updates the world
+// Updates the world.
 void Game::Update(DX::StepTimer const& timer)
 {
     float elapsedTime = float(timer.GetElapsedSeconds());
 
-    // TODO: Add your game logic here
+    // TODO: Add your game logic here.
     elapsedTime;
 }
 
-// Draws the scene
+// Draws the scene.
 void Game::Render()
 {
     // Don't try to render anything before the first Update.
     if (m_timer.GetFrameCount() == 0)
+    {
         return;
+    }
 
     Clear();
 
-    // TODO: Add your rendering code here
+    // TODO: Add your rendering code here.
 
     Present();
 }
 
-// Helper method to clear the backbuffers
+// Helper method to clear the back buffers.
 void Game::Clear()
 {
     // Clear the views
@@ -82,11 +83,12 @@ void Game::Clear()
 
     m_d3dContext->OMSetRenderTargets(1, m_renderTargetView.GetAddressOf(), m_depthStencilView.Get());
 
+    // Set the viewport.
     CD3D11_VIEWPORT viewPort(0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight));
     m_d3dContext->RSSetViewports(1, &viewPort);
 }
 
-// Presents the backbuffer contents to the screen
+// Presents the back buffer contents to the screen.
 void Game::Present()
 {
     // The first argument instructs DXGI to block until VSync, putting the application
@@ -116,12 +118,12 @@ void Game::Present()
 // Message handlers
 void Game::OnActivated()
 {
-    // TODO: Game is becoming active window
+    // TODO: Game is becoming active window.
 }
 
 void Game::OnDeactivated()
 {
-    // TODO: Game is becoming background window
+    // TODO: Game is becoming background window.
 }
 
 void Game::OnSuspending()
@@ -129,20 +131,19 @@ void Game::OnSuspending()
     m_d3dContext->ClearState();
 
     ComPtr<IDXGIDevice3> dxgiDevice;
-    HRESULT hr = m_d3dDevice.As(&dxgiDevice);
-    if (SUCCEEDED(hr))
+    if (SUCCEEDED(m_d3dDevice.As(&dxgiDevice)))
     {
         dxgiDevice->Trim();
     }
 
-    // TODO: Game is being power-suspended
+    // TODO: Game is being power-suspended.
 }
 
 void Game::OnResuming()
 {
     m_timer.ResetElapsedTime();
 
-    // TODO: Game is being power-resumed
+    // TODO: Game is being power-resumed.
 }
 
 void Game::OnWindowSizeChanged(int width, int height, DXGI_MODE_ROTATION rotation)
@@ -153,7 +154,7 @@ void Game::OnWindowSizeChanged(int width, int height, DXGI_MODE_ROTATION rotatio
 
     CreateResources();
 
-    // TODO: Game window is being resized
+    // TODO: Game window is being resized.
 }
 
 void Game::ValidateDevice()
@@ -164,37 +165,29 @@ void Game::ValidateDevice()
     DXGI_ADAPTER_DESC previousDesc;
     {
         ComPtr<IDXGIDevice3> dxgiDevice;
-        HRESULT hr = m_d3dDevice.As(&dxgiDevice);
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(m_d3dDevice.As(&dxgiDevice));
 
         ComPtr<IDXGIAdapter> deviceAdapter;
-        hr = dxgiDevice->GetAdapter(&deviceAdapter);
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(dxgiDevice->GetAdapter(&deviceAdapter));
 
         ComPtr<IDXGIFactory2> dxgiFactory;
-        hr = deviceAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf()));
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(deviceAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
 
         ComPtr<IDXGIAdapter1> previousDefaultAdapter;
-        hr = dxgiFactory->EnumAdapters1(0, previousDefaultAdapter.GetAddressOf());
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(dxgiFactory->EnumAdapters1(0, previousDefaultAdapter.GetAddressOf()));
 
-        hr = previousDefaultAdapter->GetDesc(&previousDesc);
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(previousDefaultAdapter->GetDesc(&previousDesc));
     }
 
     DXGI_ADAPTER_DESC currentDesc;
     {
         ComPtr<IDXGIFactory2> currentFactory;
-        HRESULT hr = CreateDXGIFactory1(IID_PPV_ARGS(currentFactory.GetAddressOf()));
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(currentFactory.GetAddressOf())));
 
         ComPtr<IDXGIAdapter1> currentDefaultAdapter;
-        hr = currentFactory->EnumAdapters1(0, currentDefaultAdapter.GetAddressOf());
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(currentFactory->EnumAdapters1(0, currentDefaultAdapter.GetAddressOf()));
 
-        hr = currentDefaultAdapter->GetDesc(&currentDesc);
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(currentDefaultAdapter->GetDesc(&currentDesc));
     }
 
     // If the adapter LUIDs don't match, or if the device reports that it has been removed,
@@ -213,7 +206,7 @@ void Game::ValidateDevice()
 // Properties
 void Game::GetDefaultSize(int& width, int& height) const
 {
-    // TODO: Change to desired default window size (note minimum size is 320x200)
+    // TODO: Change to desired default window size (note minimum size is 320x200).
     width = 800;
     height = 600;
 }
@@ -222,7 +215,7 @@ void Game::GetDefaultSize(int& width, int& height) const
 void Game::CreateDevice()
 {
     // This flag adds support for surfaces with a different color channel ordering than the API default.
-    UINT creationFlags = 0;
+    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
 #ifdef _DEBUG
     creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
@@ -230,7 +223,7 @@ void Game::CreateDevice()
 
     static const D3D_FEATURE_LEVEL featureLevels [] =
     {
-        // TODO: Modify for supported Direct3D feature levels
+        // TODO: Modify for supported Direct3D feature levels.
         D3D_FEATURE_LEVEL_12_1,
         D3D_FEATURE_LEVEL_12_0,
         D3D_FEATURE_LEVEL_11_1,
@@ -248,35 +241,28 @@ void Game::CreateDevice()
 
     ComPtr<ID3D11Device> d3dDevice;
     ComPtr<ID3D11DeviceContext> d3dContext;
-    HRESULT hr = D3D11CreateDevice(
+    DX::ThrowIfFailed(D3D11CreateDevice(
         nullptr,                    // specify nullptr to use the default adapter
         D3D_DRIVER_TYPE_HARDWARE,
         nullptr,
-        creationFlags,              // optionally set debug and Direct2D compatibility flags
-        featureLevels,              // list of feature levels this app can support
-        _countof(featureLevels),    // number of entries in above list
-        D3D11_SDK_VERSION,          // always set this to D3D11_SDK_VERSION
+        creationFlags,
+        featureLevels,
+        _countof(featureLevels),
+        D3D11_SDK_VERSION,
         d3dDevice.GetAddressOf(),   // returns the Direct3D device created
         &m_featureLevel,            // returns feature level of device created
         d3dContext.GetAddressOf()   // returns the device immediate context
-        );
+        ));
 
-    DX::ThrowIfFailed(hr);
-
-    hr = d3dDevice.As(&m_d3dDevice);
-    DX::ThrowIfFailed(hr);
-
-    hr = d3dContext.As(&m_d3dContext);
-    DX::ThrowIfFailed(hr);
+    DX::ThrowIfFailed(d3dDevice.As(&m_d3dDevice));
+    DX::ThrowIfFailed(d3dContext.As(&m_d3dContext));
 
 #ifndef NDEBUG
     ComPtr<ID3D11Debug> d3dDebug;
-    hr = m_d3dDevice.As(&d3dDebug);
-    if (SUCCEEDED(hr))
+    if (SUCCEEDED(m_d3dDevice.As(&d3dDebug)))
     {
         ComPtr<ID3D11InfoQueue> d3dInfoQueue;
-        hr = d3dDebug.As(&d3dInfoQueue);
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(d3dDebug.As(&d3dInfoQueue)))
         {
 #ifdef _DEBUG
             d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, true);
@@ -285,7 +271,7 @@ void Game::CreateDevice()
             D3D11_MESSAGE_ID hide [] =
             {
                 D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
-                // TODO: Add more message IDs here as needed 
+                // TODO: Add more message IDs here as needed.
             };
             D3D11_INFO_QUEUE_FILTER filter;
             memset(&filter, 0, sizeof(filter));
@@ -299,7 +285,7 @@ void Game::CreateDevice()
 #ifdef _DEBUG
     {
         ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
-        if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS( dxgiInfoQueue.GetAddressOf()))))
+        if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
         {
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
@@ -307,7 +293,7 @@ void Game::CreateDevice()
     }
 #endif
 
-    // TODO: Initialize device dependent objects here (independent of window size)
+    // TODO: Initialize device dependent objects here (independent of window size).
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -373,20 +359,20 @@ void Game::CreateResources()
         swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
         ComPtr<IDXGISwapChain1> swapChain;
-        HRESULT hr = dxgiFactory->CreateSwapChainForCoreWindow(m_d3dDevice.Get(),
-                                                               m_window, &swapChainDesc,
-                                                               nullptr, swapChain.GetAddressOf());
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(dxgiFactory->CreateSwapChainForCoreWindow(
+            m_d3dDevice.Get(),
+            m_window,
+            &swapChainDesc,
+            nullptr,
+            swapChain.GetAddressOf()
+            ));
 
-        hr = swapChain.As(&m_swapChain);
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(swapChain.As(&m_swapChain));
 
-        hr = dxgiDevice->SetMaximumFrameLatency(1);
-        DX::ThrowIfFailed(hr);
+        DX::ThrowIfFailed(dxgiDevice->SetMaximumFrameLatency(1));
     }
 
-    HRESULT hr = m_swapChain->SetRotation(m_outputRotation);
-    DX::ThrowIfFailed(hr);
+    DX::ThrowIfFailed(m_swapChain->SetRotation(m_outputRotation));
 
     // Obtain the backbuffer for this window which will be the final 3D rendertarget.
     ComPtr<ID3D11Texture2D> backBuffer;
@@ -405,12 +391,12 @@ void Game::CreateResources()
     CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
     DX::ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(depthStencil.Get(), &depthStencilViewDesc, m_depthStencilView.ReleaseAndGetAddressOf()));
 
-    // TODO: Initialize windows-size dependent objects here
+    // TODO: Initialize windows-size dependent objects here.
 }
 
 void Game::OnDeviceLost()
 {
-    // TODO: Add Direct3D resource cleanup here
+    // TODO: Add Direct3D resource cleanup here.
 
     m_depthStencil.Reset();
     m_depthStencilView.Reset();
