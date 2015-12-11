@@ -24,8 +24,8 @@ Game::Game() :
 void Game::Initialize(IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation)
 {
     m_window = window;
-    m_outputWidth = std::max( width, 1 );
-    m_outputHeight = std::max( height, 1 );
+    m_outputWidth = std::max(width, 1);
+    m_outputHeight = std::max(height, 1);
     m_outputRotation = rotation;
 
     CreateDevice();
@@ -179,7 +179,7 @@ void Game::ValidateDevice()
 
     DXGI_ADAPTER_DESC currentDesc;
     {
-        ComPtr<IDXGIFactory2> currentFactory;
+        ComPtr<IDXGIFactory4> currentFactory;
         DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(currentFactory.GetAddressOf())));
 
         ComPtr<IDXGIAdapter1> currentDefaultAdapter;
@@ -231,25 +231,15 @@ void Game::CreateDevice()
 
     DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
 
+    ComPtr<IDXGIAdapter1> adapter;
+    GetAdapter(adapter.GetAddressOf());
+
     // Create the DX12 API device object.
-    HRESULT hr = D3D12CreateDevice(
-        nullptr,                    // Specify nullptr to use the default adapter.
+    DX::ThrowIfFailed(D3D12CreateDevice(
+        adapter.Get(),
         m_featureLevel,
         IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
-        );
-
-#if !defined(NDEBUG)
-    if (FAILED(hr))
-    {
-        // Try WARP12 instead (only available if the Graphics Tools feature-on-demand is enabled).
-        ComPtr<IDXGIAdapter> warpAdapter;
-        DX::ThrowIfFailed(m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter)));
-
-        hr = D3D12CreateDevice(warpAdapter.Get(), m_featureLevel, IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf()));
-    }
-#endif
-
-    DX::ThrowIfFailed(hr);
+        ));
 
     // Create the command queue.
     D3D12_COMMAND_QUEUE_DESC queueDesc = {};
@@ -271,7 +261,6 @@ void Game::CreateDevice()
     DX::ThrowIfFailed(m_d3dDevice->CreateDescriptorHeap(&dsvDescriptorHeapDesc, IID_PPV_ARGS(m_dsvDescriptorHeap.ReleaseAndGetAddressOf())));
 
     m_rtvDescriptorSize = m_d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-    m_dsvDescriptorSize = m_d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 
     // Create a command allocator for each back buffer that will be rendered to.
     for (UINT n = 0; n < c_swapBufferCount; n++)
@@ -439,6 +428,49 @@ void Game::MoveToNextFrame()
 
     // Set the fence value for the next frame.
     m_fenceValues[m_backBufferIndex] = currentFenceValue + 1;
+}
+
+// This method acquires the first available hardware adapter that supports Direct3D 12.
+// If no such adapter can be found, try WARP. Otherwise throw an exception.
+void Game::GetAdapter(IDXGIAdapter1** ppAdapter)
+{
+    *ppAdapter = nullptr;
+
+    ComPtr<IDXGIAdapter1> adapter;
+    for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != m_dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); ++adapterIndex)
+    {
+        DXGI_ADAPTER_DESC1 desc;
+        DX::ThrowIfFailed(adapter->GetDesc1(&desc));
+
+        if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+        {
+            // Don't select the Basic Render Driver adapter.
+            continue;
+        }
+
+        // Check to see if the adapter supports Direct3D 12, but don't create the actual device yet.
+        if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), m_featureLevel, _uuidof(ID3D12Device), nullptr)))
+        {
+            break;
+        }
+    }
+
+#if !defined(NDEBUG)
+    if (!adapter)
+    {
+        if (FAILED(m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(adapter.ReleaseAndGetAddressOf()))))
+        {
+            throw std::exception("WARP12 not available. Enable the 'Graphics Tools' feature-on-demand");
+        }
+    }
+#endif
+
+    if (!adapter)
+    {
+        throw std::exception("No Direct3D 12 device found");
+    }
+
+    *ppAdapter = adapter.Detach();
 }
 
 void Game::OnDeviceLost()

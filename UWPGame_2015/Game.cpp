@@ -22,8 +22,8 @@ Game::Game() :
 void Game::Initialize(IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation)
 {
     m_window = window;
-    m_outputWidth = std::max( width, 1 );
-    m_outputHeight = std::max( height, 1 );
+    m_outputWidth = std::max(width, 1);
+    m_outputHeight = std::max(height, 1);
     m_outputRotation = rotation;
 
     CreateDevice();
@@ -168,7 +168,7 @@ void Game::ValidateDevice()
         DX::ThrowIfFailed(m_d3dDevice.As(&dxgiDevice));
 
         ComPtr<IDXGIAdapter> deviceAdapter;
-        DX::ThrowIfFailed(dxgiDevice->GetAdapter(&deviceAdapter));
+        DX::ThrowIfFailed(dxgiDevice->GetAdapter(deviceAdapter.GetAddressOf()));
 
         ComPtr<IDXGIFactory2> dxgiFactory;
         DX::ThrowIfFailed(deviceAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
@@ -193,10 +193,9 @@ void Game::ValidateDevice()
     // If the adapter LUIDs don't match, or if the device reports that it has been removed,
     // a new D3D device must be created.
 
-    HRESULT hr = m_d3dDevice->GetDeviceRemovedReason();
     if (previousDesc.AdapterLuid.LowPart != currentDesc.AdapterLuid.LowPart
         || previousDesc.AdapterLuid.HighPart != currentDesc.AdapterLuid.HighPart
-        || FAILED(hr))
+        || FAILED(m_d3dDevice->GetDeviceRemovedReason()))
     {
         // Create a new device and swap chain.
         OnDeviceLost();

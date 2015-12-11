@@ -21,8 +21,8 @@ Game::Game() :
 void Game::Initialize(HWND window, int width, int height)
 {
     m_window = window;
-    m_outputWidth = std::max( width, 1 );
-    m_outputHeight = std::max( height, 1 );
+    m_outputWidth = std::max(width, 1);
+    m_outputHeight = std::max(height, 1);
 
     CreateDevice();
 
@@ -175,7 +175,7 @@ void Game::CreateDevice()
         creationFlags,
         featureLevels,
         _countof(featureLevels),
-        D3D11_SDK_VERSION,                      // always set this to D3D11_SDK_VERSION
+        D3D11_SDK_VERSION,
         m_d3dDevice.ReleaseAndGetAddressOf(),   // returns the Direct3D device created
         &m_featureLevel,                        // returns feature level of device created
         m_d3dContext.ReleaseAndGetAddressOf()   // returns the device immediate context
@@ -185,16 +185,16 @@ void Game::CreateDevice()
     {
         // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
         hr = D3D11CreateDevice(nullptr,
-                               D3D_DRIVER_TYPE_HARDWARE,
-                               nullptr,
-                               creationFlags,
-                               &featureLevels[1],
-                               _countof(featureLevels) - 1,
-                               D3D11_SDK_VERSION,
-                               m_d3dDevice.ReleaseAndGetAddressOf(),
-                               &m_featureLevel,
-                               m_d3dContext.ReleaseAndGetAddressOf()
-                               );
+            D3D_DRIVER_TYPE_HARDWARE,
+            nullptr,
+            creationFlags,
+            &featureLevels[1],
+            _countof(featureLevels) - 1,
+            D3D11_SDK_VERSION,
+            m_d3dDevice.ReleaseAndGetAddressOf(),
+            &m_featureLevel,
+            m_d3dContext.ReleaseAndGetAddressOf()
+            );
     }
 
     DX::ThrowIfFailed(hr);
@@ -281,8 +281,7 @@ void Game::CreateResources()
         DX::ThrowIfFailed(dxgiAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
 
         ComPtr<IDXGIFactory2> dxgiFactory2;
-        HRESULT hr = dxgiFactory.As(&dxgiFactory2);
-        if (SUCCEEDED(hr))
+        if (SUCCEEDED(dxgiFactory.As(&dxgiFactory2)))
         {
             // DirectX 11.1 or later
 
@@ -306,7 +305,8 @@ void Game::CreateResources()
                 &swapChainDesc,
                 &fsSwapChainDesc,
                 nullptr,
-                m_swapChain1.ReleaseAndGetAddressOf()));
+                m_swapChain1.ReleaseAndGetAddressOf()
+                ));
 
             DX::ThrowIfFailed(m_swapChain1.As(&m_swapChain));
         }
