@@ -1,0 +1,36 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Direct3D12 Win32 Game DR</Name>
+    <Description>A project for a Win32 desktop game that uses Direct3D12 with DeviceResources abstraction</Description>
+    <ProjectType>VC</ProjectType>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Direct3D Win32 Game</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+    <PreviewImage>preview.png</PreviewImage>
+  </TemplateData>
+  <TemplateContent>
+    <Project ReplaceParameters="true" File="Direct3DWin32Game.vcxproj">
+      <ProjectItem ReplaceParameters="true" TargetFileName="$projectname$.vcxproj.filters">Direct3DWin32Game.vcxproj.filters</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="Game.cpp" OpenInEditor="true">Game.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Main.cpp">Main.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="pch.cpp">pch.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="Game.h">Game.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="DeviceResources.h">DeviceResources.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="DeviceResources.cpp">DeviceResources.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="pch.h">pch.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="StepTimer.h">StepTimer.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="d3dx12.h">d3dx12.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="resource.rc">resource.rc</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="directx.ico">directx.ico</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="settings.manifest">settings.manifest</ProjectItem>
+    </Project>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>Microsoft.VisualStudio.Universal.TemplateWizards, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</Assembly>
+    <FullClassName>Microsoft.VisualStudio.Universal.TemplateWizards.PlatformVersion.Wizard</FullClassName>
+  </WizardExtension>
+</VSTemplate>
