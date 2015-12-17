@@ -18,6 +18,7 @@ namespace DX
     {
     public:
         DeviceResources(DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM, DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D32_FLOAT, UINT backBufferCount = 2);
+        ~DeviceResources();
 
         void CreateDeviceResources();
         void CreateWindowSizeDependentResources();

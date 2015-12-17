@@ -19,6 +19,11 @@ Game::Game() :
 {
 }
 
+Game::~Game()
+{
+    WaitForGpu();
+}
+
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
@@ -365,6 +370,9 @@ void Game::CreateResources()
 
 void Game::WaitForGpu()
 {
+    if (!m_fence)
+        return;
+
     // Schedule a Signal command in the GPU queue.
     DX::ThrowIfFailed(m_commandQueue->Signal(m_fence.Get(), m_fenceValues[m_backBufferIndex]));
 

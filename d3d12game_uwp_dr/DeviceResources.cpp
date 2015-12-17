@@ -33,6 +33,12 @@ DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT d
     }
 }
 
+// Destructor for DeviceResources.
+DX::DeviceResources::~DeviceResources()
+{
+    WaitForGpu();
+}
+
 // Configures the Direct3D device, and stores handles to it and the device context.
 void DX::DeviceResources::CreateDeviceResources() 
 {
@@ -410,6 +416,9 @@ void DX::DeviceResources::Present()
 // Wait for pending GPU work to complete.
 void DX::DeviceResources::WaitForGpu()
 {
+    if (!m_fence)
+        return;
+
     // Schedule a Signal command in the GPU queue.
     DX::ThrowIfFailed(m_commandQueue->Signal(m_fence.Get(), m_fenceValues[m_backBufferIndex]));
 

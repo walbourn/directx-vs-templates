@@ -14,6 +14,7 @@ class Game
 public:
 
     Game();
+    ~Game();
 
     // Initialization and management
     void Initialize(HWND window, int width, int height);
