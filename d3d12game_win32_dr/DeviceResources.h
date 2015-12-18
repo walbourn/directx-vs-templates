@@ -47,6 +47,7 @@ namespace DX
         D3D12_VIEWPORT              GetScreenViewport() const       { return m_screenViewport; }
         D3D12_RECT                  GetScissorRect() const          { return m_scissorRect; }
         UINT                        GetCurrentFrameIndex() const    { return m_backBufferIndex; }
+        UINT                        GetBackBufferCount() const      { return m_backBufferCount; }
 
         CD3DX12_CPU_DESCRIPTOR_HANDLE GetRenderTargetView() const
         {

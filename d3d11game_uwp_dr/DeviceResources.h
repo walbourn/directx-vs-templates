@@ -42,6 +42,7 @@ namespace DX
         DXGI_FORMAT             GetBackBufferFormat() const             { return m_backBufferFormat; }
         DXGI_FORMAT             GetDepthBufferFormat() const            { return m_depthBufferFormat; }
         D3D11_VIEWPORT          GetScreenViewport() const               { return m_screenViewport; }
+        UINT                    GetBackBufferCount() const              { return m_backBufferCount; }
 
     private:
         void GetHardwareAdapter(IDXGIAdapter1** ppAdapter);
