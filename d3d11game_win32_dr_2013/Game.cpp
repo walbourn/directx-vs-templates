@@ -11,7 +11,7 @@ using Microsoft::WRL::ComPtr;
 
 Game::Game()
 {
-    m_deviceResources.reset(new DX::DeviceResources());
+    m_deviceResources = std::make_unique<DX::DeviceResources>();
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
