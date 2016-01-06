@@ -67,7 +67,10 @@ void Game::Render()
     m_deviceResources->Prepare();
     Clear();
 
+    auto commandList = m_deviceResources->GetCommandList();
+
     // TODO: Add your rendering code here.
+    commandList;
 
     m_deviceResources->Present();
 }
@@ -140,7 +143,10 @@ void Game::GetDefaultSize(int& width, int& height) const
 // These are the resources that depend on the device.
 void Game::CreateDeviceDependentResources()
 {
+    auto device = m_deviceResources->GetD3DDevice();
+
     // TODO: Initialize device dependent objects here (independent of window size).
+    device;
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
