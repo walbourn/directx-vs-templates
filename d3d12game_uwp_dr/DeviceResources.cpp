@@ -36,6 +36,7 @@ DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT d
 // Destructor for DeviceResources.
 DX::DeviceResources::~DeviceResources()
 {
+    // Ensure that the GPU is no longer referencing resources that are about to be destroyed.
     WaitForGpu();
 }
 

@@ -22,6 +22,7 @@ Game::Game() :
 
 Game::~Game()
 {
+    // Ensure that the GPU is no longer referencing resources that are about to be destroyed.
     WaitForGpu();
 }
 
