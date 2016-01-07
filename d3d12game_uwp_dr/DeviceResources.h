@@ -29,7 +29,7 @@ namespace DX
         void RegisterDeviceNotify(IDeviceNotify* deviceNotify) { m_deviceNotify = deviceNotify; }
         void Prepare();
         void Present();
-        void WaitForGpu();
+        void WaitForGpu() noexcept;
 
         // Device Accessors.
         RECT GetOutputSize() const { return m_outputSize; }
