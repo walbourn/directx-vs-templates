@@ -60,7 +60,6 @@ private:
     Microsoft::WRL::ComPtr<IDXGISwapChain1>         m_swapChain1;
     Microsoft::WRL::ComPtr<ID3D11RenderTargetView>  m_renderTargetView;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
-    Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_depthStencil;
 
     // Rendering loop timer.
     DX::StepTimer                                   m_timer;
