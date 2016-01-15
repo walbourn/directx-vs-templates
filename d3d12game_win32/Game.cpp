@@ -369,20 +369,24 @@ void Game::CreateResources()
     // TODO: Initialize windows-size dependent objects here.
 }
 
-void Game::WaitForGpu()
+void Game::WaitForGpu() noexcept
 {
-    if (!m_fence)
-        return;
+    if (m_commandQueue && m_fence && m_fenceEvent.IsValid())
+    {
+        // Schedule a Signal command in the GPU queue.
+        UINT64 fenceValue = m_fenceValues[m_backBufferIndex];
+        if (SUCCEEDED(m_commandQueue->Signal(m_fence.Get(), fenceValue)))
+        {
+            // Wait until the Signal has been processed.
+            if (SUCCEEDED(m_fence->SetEventOnCompletion(fenceValue, m_fenceEvent.Get())))
+            {
+                WaitForSingleObjectEx(m_fenceEvent.Get(), INFINITE, FALSE);
 
-    // Schedule a Signal command in the GPU queue.
-    DX::ThrowIfFailed(m_commandQueue->Signal(m_fence.Get(), m_fenceValues[m_backBufferIndex]));
-
-    // Wait until the Signal has been processed.
-    DX::ThrowIfFailed(m_fence->SetEventOnCompletion(m_fenceValues[m_backBufferIndex], m_fenceEvent.Get()));
-    WaitForSingleObjectEx(m_fenceEvent.Get(), INFINITE, FALSE);
-
-    // Increment the fence value for the current frame.
-    m_fenceValues[m_backBufferIndex]++;
+                // Increment the fence value for the current frame.
+                m_fenceValues[m_backBufferIndex]++;
+            }
+        }
+    }
 }
 
 void Game::MoveToNextFrame()

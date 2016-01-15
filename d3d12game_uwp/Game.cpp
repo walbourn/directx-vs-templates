@@ -20,12 +20,6 @@ Game::Game() :
 {
 }
 
-Game::~Game()
-{
-    // Ensure that the GPU is no longer referencing resources that are about to be destroyed.
-    WaitForGpu();
-}
-
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation)
 {
@@ -405,9 +399,6 @@ void Game::CreateResources()
 
 void Game::WaitForGpu()
 {
-    if (!m_fence)
-        return;
-
     // Schedule a Signal command in the GPU queue.
     DX::ThrowIfFailed(m_commandQueue->Signal(m_fence.Get(), m_fenceValues[m_backBufferIndex]));
 
