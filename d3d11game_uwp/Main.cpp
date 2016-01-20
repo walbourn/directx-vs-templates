@@ -134,6 +134,11 @@ protected:
 
         ApplicationView::PreferredLaunchViewSize = desiredSize;
 
+        auto minSize = Size( ConvertPixelsToDips( 320 ),
+                             ConvertPixelsToDips( 200 ) );
+
+        ApplicationView::GetForCurrentView()->SetPreferredMinSize( minSize );
+
         CoreWindow::GetForCurrentThread()->Activate();
 
         ApplicationView::GetForCurrentView()->TryResizeView(desiredSize);
