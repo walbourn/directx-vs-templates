@@ -33,6 +33,7 @@ namespace DX
 
         // Device Accessors.
         RECT GetOutputSize() const { return m_outputSize; }
+        DXGI_MODE_ROTATION GetRotation() const { return m_rotation; }
 
         // Direct3D Accessors.
         ID3D12Device*               GetD3DDevice() const            { return m_d3dDevice.Get(); }
