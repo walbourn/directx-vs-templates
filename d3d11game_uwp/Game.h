@@ -34,7 +34,7 @@ public:
     void OnWindowSizeChanged(int width, int height, DXGI_MODE_ROTATION rotation);
     void ValidateDevice();
 
-    // Properites
+    // Properties
     void GetDefaultSize( int& width, int& height ) const;
 
 private:
