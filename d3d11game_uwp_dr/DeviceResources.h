@@ -30,20 +30,21 @@ namespace DX
         void Present();
 
         // Device Accessors.
-        RECT GetOutputSize() const { return m_outputSize; }
+        RECT GetOutputSize() const             { return m_outputSize; }
         DXGI_MODE_ROTATION GetRotation() const { return m_rotation; }
 
         // Direct3D Accessors.
-        ID3D11Device2*          GetD3DDevice() const                    { return m_d3dDevice.Get(); }
-        ID3D11DeviceContext2*   GetD3DDeviceContext() const             { return m_d3dContext.Get(); }
-        IDXGISwapChain3*        GetSwapChain() const                    { return m_swapChain.Get(); }
-        D3D_FEATURE_LEVEL       GetDeviceFeatureLevel() const           { return m_d3dFeatureLevel; }
-        ID3D11RenderTargetView* GetBackBufferRenderTargetView() const   { return m_d3dRenderTargetView.Get(); }
-        ID3D11DepthStencilView* GetDepthStencilView() const             { return m_d3dDepthStencilView.Get(); }
-        DXGI_FORMAT             GetBackBufferFormat() const             { return m_backBufferFormat; }
-        DXGI_FORMAT             GetDepthBufferFormat() const            { return m_depthBufferFormat; }
-        D3D11_VIEWPORT          GetScreenViewport() const               { return m_screenViewport; }
-        UINT                    GetBackBufferCount() const              { return m_backBufferCount; }
+        ID3D11Device2*          GetD3DDevice() const                  { return m_d3dDevice.Get(); }
+        ID3D11DeviceContext2*   GetD3DDeviceContext() const           { return m_d3dContext.Get(); }
+        IDXGISwapChain3*        GetSwapChain() const                  { return m_swapChain.Get(); }
+        D3D_FEATURE_LEVEL       GetDeviceFeatureLevel() const         { return m_d3dFeatureLevel; }
+        ID3D11RenderTargetView* GetBackBufferRenderTargetView() const { return m_d3dRenderTargetView.Get(); }
+        ID3D11DepthStencilView* GetDepthStencilView() const           { return m_d3dDepthStencilView.Get(); }
+        DXGI_FORMAT             GetBackBufferFormat() const           { return m_backBufferFormat; }
+        DXGI_FORMAT             GetDepthBufferFormat() const          { return m_depthBufferFormat; }
+        D3D11_VIEWPORT          GetScreenViewport() const             { return m_screenViewport; }
+        UINT                    GetBackBufferCount() const            { return m_backBufferCount; }
+        DirectX::XMFLOAT4X4     GetOrientationTransform3D() const     { return m_orientationTransform3D; }
 
     private:
         void GetHardwareAdapter(IDXGIAdapter1** ppAdapter);
@@ -68,6 +69,9 @@ namespace DX
         D3D_FEATURE_LEVEL                               m_d3dFeatureLevel;
         DXGI_MODE_ROTATION                              m_rotation;
         RECT                                            m_outputSize;
+
+        // Transforms used for display orientation.
+        DirectX::XMFLOAT4X4                             m_orientationTransform3D;
 
         // The IDeviceNotify can be held directly as it owns the DeviceResources.
         IDeviceNotify*                                  m_deviceNotify;

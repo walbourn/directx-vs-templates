@@ -11,6 +11,42 @@ using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
 
+// Constants used to calculate screen rotations
+namespace ScreenRotation
+{
+    // 0-degree Z-rotation
+    static const XMFLOAT4X4 Rotation0(
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+        );
+
+    // 90-degree Z-rotation
+    static const XMFLOAT4X4 Rotation90(
+        0.0f, 1.0f, 0.0f, 0.0f,
+        -1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+        );
+
+    // 180-degree Z-rotation
+    static const XMFLOAT4X4 Rotation180(
+        -1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, -1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+        );
+
+    // 270-degree Z-rotation
+    static const XMFLOAT4X4 Rotation270(
+        0.0f, -1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+        );
+};
+
 // Constructor for DeviceResources.
 DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount) :
     m_backBufferIndex(0),
@@ -25,6 +61,7 @@ DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT d
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_11_0),
     m_rotation(DXGI_MODE_ROTATION_IDENTITY),
     m_outputSize{0, 0, 1, 1},
+    m_orientationTransform3D(ScreenRotation::Rotation0),
     m_deviceNotify(nullptr)
 {
     if (backBufferCount > MAX_BACK_BUFFER_COUNT)
@@ -190,6 +227,28 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
             ));
 
         DX::ThrowIfFailed(swapChain.As(&m_swapChain));
+    }
+
+    // Set the proper orientation for the swap chain, and generate
+    // matrix transformations for rendering to the rotated swap chain.
+    switch (m_rotation)
+    {
+    default:
+    case DXGI_MODE_ROTATION_IDENTITY:
+        m_orientationTransform3D = ScreenRotation::Rotation0;
+        break;
+
+    case DXGI_MODE_ROTATION_ROTATE90:
+        m_orientationTransform3D = ScreenRotation::Rotation270;
+        break;
+
+    case DXGI_MODE_ROTATION_ROTATE180:
+        m_orientationTransform3D = ScreenRotation::Rotation180;
+        break;
+
+    case DXGI_MODE_ROTATION_ROTATE270:
+        m_orientationTransform3D = ScreenRotation::Rotation90;
+        break;
     }
 
     DX::ThrowIfFailed(m_swapChain->SetRotation(m_rotation));
