@@ -122,6 +122,18 @@ protected:
     // Event handlers
     void OnActivated(CoreApplicationView^ applicationView, IActivatedEventArgs^ args)
     {
+        if (args->Kind == ActivationKind::Launch)
+        {
+            auto launchArgs = static_cast<LaunchActivatedEventArgs^>(args);
+
+            if (launchArgs->PrelaunchActivated)
+            {
+                // Opt-out of Prelaunch
+                CoreApplication::Exit();
+                return;
+            }
+        }
+
         int w, h;
         m_game->GetDefaultSize(w, h);
 
