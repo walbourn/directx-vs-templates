@@ -58,6 +58,10 @@ void DX::DeviceResources::CreateDeviceResources()
         // If the project is in a debug build, enable debugging via SDK Layers with this flag.
         creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
     }
+    else
+    {
+        OutputDebugStringA("WARNING: Direct3D Debug Device is not available\n");
+    }
 #endif
 
     // This array defines the set of DirectX hardware feature levels this app will support.
@@ -208,8 +212,8 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     // Clear the previous window size specific context.
     ID3D11RenderTargetView* nullViews[] = {nullptr};
     m_d3dContext->OMSetRenderTargets(_countof(nullViews), nullViews, nullptr);
-    m_d3dRenderTargetView = nullptr;
-    m_d3dDepthStencilView = nullptr;
+    m_d3dRenderTargetView.Reset();
+    m_d3dDepthStencilView.Reset();
     m_d3dContext->Flush();
 
     // Determine the render target size in pixels.

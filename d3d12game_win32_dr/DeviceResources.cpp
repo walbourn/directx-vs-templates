@@ -50,6 +50,10 @@ void DX::DeviceResources::CreateDeviceResources()
         {
             debugController->EnableDebugLayer();
         }
+        else
+        {
+            OutputDebugStringA("WARNING: Direct3D Debug Device is not available\n");
+        }
 
         ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
         if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
