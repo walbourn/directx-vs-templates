@@ -42,9 +42,9 @@ DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT d
     m_backBufferCount(backBufferCount),
     m_window(0),
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
+    m_outputSize{0, 0, 1, 1},
     m_deviceNotify(nullptr)
 {
-    m_outputSize = { 0, 0, 1, 1 };
 }
 
 // Configures the Direct3D device, and stores handles to it and the device context.
@@ -316,7 +316,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
                 ));
         }
 
-        // This class does not support 'full-screen' mode and prevents the ALT+ENTER shortcut from working
+        // This class does not support exclusive full-screen mode and prevents DXGI from responding to the ALT+ENTER shortcut
         DX::ThrowIfFailed(dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
     }
 

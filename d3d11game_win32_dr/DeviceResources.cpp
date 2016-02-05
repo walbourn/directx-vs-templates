@@ -316,7 +316,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
                 ));
         }
 
-        // This class does not support 'full-screen' mode and prevents the ALT+ENTER shortcut from working
+        // This class does not support exclusive full-screen mode and prevents DXGI from responding to the ALT+ENTER shortcut
         DX::ThrowIfFailed(dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
     }
 

@@ -64,7 +64,12 @@ public:
         window->Closed +=
             ref new TypedEventHandler<CoreWindow^, CoreWindowEventArgs^>(this, &ViewProvider::OnWindowClosed);
 
-        DisplayInformation^ currentDisplayInformation = DisplayInformation::GetForCurrentView();
+        auto dispatcher = CoreWindow::GetForCurrentThread()->Dispatcher;
+
+        dispatcher->AcceleratorKeyActivated +=
+            ref new TypedEventHandler<CoreDispatcher^, AcceleratorKeyEventArgs^>(this, &ViewProvider::OnAcceleratorKeyActivated);
+
+        auto currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
         currentDisplayInformation->DpiChanged +=
             ref new TypedEventHandler<DisplayInformation^, Object^>(this, &ViewProvider::OnDpiChanged);
@@ -140,20 +145,25 @@ protected:
         m_DPI = DisplayInformation::GetForCurrentView()->LogicalDpi;
 
         ApplicationView::PreferredLaunchWindowingMode = ApplicationViewWindowingMode::PreferredLaunchViewSize;
+        // TODO: Change to ApplicationViewWindowingMode::FullScreen to default to full screen
 
         auto desiredSize = Size( ConvertPixelsToDips( w ),
                                  ConvertPixelsToDips( h ) ); 
 
         ApplicationView::PreferredLaunchViewSize = desiredSize;
 
+        auto view = ApplicationView::GetForCurrentView();
+
         auto minSize = Size( ConvertPixelsToDips( 320 ),
                              ConvertPixelsToDips( 200 ) );
 
-        ApplicationView::GetForCurrentView()->SetPreferredMinSize( minSize );
+        view->SetPreferredMinSize( minSize );
 
         CoreWindow::GetForCurrentThread()->Activate();
 
-        ApplicationView::GetForCurrentView()->TryResizeView(desiredSize);
+        view->FullScreenSystemOverlayMode = FullScreenSystemOverlayMode::Minimal;
+
+        view->TryResizeView(desiredSize);
     }
 
     void OnSuspending(Platform::Object^ sender, SuspendingEventArgs^ args)
@@ -193,6 +203,22 @@ protected:
     void OnWindowClosed(CoreWindow^ sender, CoreWindowEventArgs^ args)
     {
         m_exit = true;
+    }
+
+    void OnAcceleratorKeyActivated(CoreDispatcher^, AcceleratorKeyEventArgs^ args)
+    {
+        if (args->EventType == CoreAcceleratorKeyEventType::SystemKeyDown
+            && args->VirtualKey == VirtualKey::Enter)
+        {
+            auto view = ApplicationView::GetForCurrentView();
+
+            if (view->IsFullScreenMode)
+                view->ExitFullScreenMode();
+            else
+                view->TryEnterFullScreenMode();
+
+            args->Handled = true;
+        }
     }
 
     void OnDpiChanged(DisplayInformation^ sender, Object^ args)

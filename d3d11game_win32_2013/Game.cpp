@@ -326,7 +326,7 @@ void Game::CreateResources()
             DX::ThrowIfFailed(dxgiFactory->CreateSwapChain(m_d3dDevice.Get(), &swapChainDesc, m_swapChain.ReleaseAndGetAddressOf()));
         }
 
-        // This template does not support 'full-screen' mode and prevents the ALT+ENTER shortcut from working
+        // This template does not support exclusive fullscreen mode and prevents DXGI from responding to the ALT+ENTER shortcut
         DX::ThrowIfFailed(dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
     }
 

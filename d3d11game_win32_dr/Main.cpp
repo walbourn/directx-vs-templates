@@ -57,13 +57,18 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
         AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 
-        HWND hwnd = CreateWindow(L"$safeprojectname$WindowClass", L"$projectname$", WS_OVERLAPPEDWINDOW,
+        HWND hwnd = CreateWindowEx(0, L"$safeprojectname$WindowClass", L"$projectname$", WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance,
             nullptr);
+        // TODO: Change to CreateWindowEx(WS_EX_TOPMOST, L"$safeprojectname$WindowClass", L"$projectname$", WS_POPUP,
+        // to default to fullscreen.
+
         if (!hwnd)
             return 1;
 
         ShowWindow(hwnd, nCmdShow);
+        // TODO: Change nCmdShow to SW_SHOWMAXIMIZED to default to fullscreen.
+
         SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(g_game.get()) );
 
         GetClientRect(hwnd, &rc);
@@ -102,6 +107,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     static bool s_in_sizemove = false;
     static bool s_in_suspend = false;
     static bool s_minimized = false;
+    static bool s_fullscreen = false;
+    // TODO: Set s_fullscreen to true if defaulting to fullscreen.
 
     auto game = reinterpret_cast<Game*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
@@ -195,6 +202,38 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
     case WM_DESTROY:
         PostQuitMessage(0);
+        break;
+
+    case WM_SYSKEYDOWN:
+        if (wParam == VK_RETURN && (lParam & 0x60000000) == 0x20000000)
+        {
+            // Implements the classic ALT+ENTER fullscreen toggle
+            if (s_fullscreen)
+            {
+                SetWindowLongPtr(hWnd, GWL_STYLE, WS_OVERLAPPEDWINDOW);
+                SetWindowLongPtr(hWnd, GWL_EXSTYLE, 0);
+
+                int width = 800;
+                int height = 600;
+                if (game)
+                    game->GetDefaultSize(width, height);
+
+                ShowWindow(hWnd, SW_SHOWNORMAL);
+
+                SetWindowPos(hWnd, HWND_TOP, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+            }
+            else
+            {
+                SetWindowLongPtr(hWnd, GWL_STYLE, 0);
+                SetWindowLongPtr(hWnd, GWL_EXSTYLE, WS_EX_TOPMOST);
+
+                SetWindowPos(hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
+
+                ShowWindow(hWnd, SW_SHOWMAXIMIZED);
+            }
+
+            s_fullscreen = !s_fullscreen;
+        }
         break;
     }
 
