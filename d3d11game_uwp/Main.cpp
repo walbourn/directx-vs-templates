@@ -212,6 +212,7 @@ protected:
             && args->KeyStatus.IsMenuKeyDown 
             && !args->KeyStatus.WasKeyDown)
         {
+            // Implements the classic ALT+ENTER fullscreen toggle
             auto view = ApplicationView::GetForCurrentView();
 
             if (view->IsFullScreenMode)
