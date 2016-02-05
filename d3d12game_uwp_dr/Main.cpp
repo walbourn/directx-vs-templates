@@ -208,7 +208,9 @@ protected:
     void OnAcceleratorKeyActivated(CoreDispatcher^, AcceleratorKeyEventArgs^ args)
     {
         if (args->EventType == CoreAcceleratorKeyEventType::SystemKeyDown
-            && args->VirtualKey == VirtualKey::Enter)
+            && args->VirtualKey == VirtualKey::Enter
+            && args->KeyStatus.IsMenuKeyDown 
+            && !args->KeyStatus.WasKeyDown)
         {
             auto view = ApplicationView::GetForCurrentView();
 
