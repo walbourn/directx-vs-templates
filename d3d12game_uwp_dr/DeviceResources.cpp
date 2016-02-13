@@ -48,7 +48,7 @@ namespace ScreenRotation
 };
 
 // Constructor for DeviceResources.
-DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount) :
+DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
     m_backBufferIndex(0),
     m_fenceValues{},
     m_rtvDescriptorSize(0),
@@ -57,6 +57,7 @@ DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT d
     m_backBufferFormat(backBufferFormat),
     m_depthBufferFormat(depthBufferFormat),
     m_backBufferCount(backBufferCount),
+    m_d3dMinFeatureLevel(minFeatureLevel),
     m_window(0),
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_11_0),
     m_rotation(DXGI_MODE_ROTATION_IDENTITY),
@@ -67,6 +68,11 @@ DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT d
     if (backBufferCount > MAX_BACK_BUFFER_COUNT)
     {
         throw std::out_of_range("backBufferCount too large");
+    }
+
+    if (minFeatureLevel < D3D_FEATURE_LEVEL_11_0)
+    {
+        throw std::out_of_range("minFeatureLevel too low");
     }
 }
 
@@ -110,9 +116,33 @@ void DX::DeviceResources::CreateDeviceResources()
     // Create the DX12 API device object.
     DX::ThrowIfFailed(D3D12CreateDevice(
         adapter.Get(),
-        m_d3dFeatureLevel,
+        m_d3dMinFeatureLevel,
         IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
         ));
+
+    // Determine maximum supported feature level for this device
+    static const D3D_FEATURE_LEVEL s_featureLevels[] =
+    {
+        D3D_FEATURE_LEVEL_12_1,
+        D3D_FEATURE_LEVEL_12_0,
+        D3D_FEATURE_LEVEL_11_1,
+        D3D_FEATURE_LEVEL_11_0,
+    };
+
+    D3D12_FEATURE_DATA_FEATURE_LEVELS featLevels =
+    {
+        _countof(s_featureLevels), s_featureLevels, D3D_FEATURE_LEVEL_11_0
+    };
+
+    HRESULT hr = m_d3dDevice->CheckFeatureSupport(D3D12_FEATURE_FEATURE_LEVELS, &featLevels, sizeof(featLevels));
+    if (SUCCEEDED(hr))
+    {
+        m_d3dFeatureLevel = featLevels.MaxSupportedFeatureLevel;
+    }
+    else
+    {
+        m_d3dFeatureLevel = m_d3dMinFeatureLevel;
+    }
 
     // Create the command queue.
     D3D12_COMMAND_QUEUE_DESC queueDesc = {};
@@ -538,7 +568,7 @@ void DX::DeviceResources::GetAdapter(IDXGIAdapter1** ppAdapter)
         }
 
         // Check to see if the adapter supports Direct3D 12, but don't create the actual device yet.
-        if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), m_d3dFeatureLevel, _uuidof(ID3D12Device), nullptr)))
+        if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), m_d3dMinFeatureLevel, _uuidof(ID3D12Device), nullptr)))
         {
 #ifdef _DEBUG
             WCHAR buff[256] = {};
