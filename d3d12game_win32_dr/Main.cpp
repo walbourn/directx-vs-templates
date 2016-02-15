@@ -20,8 +20,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    HRESULT hr = CoInitializeEx(nullptr, COINITBASE_MULTITHREADED);
-    if (FAILED(hr))
+    Microsoft::WRL::Wrappers::RoInitializeWrapper initialize(RO_INIT_MULTITHREADED);
+    if (FAILED(initialize))
         return 1;
 
     g_game = std::make_unique<Game>();
