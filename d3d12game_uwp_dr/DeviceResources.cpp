@@ -5,8 +5,6 @@
 #include "pch.h"
 #include "DeviceResources.h"
 
-#include <stdexcept>
-
 using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;

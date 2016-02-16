@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <exception>
 #include <memory>
+#include <stdexcept>
 
 #ifdef _DEBUG
 #include <dxgidebug.h>

@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <exception>
 #include <memory>
+#include <stdexcept>
 
 namespace DX
 {
