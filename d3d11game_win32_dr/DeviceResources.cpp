@@ -35,11 +35,12 @@ namespace
 };
 
 // Constructor for DeviceResources.
-DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount) : 
+DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
     m_screenViewport{},
     m_backBufferFormat(backBufferFormat),
     m_depthBufferFormat(depthBufferFormat),
     m_backBufferCount(backBufferCount),
+    m_d3dMinFeatureLevel(minFeatureLevel),
     m_window(0),
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
     m_outputSize{0, 0, 1, 1},
@@ -64,11 +65,8 @@ void DX::DeviceResources::CreateDeviceResources()
     }
 #endif
 
-    // This array defines the set of DirectX hardware feature levels this app will support.
-    // Note the ordering should be preserved.
-    // Don't forget to declare your application's minimum required feature level in its
-    // description.  All applications are assumed to support 9.1 unless otherwise stated.
-    D3D_FEATURE_LEVEL featureLevels[] = 
+    // Determine DirectX hardware feature levels this app will support.
+    static const D3D_FEATURE_LEVEL s_featureLevels[] =
     {
         D3D_FEATURE_LEVEL_11_1,
         D3D_FEATURE_LEVEL_11_0,
@@ -76,8 +74,20 @@ void DX::DeviceResources::CreateDeviceResources()
         D3D_FEATURE_LEVEL_10_0,
         D3D_FEATURE_LEVEL_9_3,
         D3D_FEATURE_LEVEL_9_2,
-        D3D_FEATURE_LEVEL_9_1
+        D3D_FEATURE_LEVEL_9_1,
     };
+
+    UINT featLevelCount = 0;
+    for (; featLevelCount < _countof(s_featureLevels); ++featLevelCount)
+    {
+        if (s_featureLevels[featLevelCount] < m_d3dMinFeatureLevel)
+            break;
+    }
+
+    if (!featLevelCount)
+    {
+        throw std::out_of_range("minFeatureLevel too high");
+    }
 
     ComPtr<IDXGIAdapter1> adapter;
     GetHardwareAdapter(adapter.GetAddressOf());
@@ -91,17 +101,17 @@ void DX::DeviceResources::CreateDeviceResources()
             D3D_DRIVER_TYPE_UNKNOWN,
             0,
             creationFlags,
-            featureLevels,
-            _countof(featureLevels),
+            s_featureLevels,
+            featLevelCount,
             D3D11_SDK_VERSION,
             m_d3dDevice.ReleaseAndGetAddressOf(),   // Returns the Direct3D device created.
             &m_d3dFeatureLevel,                     // Returns feature level of device created.
             m_d3dContext.ReleaseAndGetAddressOf()   // Returns the device immediate context.
             );
 
-        if (hr == E_INVALIDARG)
+        if (hr == E_INVALIDARG && featLevelCount > 1)
         {
-            assert(featureLevels[0] == D3D_FEATURE_LEVEL_11_1);
+            assert(s_featureLevels[0] == D3D_FEATURE_LEVEL_11_1);
 
             // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
             hr = D3D11CreateDevice(
@@ -109,8 +119,8 @@ void DX::DeviceResources::CreateDeviceResources()
                 D3D_DRIVER_TYPE_UNKNOWN,
                 nullptr,
                 creationFlags,
-                &featureLevels[1],
-                _countof(featureLevels) - 1,
+                &s_featureLevels[1],
+                featLevelCount - 1,
                 D3D11_SDK_VERSION,
                 m_d3dDevice.ReleaseAndGetAddressOf(),
                 &m_d3dFeatureLevel,
@@ -134,17 +144,17 @@ void DX::DeviceResources::CreateDeviceResources()
             D3D_DRIVER_TYPE_WARP, // Create a WARP device instead of a hardware device.
             0,
             creationFlags,
-            featureLevels,
-            _countof(featureLevels),
+            s_featureLevels,
+            featLevelCount,
             D3D11_SDK_VERSION,
             m_d3dDevice.ReleaseAndGetAddressOf(),
             &m_d3dFeatureLevel,
             m_d3dContext.ReleaseAndGetAddressOf()
             );
 
-        if (hr == E_INVALIDARG)
+        if (hr == E_INVALIDARG && featLevelCount > 1)
         {
-            assert(featureLevels[0] == D3D_FEATURE_LEVEL_11_1);
+            assert(s_featureLevels[0] == D3D_FEATURE_LEVEL_11_1);
 
             // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
             hr = D3D11CreateDevice(
@@ -152,8 +162,8 @@ void DX::DeviceResources::CreateDeviceResources()
                 D3D_DRIVER_TYPE_WARP,
                 nullptr,
                 creationFlags,
-                &featureLevels[1],
-                _countof(featureLevels) - 1,
+                &s_featureLevels[1],
+                featLevelCount - 1,
                 D3D11_SDK_VERSION,
                 m_d3dDevice.ReleaseAndGetAddressOf(),
                 &m_d3dFeatureLevel,

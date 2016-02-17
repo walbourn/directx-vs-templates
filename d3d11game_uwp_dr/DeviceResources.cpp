@@ -72,11 +72,12 @@ namespace ScreenRotation
 };
 
 // Constructor for DeviceResources.
-DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount) :
+DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
     m_screenViewport{},
     m_backBufferFormat(backBufferFormat),
     m_depthBufferFormat(depthBufferFormat),
     m_backBufferCount(backBufferCount),
+    m_d3dMinFeatureLevel(minFeatureLevel),
     m_window(nullptr),
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
     m_rotation(DXGI_MODE_ROTATION_IDENTITY),
@@ -103,11 +104,8 @@ void DX::DeviceResources::CreateDeviceResources()
     }
 #endif
 
-    // This array defines the set of DirectX hardware feature levels this app will support.
-    // Note the ordering should be preserved.
-    // Don't forget to declare your application's minimum required feature level in its
-    // description.
-    D3D_FEATURE_LEVEL featureLevels[] = 
+    // Determine DirectX hardware feature levels this app will support.
+    static const D3D_FEATURE_LEVEL s_featureLevels[] =
     {
         D3D_FEATURE_LEVEL_12_1,
         D3D_FEATURE_LEVEL_12_0,
@@ -116,7 +114,21 @@ void DX::DeviceResources::CreateDeviceResources()
         D3D_FEATURE_LEVEL_10_1,
         D3D_FEATURE_LEVEL_10_0,
         D3D_FEATURE_LEVEL_9_3,
+        D3D_FEATURE_LEVEL_9_2,
+        D3D_FEATURE_LEVEL_9_1,
     };
+
+    UINT featLevelCount = 0;
+    for (; featLevelCount < _countof(s_featureLevels); ++featLevelCount)
+    {
+        if (s_featureLevels[featLevelCount] < m_d3dMinFeatureLevel)
+            break;
+    }
+
+    if (!featLevelCount)
+    {
+        throw std::out_of_range("minFeatureLevel too high");
+    }
 
     ComPtr<IDXGIAdapter1> adapter;
     GetHardwareAdapter(adapter.GetAddressOf());
@@ -133,8 +145,8 @@ void DX::DeviceResources::CreateDeviceResources()
             D3D_DRIVER_TYPE_UNKNOWN,
             0,
             creationFlags,              // Set debug and Direct2D compatibility flags.
-            featureLevels,
-            _countof(featureLevels),
+            s_featureLevels,
+            featLevelCount,
             D3D11_SDK_VERSION,
             device.GetAddressOf(),      // Returns the Direct3D device created.
             &m_d3dFeatureLevel,         // Returns feature level of device created.
@@ -157,8 +169,8 @@ void DX::DeviceResources::CreateDeviceResources()
             D3D_DRIVER_TYPE_WARP, // Create a WARP device instead of a hardware device.
             0,
             creationFlags,
-            featureLevels,
-            _countof(featureLevels),
+            s_featureLevels,
+            featLevelCount,
             D3D11_SDK_VERSION,
             device.GetAddressOf(),
             &m_d3dFeatureLevel,
