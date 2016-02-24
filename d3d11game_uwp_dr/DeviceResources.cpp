@@ -536,7 +536,18 @@ void DX::DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
     *ppAdapter = nullptr;
 
     ComPtr<IDXGIFactory2> dxgiFactory;
+#ifdef _DEBUG
+    UINT creationFlags = 0;
+
+    if (SdkLayersAvailable())
+    {
+        creationFlags |= DXGI_CREATE_FACTORY_DEBUG;
+    }
+
+    DX::ThrowIfFailed(CreateDXGIFactory2(creationFlags, IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
+#else
     DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
+#endif
 
     ComPtr<IDXGIAdapter1> adapter;
     for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); adapterIndex++)
