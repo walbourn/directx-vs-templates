@@ -45,6 +45,20 @@ namespace ScreenRotation
         );
 };
 
+namespace
+{
+    inline DXGI_FORMAT NoSRGB(DXGI_FORMAT fmt)
+    {
+        switch (fmt)
+        {
+        case DXGI_FORMAT_R8G8B8A8_UNORM_SRGB:   return DXGI_FORMAT_R8G8B8A8_UNORM;
+        case DXGI_FORMAT_B8G8R8A8_UNORM_SRGB:   return DXGI_FORMAT_B8G8R8A8_UNORM;
+        case DXGI_FORMAT_B8G8R8X8_UNORM_SRGB:   return DXGI_FORMAT_B8G8R8X8_UNORM;
+        default:                                return fmt;
+        }
+    }
+};
+
 // Constructor for DeviceResources.
 DX::DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
     m_backBufferIndex(0),
@@ -201,6 +215,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     // Determine the render target size in pixels.
     UINT backBufferWidth = std::max<UINT>(m_outputSize.right - m_outputSize.left, 1);
     UINT backBufferHeight = std::max<UINT>(m_outputSize.bottom - m_outputSize.top, 1);
+    DXGI_FORMAT backBufferFormat = NoSRGB(m_backBufferFormat);
 
     // If the swap chain already exists, resize it, otherwise create one.
     if (m_swapChain)
@@ -210,7 +225,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
             m_backBufferCount,
             backBufferWidth,
             backBufferHeight,
-            m_backBufferFormat,
+            backBufferFormat,
             0
             );
 
@@ -239,7 +254,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
         swapChainDesc.Width = backBufferWidth;
         swapChainDesc.Height = backBufferHeight;
-        swapChainDesc.Format = m_backBufferFormat;
+        swapChainDesc.Format = backBufferFormat;
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swapChainDesc.BufferCount = m_backBufferCount;
         swapChainDesc.SampleDesc.Count = 1;
@@ -295,8 +310,12 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         swprintf_s(name, L"Render target %u", n);
         m_renderTargets[n]->SetName(name);
 
+        D3D12_RENDER_TARGET_VIEW_DESC rtvDesc = {};
+        rtvDesc.Format = m_backBufferFormat;
+        rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+
         CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), n, m_rtvDescriptorSize);
-        m_d3dDevice->CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvDescriptor);
+        m_d3dDevice->CreateRenderTargetView(m_renderTargets[n].Get(), &rtvDesc, rtvDescriptor);
     }
 
     // Reset the index to the current back buffer.
