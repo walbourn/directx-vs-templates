@@ -34,6 +34,7 @@ void Game::Initialize(HWND window, int width, int height)
     */
 }
 
+#pragma region Frame Update
 // Executes the basic game loop.
 void Game::Tick()
 {
@@ -53,7 +54,9 @@ void Game::Update(DX::StepTimer const& timer)
     // TODO: Add your game logic here.
     elapsedTime;
 }
+#pragma endregion Frame Update
 
+#pragma region Frame Render
 // Draws the scene.
 void Game::Render()
 {
@@ -93,7 +96,9 @@ void Game::Clear()
     commandList->RSSetViewports(1, &viewport);
     commandList->RSSetScissorRects(1, &scissorRect);
 }
+#pragma endregion Frame Render
 
+#pragma region Message Handlers
 // Message handlers
 void Game::OnActivated()
 {
@@ -134,7 +139,9 @@ void Game::GetDefaultSize(int& width, int& height) const
     width = 800;
     height = 600;
 }
+#pragma endregion Message Handlers
 
+#pragma region Direct3D Resources
 // These are the resources that depend on the device.
 void Game::CreateDeviceDependentResources()
 {
@@ -161,3 +168,4 @@ void Game::OnDeviceRestored()
 
     CreateWindowSizeDependentResources();
 }
+#pragma endregion Direct3D Resources
