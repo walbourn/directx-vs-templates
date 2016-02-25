@@ -54,7 +54,7 @@ void Game::Update(DX::StepTimer const& timer)
     // TODO: Add your game logic here.
     elapsedTime;
 }
-#pragma endregion Frame Update
+#pragma endregion
 
 #pragma region Frame Render
 // Draws the scene.
@@ -96,7 +96,7 @@ void Game::Clear()
     commandList->RSSetViewports(1, &viewport);
     commandList->RSSetScissorRects(1, &scissorRect);
 }
-#pragma endregion Frame Render
+#pragma endregion
 
 #pragma region Message Handlers
 // Message handlers
@@ -144,7 +144,7 @@ void Game::GetDefaultSize(int& width, int& height) const
     width = 800;
     height = 600;
 }
-#pragma endregion Message Handlers
+#pragma endregion
 
 #pragma region Direct3D Resources
 // These are the resources that depend on the device.
@@ -173,4 +173,4 @@ void Game::OnDeviceRestored()
 
     CreateWindowSizeDependentResources();
 }
-#pragma endregion Direct3D Resources
+#pragma endregion
