@@ -325,7 +325,13 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     // on this surface.
     CD3DX12_HEAP_PROPERTIES depthHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
-    D3D12_RESOURCE_DESC depthStencilDesc = CD3DX12_RESOURCE_DESC::Tex2D(m_depthBufferFormat, backBufferWidth, backBufferHeight);
+    D3D12_RESOURCE_DESC depthStencilDesc = CD3DX12_RESOURCE_DESC::Tex2D(
+        m_depthBufferFormat,
+        backBufferWidth,
+        backBufferHeight,
+        1, // This depth stencil view has only one texture.
+        1  // Use a single mipmap level.
+        );
     depthStencilDesc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
     D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
