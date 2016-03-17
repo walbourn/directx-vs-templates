@@ -305,6 +305,8 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     m_screenViewport.TopLeftX = m_screenViewport.TopLeftY = 0.f;
     m_screenViewport.Width = static_cast<float>(backBufferWidth);
     m_screenViewport.Height = static_cast<float>(backBufferHeight);
+    m_screenViewport.MinDepth = D3D12_MIN_DEPTH;
+    m_screenViewport.MaxDepth = D3D12_MAX_DEPTH;
 
     m_scissorRect.left = m_scissorRect.top = 0;
     m_scissorRect.right = backBufferWidth;
