@@ -77,7 +77,7 @@ void Game::Render()
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
-    // Clear the views
+    // Clear the views.
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), Colors::CornflowerBlue);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -332,7 +332,7 @@ void Game::CreateResources()
     }
     else
     {
-        // First, retrieve the underlying DXGI Device from the D3D Device
+        // First, retrieve the underlying DXGI Device from the D3D Device.
         ComPtr<IDXGIDevice1> dxgiDevice;
         DX::ThrowIfFailed(m_d3dDevice.As(&dxgiDevice));
 

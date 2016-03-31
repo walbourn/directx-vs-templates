@@ -75,7 +75,7 @@ void Game::Render()
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
-    // Clear the views
+    // Clear the views.
     m_d3dContext->ClearRenderTargetView(m_renderTargetView.Get(), Colors::CornflowerBlue);
     m_d3dContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
@@ -183,7 +183,7 @@ void Game::CreateDevice()
 
     if (hr == E_INVALIDARG)
     {
-        // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
+        // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it.
         hr = D3D11CreateDevice(nullptr,
             D3D_DRIVER_TYPE_HARDWARE,
             nullptr,
@@ -268,7 +268,7 @@ void Game::CreateResources()
     }
     else
     {
-        // First, retrieve the underlying DXGI Device from the D3D Device
+        // First, retrieve the underlying DXGI Device from the D3D Device.
         ComPtr<IDXGIDevice1> dxgiDevice;
         DX::ThrowIfFailed(m_d3dDevice.As(&dxgiDevice));
 
@@ -326,7 +326,7 @@ void Game::CreateResources()
             DX::ThrowIfFailed(dxgiFactory->CreateSwapChain(m_d3dDevice.Get(), &swapChainDesc, m_swapChain.ReleaseAndGetAddressOf()));
         }
 
-        // This template does not support exclusive fullscreen mode and prevents DXGI from responding to the ALT+ENTER shortcut
+        // This template does not support exclusive fullscreen mode and prevents DXGI from responding to the ALT+ENTER shortcut.
         DX::ThrowIfFailed(dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
     }
 

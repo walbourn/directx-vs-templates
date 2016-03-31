@@ -80,7 +80,7 @@ void Game::Render()
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
-    // Clear the views
+    // Clear the views.
     auto context = m_deviceResources->GetD3DDeviceContext();
     auto renderTarget = m_deviceResources->GetBackBufferRenderTargetView();
     auto depthStencil = m_deviceResources->GetDepthStencilView();
