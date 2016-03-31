@@ -73,6 +73,7 @@ void Game::Render()
     // TODO: Add your rendering code here.
     context;
 
+    // Show the new frame.
     m_deviceResources->Present();
 }
 

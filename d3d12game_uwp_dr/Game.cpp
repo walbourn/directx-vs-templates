@@ -75,6 +75,7 @@ void Game::Render()
     // TODO: Add your rendering code here.
     commandList;
 
+    // Show the new frame.
     m_deviceResources->Present();
 }
 

@@ -73,6 +73,7 @@ void Game::Render()
 
     // TODO: Add your rendering code here.
 
+    // Show the new frame.
     Present();
 }
 
