@@ -208,6 +208,7 @@ void DX::DeviceResources::CreateDeviceResources()
     if (SUCCEEDED(m_d3dDevice.As(&m_d3dDevice1)))
     {
         (void) m_d3dContext.As(&m_d3dContext1);
+        (void) m_d3dContext.As(&m_d3dAnnotation);
     }
 }
 
@@ -414,6 +415,7 @@ void DX::DeviceResources::HandleDeviceLost()
     m_swapChain1.Reset();
     m_d3dContext.Reset();
     m_d3dContext1.Reset();
+    m_d3dAnnotation.Reset();
     m_d3dDevice1.Reset();
 
 #ifdef _DEBUG

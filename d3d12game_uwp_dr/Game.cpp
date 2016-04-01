@@ -49,10 +49,14 @@ void Game::Tick()
 // Updates the world.
 void Game::Update(DX::StepTimer const& timer)
 {
+    PIXBeginEvent(PIX_COLOR_DEFAULT, L"Update");
+
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
     elapsedTime;
+
+    PIXEndEvent();
 }
 #pragma endregion
 
@@ -71,19 +75,26 @@ void Game::Render()
     Clear();
 
     auto commandList = m_deviceResources->GetCommandList();
+    PIXBeginEvent(commandList, PIX_COLOR_DEFAULT, L"Render");
 
     // TODO: Add your rendering code here.
-    commandList;
+
+    PIXEndEvent(commandList);
 
     // Show the new frame.
+    auto commandQueue = m_deviceResources->GetCommandQueue();
+    PIXBeginEvent(commandQueue, PIX_COLOR_DEFAULT, L"Present");
     m_deviceResources->Present();
+    PIXEndEvent(commandQueue);
 }
 
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
-    // Clear the views.
     auto commandList = m_deviceResources->GetCommandList();
+    PIXBeginEvent(commandList, PIX_COLOR_DEFAULT, L"Clear");
+
+    // Clear the views.
     auto rtvDescriptor = m_deviceResources->GetRenderTargetView();
     auto dsvDescriptor = m_deviceResources->GetDepthStencilView();
 
@@ -96,6 +107,8 @@ void Game::Clear()
     auto scissorRect = m_deviceResources->GetScissorRect();
     commandList->RSSetViewports(1, &viewport);
     commandList->RSSetScissorRects(1, &scissorRect);
+
+    PIXEndEvent(commandList);
 }
 #pragma endregion
 

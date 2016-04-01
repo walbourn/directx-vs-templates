@@ -30,6 +30,9 @@
 #include <memory>
 #include <stdexcept>
 
+#include <stdio.h>
+#include <pix.h>
+
 #ifdef _DEBUG
 #include <dxgidebug.h>
 #endif

@@ -26,6 +26,8 @@
 #include <memory>
 #include <stdexcept>
 
+#include <stdio.h>
+
 namespace DX
 {
     // Helper class for COM exceptions

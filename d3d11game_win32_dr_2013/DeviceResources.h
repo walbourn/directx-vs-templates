@@ -48,6 +48,31 @@ namespace DX
         D3D11_VIEWPORT          GetScreenViewport() const               { return m_screenViewport; }
         UINT                    GetBackBufferCount() const              { return m_backBufferCount; }
 
+        // Performance events
+        void PIXBeginEvent(_In_z_ const wchar_t* name)
+        {
+            if (m_d3dAnnotation)
+            {
+                m_d3dAnnotation->BeginEvent(name);
+            }
+        }
+
+        void PIXEndEvent()
+        {
+            if (m_d3dAnnotation)
+            {
+                m_d3dAnnotation->EndEvent();
+            }
+        }
+
+        void PIXSetMarker(_In_z_ const wchar_t* name)
+        {
+            if (m_d3dAnnotation)
+            {
+                m_d3dAnnotation->SetMarker(name);
+            }
+        }
+
     private:
         void GetHardwareAdapter(IDXGIAdapter1** ppAdapter);
 
@@ -58,6 +83,7 @@ namespace DX
         Microsoft::WRL::ComPtr<ID3D11DeviceContext1>    m_d3dContext1;
         Microsoft::WRL::ComPtr<IDXGISwapChain>          m_swapChain;
         Microsoft::WRL::ComPtr<IDXGISwapChain1>         m_swapChain1;
+        Microsoft::WRL::ComPtr<ID3DUserDefinedAnnotation> m_d3dAnnotation;
 
         // Direct3D rendering objects. Required for 3D.
         Microsoft::WRL::ComPtr<ID3D11RenderTargetView>  m_d3dRenderTargetView;

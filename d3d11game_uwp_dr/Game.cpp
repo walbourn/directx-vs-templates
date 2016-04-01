@@ -49,10 +49,14 @@ void Game::Tick()
 // Updates the world.
 void Game::Update(DX::StepTimer const& timer)
 {
+    PIXBeginEvent(PIX_COLOR_DEFAULT, L"Update");
+
     float elapsedTime = float(timer.GetElapsedSeconds());
 
     // TODO: Add your game logic here.
     elapsedTime;
+
+    PIXEndEvent();
 }
 #pragma endregion
 
@@ -69,19 +73,25 @@ void Game::Render()
     Clear();
 
     auto context = m_deviceResources->GetD3DDeviceContext();
+    PIXBeginEvent(context, PIX_COLOR_DEFAULT, L"Render");
 
     // TODO: Add your rendering code here.
-    context;
+
+    PIXEndEvent(context);
 
     // Show the new frame.
+    PIXBeginEvent(context, PIX_COLOR_DEFAULT, L"Present");
     m_deviceResources->Present();
+    PIXEndEvent(context);
 }
 
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
-    // Clear the views.
     auto context = m_deviceResources->GetD3DDeviceContext();
+    PIXBeginEvent(context, PIX_COLOR_DEFAULT, L"Clear");
+
+    // Clear the views.
     auto renderTarget = m_deviceResources->GetBackBufferRenderTargetView();
     auto depthStencil = m_deviceResources->GetDepthStencilView();
 
@@ -92,7 +102,9 @@ void Game::Clear()
     // Set the viewport.
     auto viewport = m_deviceResources->GetScreenViewport();
     context->RSSetViewports(1, &viewport);
-}
+
+    PIXEndEvent(context);
+ }
 #pragma endregion
 
 #pragma region Message Handlers

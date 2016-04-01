@@ -68,18 +68,25 @@ void Game::Render()
 
     Clear();
 
+    m_deviceResources->PIXBeginEvent(L"Render");
     auto context = m_deviceResources->GetD3DDeviceContext();
 
     // TODO: Add your rendering code here.
     context;
 
+    m_deviceResources->PIXEndEvent();
+
     // Show the new frame.
+    m_deviceResources->PIXBeginEvent(L"Present");
     m_deviceResources->Present();
+    m_deviceResources->PIXEndEvent();
 }
 
 // Helper method to clear the back buffers.
 void Game::Clear()
 {
+    m_deviceResources->PIXBeginEvent(L"Clear");
+
     // Clear the views.
     auto context = m_deviceResources->GetD3DDeviceContext();
     auto renderTarget = m_deviceResources->GetBackBufferRenderTargetView();
@@ -92,6 +99,8 @@ void Game::Clear()
     // Set the viewport.
     auto viewport = m_deviceResources->GetScreenViewport();
     context->RSSetViewports(1, &viewport);
+
+    m_deviceResources->PIXEndEvent();
 }
 #pragma endregion
 
