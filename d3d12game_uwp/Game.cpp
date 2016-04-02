@@ -110,7 +110,7 @@ void Game::Present()
     m_commandList->ResourceBarrier(1, &barrier);
 
     // Send the command list off to the GPU for processing.
-    m_commandList->Close();
+    DX::ThrowIfFailed(m_commandList->Close());
     m_commandQueue->ExecuteCommandLists(1, CommandListCast(m_commandList.GetAddressOf()));
 
     // The first argument instructs DXGI to block until VSync, putting the application
@@ -271,7 +271,7 @@ void Game::CreateDevice()
 
     // Create a command list for recording graphics commands.
     DX::ThrowIfFailed(m_d3dDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocators[0].Get(), nullptr, IID_PPV_ARGS(m_commandList.ReleaseAndGetAddressOf())));
-    m_commandList->Close();
+    DX::ThrowIfFailed(m_commandList->Close());
 
     // Create a fence for tracking GPU execution progress.
     DX::ThrowIfFailed(m_d3dDevice->CreateFence(m_fenceValues[m_backBufferIndex], D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_fence.ReleaseAndGetAddressOf())));
