@@ -77,9 +77,7 @@ void Game::Render()
     m_deviceResources->PIXEndEvent();
 
     // Show the new frame.
-    m_deviceResources->PIXBeginEvent(L"Present");
     m_deviceResources->Present();
-    m_deviceResources->PIXEndEvent();
 }
 
 // Helper method to clear the back buffers.
