@@ -341,29 +341,32 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
         m_d3dRenderTargetView.ReleaseAndGetAddressOf()
         ));
 
-    // Create a depth stencil view for use with 3D rendering if needed.
-    CD3D11_TEXTURE2D_DESC depthStencilDesc(
-        m_depthBufferFormat, 
-        backBufferWidth,
-        backBufferHeight,
-        1, // This depth stencil view has only one texture.
-        1, // Use a single mipmap level.
-        D3D11_BIND_DEPTH_STENCIL
-        );
+    if (m_depthBufferFormat != DXGI_FORMAT_UNKNOWN)
+    {
+        // Create a depth stencil view for use with 3D rendering if needed.
+        CD3D11_TEXTURE2D_DESC depthStencilDesc(
+            m_depthBufferFormat,
+            backBufferWidth,
+            backBufferHeight,
+            1, // This depth stencil view has only one texture.
+            1, // Use a single mipmap level.
+            D3D11_BIND_DEPTH_STENCIL
+            );
 
-    ComPtr<ID3D11Texture2D> depthStencil;
-    DX::ThrowIfFailed(m_d3dDevice->CreateTexture2D(
-        &depthStencilDesc,
-        nullptr,
-        depthStencil.GetAddressOf()
-        ));
+        ComPtr<ID3D11Texture2D> depthStencil;
+        DX::ThrowIfFailed(m_d3dDevice->CreateTexture2D(
+            &depthStencilDesc,
+            nullptr,
+            depthStencil.GetAddressOf()
+            ));
 
-    CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
-    DX::ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(
-        depthStencil.Get(),
-        &depthStencilViewDesc,
-        m_d3dDepthStencilView.ReleaseAndGetAddressOf()
-        ));
+        CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+        DX::ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(
+            depthStencil.Get(),
+            &depthStencilViewDesc,
+            m_d3dDepthStencilView.ReleaseAndGetAddressOf()
+            ));
+    }
     
     // Set the 3D rendering viewport to target the entire window.
     m_screenViewport = CD3D11_VIEWPORT(
@@ -454,8 +457,11 @@ void DX::DeviceResources::Present()
         // overwritten. If dirty or scroll rects are used, this call should be removed.
         m_d3dContext1->DiscardView(m_d3dRenderTargetView.Get());
 
-        // Discard the contents of the depth stencil.
-        m_d3dContext1->DiscardView(m_d3dDepthStencilView.Get());
+        if(m_d3dDepthStencilView)
+        {
+            // Discard the contents of the depth stencil.
+            m_d3dContext1->DiscardView(m_d3dDepthStencilView.Get());
+        }
     }
 
     // If the device was removed either by a disconnection or a driver upgrade, we 
