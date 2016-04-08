@@ -16,3 +16,7 @@
 *.ilk
 *.VC.db
 wiki/
+d3d11game_xdk/
+d3d11game_xdk_dr/
+d3d12game_xdk/
+d3d12game_xdk_dr/
