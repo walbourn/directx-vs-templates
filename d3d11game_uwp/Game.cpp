@@ -354,7 +354,7 @@ void Game::CreateResources()
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swapChainDesc.BufferCount = backBufferCount;
         swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
-        swapChainDesc.Scaling = DXGI_SCALING_NONE;
+        swapChainDesc.Scaling = DXGI_SCALING_ASPECT_RATIO_STRETCH;
         swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
         ComPtr<IDXGISwapChain1> swapChain;
