@@ -310,7 +310,7 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     {
         DX::ThrowIfFailed(m_swapChain->GetBuffer(n, IID_PPV_ARGS(m_renderTargets[n].GetAddressOf())));
 
-        WCHAR name[25] = {};
+        wchar_t name[25] = {};
         swprintf_s(name, L"Render target %u", n);
         m_renderTargets[n]->SetName(name);
 
@@ -603,7 +603,7 @@ void DX::DeviceResources::GetAdapter(IDXGIAdapter1** ppAdapter)
         if (SUCCEEDED(D3D12CreateDevice(adapter.Get(), m_d3dMinFeatureLevel, _uuidof(ID3D12Device), nullptr)))
         {
 #ifdef _DEBUG
-            WCHAR buff[256] = {};
+            wchar_t buff[256] = {};
             swprintf_s(buff, L"Direct3D Adapter (%u): VID:%04X, PID:%04X - %ls\n", adapterIndex, desc.VendorId, desc.DeviceId, desc.Description);
             OutputDebugStringW(buff);
 #endif

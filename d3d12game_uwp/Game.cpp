@@ -355,7 +355,7 @@ void Game::CreateResources()
     {
         DX::ThrowIfFailed(m_swapChain->GetBuffer(n, IID_PPV_ARGS(m_renderTargets[n].GetAddressOf())));
 
-        WCHAR name[25] = {};
+        wchar_t name[25] = {};
         swprintf_s(name, L"Render target %u", n);
         m_renderTargets[n]->SetName(name);
 
