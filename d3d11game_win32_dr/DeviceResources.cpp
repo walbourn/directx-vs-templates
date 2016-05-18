@@ -195,8 +195,7 @@ void DX::DeviceResources::CreateDeviceResources()
             {
                 D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
             };
-            D3D11_INFO_QUEUE_FILTER filter;
-            memset(&filter, 0, sizeof(filter));
+            D3D11_INFO_QUEUE_FILTER filter = {};
             filter.DenyList.NumIDs = _countof(hide);
             filter.DenyList.pIDList = hide;
             d3dInfoQueue->AddStorageFilterEntries(&filter);
