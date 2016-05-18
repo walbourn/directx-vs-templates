@@ -209,6 +209,27 @@ void Game::CreateDevice()
         IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
         ));
 
+#ifndef NDEBUG
+    // Configure debug device (if active).
+    ComPtr<ID3D12InfoQueue> d3dInfoQueue;
+    if (SUCCEEDED(m_d3dDevice.As(&d3dInfoQueue)))
+    {
+#ifdef _DEBUG
+        d3dInfoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+        d3dInfoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
+#endif
+        D3D12_MESSAGE_ID hide[] =
+        {
+            D3D12_MESSAGE_ID_MAP_INVALID_NULLRANGE,
+            D3D12_MESSAGE_ID_UNMAP_INVALID_NULLRANGE
+        };
+        D3D12_INFO_QUEUE_FILTER filter = {};
+        filter.DenyList.NumIDs = _countof(hide);
+        filter.DenyList.pIDList = hide;
+        d3dInfoQueue->AddStorageFilterEntries(&filter);
+    }
+#endif
+
     // Create the command queue.
     D3D12_COMMAND_QUEUE_DESC queueDesc = {};
     queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
