@@ -266,6 +266,10 @@ void Game::CreateDevice()
     m_fenceValues[m_backBufferIndex]++;
 
     m_fenceEvent.Attach(CreateEvent(nullptr, FALSE, FALSE, nullptr));
+    if (!m_fenceEvent.IsValid())
+    {
+        throw std::exception("CreateEvent");
+    }
 
     // TODO: Initialize device dependent objects here (independent of window size).
 }
