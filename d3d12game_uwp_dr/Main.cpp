@@ -346,6 +346,11 @@ int main(Platform::Array<Platform::String^>^ argv)
 {
     UNREFERENCED_PARAMETER(argv);
 
+    if (!XMVerifyCPUSupport())
+    {
+        throw std::exception("XMVerifyCPUSupport");
+    }
+
     auto viewProviderFactory = ref new ViewProviderFactory();
     CoreApplication::Run(viewProviderFactory);
     return 0;
