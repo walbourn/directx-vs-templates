@@ -15,6 +15,11 @@ Game::Game()
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
+Game::~Game()
+{
+    WaitForGpu();
+}
+
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
