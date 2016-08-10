@@ -41,7 +41,9 @@ namespace DX
         IDXGISwapChain*         GetSwapChain() const                    { return m_swapChain.Get(); }
         IDXGISwapChain1*        GetSwapChain1() const                   { return m_swapChain1.Get(); }
         D3D_FEATURE_LEVEL       GetDeviceFeatureLevel() const           { return m_d3dFeatureLevel; }
-        ID3D11RenderTargetView*	GetBackBufferRenderTargetView() const   { return m_d3dRenderTargetView.Get(); }
+        ID3D11Texture2D*        GetRenderTarget() const                 { return m_renderTarget.Get(); }
+        ID3D11Texture2D*        GetDepthStencil() const                 { return m_depthStencil.Get(); }
+        ID3D11RenderTargetView*	GetRenderTargetView() const             { return m_d3dRenderTargetView.Get(); }
         ID3D11DepthStencilView* GetDepthStencilView() const             { return m_d3dDepthStencilView.Get(); }
         DXGI_FORMAT             GetBackBufferFormat() const             { return m_backBufferFormat; }
         DXGI_FORMAT             GetDepthBufferFormat() const            { return m_depthBufferFormat; }
@@ -86,6 +88,8 @@ namespace DX
         Microsoft::WRL::ComPtr<ID3DUserDefinedAnnotation> m_d3dAnnotation;
 
         // Direct3D rendering objects. Required for 3D.
+        Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_renderTarget;
+        Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_depthStencil;
         Microsoft::WRL::ComPtr<ID3D11RenderTargetView>  m_d3dRenderTargetView;
         Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  m_d3dDepthStencilView;
         D3D11_VIEWPORT                                  m_screenViewport;

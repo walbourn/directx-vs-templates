@@ -20,7 +20,7 @@ namespace DX
         DeviceResources(DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM,
                         DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT,
                         UINT backBufferCount = 2,
-                        D3D_FEATURE_LEVEL minFeatureLevel = D3D_FEATURE_LEVEL_9_1);
+                        D3D_FEATURE_LEVEL minFeatureLevel = D3D_FEATURE_LEVEL_9_3);
 
         void CreateDeviceResources();
         void CreateWindowSizeDependentResources();
@@ -41,7 +41,9 @@ namespace DX
         ID3D11DeviceContext2*   GetD3DDeviceContext() const           { return m_d3dContext.Get(); }
         IDXGISwapChain3*        GetSwapChain() const                  { return m_swapChain.Get(); }
         D3D_FEATURE_LEVEL       GetDeviceFeatureLevel() const         { return m_d3dFeatureLevel; }
-        ID3D11RenderTargetView* GetBackBufferRenderTargetView() const { return m_d3dRenderTargetView.Get(); }
+        ID3D11Texture2D*        GetRenderTarget() const               { return m_renderTarget.Get(); }
+        ID3D11Texture2D*        GetDepthStencil() const               { return m_depthStencil.Get(); }
+        ID3D11RenderTargetView* GetRenderTargetView() const           { return m_d3dRenderTargetView.Get(); }
         ID3D11DepthStencilView* GetDepthStencilView() const           { return m_d3dDepthStencilView.Get(); }
         DXGI_FORMAT             GetBackBufferFormat() const           { return m_backBufferFormat; }
         DXGI_FORMAT             GetDepthBufferFormat() const          { return m_depthBufferFormat; }
@@ -58,6 +60,8 @@ namespace DX
         Microsoft::WRL::ComPtr<IDXGISwapChain3>         m_swapChain;
 
         // Direct3D rendering objects. Required for 3D.
+        Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_renderTarget;
+        Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_depthStencil;
         Microsoft::WRL::ComPtr<ID3D11RenderTargetView>	m_d3dRenderTargetView;
         Microsoft::WRL::ComPtr<ID3D11DepthStencilView>	m_d3dDepthStencilView;
         D3D11_VIEWPORT                                  m_screenViewport;

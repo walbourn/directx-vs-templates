@@ -224,6 +224,8 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     m_d3dContext->OMSetRenderTargets(_countof(nullViews), nullViews, nullptr);
     m_d3dRenderTargetView.Reset();
     m_d3dDepthStencilView.Reset();
+    m_renderTarget.Reset();
+    m_depthStencil.Reset();
     m_d3dContext->Flush();
 
     // Determine the render target size in pixels.
@@ -331,11 +333,10 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
     }
 
     // Create a render target view of the swap chain back buffer.
-    ComPtr<ID3D11Texture2D> backBuffer;
-    DX::ThrowIfFailed(m_swapChain->GetBuffer(0, IID_PPV_ARGS(backBuffer.GetAddressOf())));
+    DX::ThrowIfFailed(m_swapChain->GetBuffer(0, IID_PPV_ARGS(m_renderTarget.ReleaseAndGetAddressOf())));
 
     DX::ThrowIfFailed(m_d3dDevice->CreateRenderTargetView(
-        backBuffer.Get(),
+        m_renderTarget.Get(),
         nullptr,
         m_d3dRenderTargetView.ReleaseAndGetAddressOf()
         ));
@@ -352,16 +353,15 @@ void DX::DeviceResources::CreateWindowSizeDependentResources()
             D3D11_BIND_DEPTH_STENCIL
             );
 
-        ComPtr<ID3D11Texture2D> depthStencil;
         DX::ThrowIfFailed(m_d3dDevice->CreateTexture2D(
             &depthStencilDesc,
             nullptr,
-            depthStencil.GetAddressOf()
+            m_depthStencil.ReleaseAndGetAddressOf()
             ));
 
         CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
         DX::ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(
-            depthStencil.Get(),
+            m_depthStencil.Get(),
             &depthStencilViewDesc,
             m_d3dDepthStencilView.ReleaseAndGetAddressOf()
             ));
@@ -413,6 +413,8 @@ void DX::DeviceResources::HandleDeviceLost()
 
     m_d3dDepthStencilView.Reset();
     m_d3dRenderTargetView.Reset();
+    m_renderTarget.Reset();
+    m_depthStencil.Reset();
     m_swapChain.Reset();
     m_swapChain1.Reset();
     m_d3dContext.Reset();
