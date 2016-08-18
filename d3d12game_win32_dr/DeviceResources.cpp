@@ -62,6 +62,7 @@ void DX::DeviceResources::CreateDeviceResources()
 {
 #if defined(_DEBUG)
     // Enable the debug layer (only available if the Graphics Tools feature-on-demand is enabled).
+    bool debugDXGI = false;
     {
         ComPtr<ID3D12Debug> debugController;
         if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(debugController.GetAddressOf()))))
@@ -76,10 +77,16 @@ void DX::DeviceResources::CreateDeviceResources()
         ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
         if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
         {
+            debugDXGI = true;
+
+            DX::ThrowIfFailed(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
         }
     }
+
+    if (!debugDXGI)
 #endif
 
     DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));

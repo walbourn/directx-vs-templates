@@ -557,17 +557,24 @@ void DX::DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
 
     ComPtr<IDXGIFactory2> dxgiFactory;
 #ifdef _DEBUG
-    UINT creationFlags = 0;
-
-    if (SdkLayersAvailable())
+    bool debugDXGI = false;
     {
-        creationFlags |= DXGI_CREATE_FACTORY_DEBUG;
+        ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
+        if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
+        {
+            debugDXGI = true;
+
+            DX::ThrowIfFailed(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
+
+            dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
+            dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
+        }
     }
 
-    DX::ThrowIfFailed(CreateDXGIFactory2(creationFlags, IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
-#else
-    DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
+    if (!debugDXGI)
 #endif
+
+    DX::ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
 
     ComPtr<IDXGIAdapter1> adapter;
     for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); adapterIndex++)
