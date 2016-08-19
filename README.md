@@ -10,3 +10,7 @@ There are two versions of each template. The DR version adds a ``DeviceResources
 ``VSIX\Direct3DWin32Game.vsix`` installs the Direct3D Win32 Game template for VS 2013
 
 ``VSIX\Direct3DUWPGame.vsix`` installs the Direct3D UWP Game template and the Direct3D Win32 Game template for VS 2015
+
+All content and source code for this package are subject to the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
