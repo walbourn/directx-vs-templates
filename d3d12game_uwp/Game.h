@@ -20,11 +20,6 @@ public:
 
     // Basic game loop
     void Tick();
-    void Render();
-
-    // Rendering helpers
-    void Clear();
-    void Present();
 
     // Messages
     void OnActivated();
@@ -40,6 +35,10 @@ public:
 private:
 
     void Update(DX::StepTimer const& timer);
+    void Render();
+
+    void Clear();
+    void Present();
 
     void CreateDevice();
     void CreateResources();
