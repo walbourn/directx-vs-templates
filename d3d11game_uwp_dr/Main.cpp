@@ -36,8 +36,8 @@ public:
     // IFrameworkView methods
     virtual void Initialize(CoreApplicationView^ applicationView)
     {
-        applicationView->Activated += ref new
-            TypedEventHandler<CoreApplicationView^, IActivatedEventArgs^>(this, &ViewProvider::OnActivated);
+        applicationView->Activated +=
+            ref new TypedEventHandler<CoreApplicationView^, IActivatedEventArgs^>(this, &ViewProvider::OnActivated);
 
         CoreApplication::Suspending +=
             ref new EventHandler<SuspendingEventArgs^>(this, &ViewProvider::OnSuspending);
