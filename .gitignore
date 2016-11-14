@@ -15,6 +15,7 @@
 *.lastbuildstate
 *.ilk
 *.VC.db
+.vs
 wiki/
 d3d11game_xdk/
 d3d11game_xdk_dr/
