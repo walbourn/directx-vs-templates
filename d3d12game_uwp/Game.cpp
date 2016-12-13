@@ -214,6 +214,8 @@ void Game::CreateDevice()
 {
 #if defined(_DEBUG)
     // Enable the debug layer (only available if the Graphics Tools feature-on-demand is enabled).
+    //
+    // NOTE: Enabling the debug layer after device creation will invalidate the active device.
     {
         ComPtr<ID3D12Debug> debugController;
         if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(debugController.GetAddressOf()))))

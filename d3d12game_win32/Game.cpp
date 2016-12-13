@@ -181,6 +181,8 @@ void Game::CreateDevice()
 {
 #if defined(_DEBUG)
     // Enable the debug layer (only available if the Graphics Tools feature-on-demand is enabled).
+    //
+    // NOTE: Enabling the debug layer after device creation will invalidate the active device.
     bool debugDXGI = false;
     {
         ComPtr<ID3D12Debug> debugController;
