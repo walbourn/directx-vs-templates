@@ -61,7 +61,7 @@ DX::DeviceResources::~DeviceResources()
 void DX::DeviceResources::CreateDeviceResources() 
 {
 #if defined(_DEBUG)
-    // Enable the debug layer (only available if the Graphics Tools feature-on-demand is enabled).
+    // Enable the debug layer (requires the Graphics Tools "optional feature").
     //
     // NOTE: Enabling the debug layer after device creation will invalidate the active device.
     bool debugDXGI = false;
@@ -557,7 +557,7 @@ void DX::DeviceResources::GetAdapter(IDXGIAdapter1** ppAdapter)
         // Try WARP12 instead
         if (FAILED(m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(adapter.ReleaseAndGetAddressOf()))))
         {
-            throw std::exception("WARP12 not available. Enable the 'Graphics Tools' feature-on-demand");
+            throw std::exception("WARP12 not available. Enable the 'Graphics Tools' optional feature");
         }
 
         OutputDebugStringA("Direct3D Adapter - WARP12\n");

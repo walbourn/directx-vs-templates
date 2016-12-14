@@ -1,7 +1,7 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
     <Name>Direct3D UWP Game</Name>
-    <Description>A project for a universal Windows app game that uses Direct3D11</Description>
+    <Description>A project for a universal Windows app game that uses Direct3D 11 and C++/CX</Description>
     <ProjectType>VC</ProjectType>
     <TemplateGroupID>WinRT-Native</TemplateGroupID>
     <TemplateID>Microsoft.DirectX.Direct3DUWPGame</TemplateID>
