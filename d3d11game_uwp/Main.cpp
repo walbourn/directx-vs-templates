@@ -166,7 +166,7 @@ protected:
 
     void OnSuspending(Platform::Object^ sender, SuspendingEventArgs^ args)
     {
-        SuspendingDeferral^ deferral = args->SuspendingOperation->GetDeferral();
+        auto deferral = args->SuspendingOperation->GetDeferral();
 
         create_task([this, deferral]()
         {
