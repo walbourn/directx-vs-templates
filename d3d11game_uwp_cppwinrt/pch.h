@@ -8,10 +8,7 @@
 // Use the C++ standard templated min/max
 #define NOMINMAX
 
-#pragma warning(push)
-#pragma warning(disable : 4467)
-#include <wrl.h>
-#pragma warning(pop)
+#include <wrl/client.h>
 
 #include <d3d11_3.h>
 #include <dxgi1_4.h>
@@ -20,12 +17,23 @@
 
 #include <algorithm>
 #include <exception>
+#include <future>
 #include <memory>
 #include <stdexcept>
 
 #ifdef _DEBUG
 #include <dxgidebug.h>
 #endif
+
+#include "winrt/Windows.ApplicationModel.h"
+#include "winrt/Windows.ApplicationModel.Core.h"
+#include "winrt/Windows.ApplicationModel.Activation.h"
+#include "winrt/Windows.Foundation.h"
+#include "winrt/Windows.Graphics.Display.h"
+#include "winrt/Windows.System.h"
+#include "winrt/Windows.UI.Core.h"
+#include "winrt/Windows.UI.Input.h"
+#include "winrt/Windows.UI.ViewManagement.h"
 
 namespace DX
 {

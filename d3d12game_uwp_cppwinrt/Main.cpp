@@ -5,19 +5,6 @@
 #include "pch.h"
 #include "Game.h"
 
-#include <ppltasks.h>
-
-#include "winrt\Windows.ApplicationModel.h"
-#include "winrt\Windows.ApplicationModel.Core.h"
-#include "winrt\Windows.ApplicationModel.Activation.h"
-#include "winrt\Windows.UI.Core.h"
-#include "winrt\Windows.UI.Input.h"
-#include "winrt\Windows.UI.ViewManagement.h"
-#include "winrt\Windows.System.h"
-#include "winrt\Windows.Foundation.h"
-#include "winrt\Windows.Graphics.Display.h"
-
-using namespace concurrency;
 using namespace winrt::Windows::ApplicationModel;
 using namespace winrt::Windows::ApplicationModel::Core;
 using namespace winrt::Windows::ApplicationModel::Activation;
@@ -44,7 +31,7 @@ public:
     }
 
     // IFrameworkView methods
-    virtual void Initialize(CoreApplicationView const & applicationView)
+    void Initialize(CoreApplicationView const & applicationView)
     {
         applicationView.Activated({ this, &ViewProvider::OnActivated });
 
@@ -55,12 +42,12 @@ public:
         m_game = std::make_unique<Game>();
     }
 
-    virtual void Uninitialize()
+    void Uninitialize()
     {
         m_game.reset();
     }
 
-    virtual void SetWindow(CoreWindow const & window)
+    void SetWindow(CoreWindow const & window)
     {
         window.SizeChanged({ this, &ViewProvider::OnWindowSizeChanged });
 
@@ -101,11 +88,11 @@ public:
         m_game->Initialize(winrt::get(window), outputWidth, outputHeight, rotation);
     }
 
-    virtual void Load(winrt::hstring const &)
+    void Load(winrt::hstring const &)
     {
     }
 
-    virtual void Run()
+    void Run()
     {
         while (!m_exit)
         {
@@ -165,9 +152,9 @@ protected:
 
     void OnSuspending(IInspectable const & /*sender*/, SuspendingEventArgs const & args)
     {
-        SuspendingDeferral deferral = args.SuspendingOperation().GetDeferral();
+        auto deferral = args.SuspendingOperation().GetDeferral();
 
-        create_task([this, deferral]()
+        std::async(std::launch::async, [this, deferral]()
         {
             m_game->OnSuspending();
 
@@ -332,7 +319,7 @@ private:
 class ViewProviderFactory final : public winrt::implements<ViewProviderFactory, IFrameworkViewSource>
 {
 public:
-    virtual IFrameworkView CreateView()
+    IFrameworkView CreateView()
     {
         return winrt::make<ViewProvider>();
     }
