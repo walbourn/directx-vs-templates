@@ -342,7 +342,7 @@ public:
 
 // Entry point
 [Platform::MTAThread]
-int main(Platform::Array<Platform::String^>^ argv)
+int __cdecl main(Platform::Array<Platform::String^>^ argv)
 {
     UNREFERENCED_PARAMETER(argv);
 

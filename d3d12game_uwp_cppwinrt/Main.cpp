@@ -327,10 +327,10 @@ public:
 
 
 // Entry point
-int CALLBACK WinMain(
+int WINAPI wWinMain(
     _In_ HINSTANCE /*hInstance*/,
     _In_ HINSTANCE /*hPrevInstance*/,
-    _In_ LPSTR     /*lpCmdLine*/,
+    _In_ LPWSTR    /*lpCmdLine*/,
     _In_ int       /*nCmdShow*/
 )
 {
