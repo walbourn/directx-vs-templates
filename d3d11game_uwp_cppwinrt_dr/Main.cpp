@@ -85,7 +85,7 @@ public:
             std::swap(outputWidth, outputHeight);
         }
 
-        m_game->Initialize(winrt::get(window), outputWidth, outputHeight, rotation);
+        m_game->Initialize(winrt::get_abi(window), outputWidth, outputHeight, rotation);
     }
 
     void Load(winrt::hstring const &)

@@ -16,7 +16,7 @@ public:
     Game();
 
     // Initialization and management
-    void Initialize(IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation);
+    void Initialize(::IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation);
 
     // Basic game loop
     void Tick();

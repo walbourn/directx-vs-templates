@@ -18,7 +18,7 @@ Game::Game()
 }
 
 // Initialize the Direct3D resources required to run.
-void Game::Initialize(IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation)
+void Game::Initialize(::IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation)
 {
     m_deviceResources->SetWindow(window, width, height, rotation);
 
