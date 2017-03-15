@@ -45,12 +45,24 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="ProjectTemplates\Direct3D12UWPGame.zip" />
-    <None Include="ProjectTemplates\Direct3D12UWPGameCppWinRT.zip" />
-    <None Include="ProjectTemplates\Direct3D12UWPGameCppWinRTDR.zip" />
-    <None Include="ProjectTemplates\Direct3D12UWPGameDR.zip" />
-    <None Include="ProjectTemplates\Direct3D12Win32Game.zip" />
-    <None Include="ProjectTemplates\Direct3D12Win32GameDR.zip" />
+    <Content Include="ProjectTemplates\Direct3D12UWPGame.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ProjectTemplates\Direct3D12UWPGameCppWinRT.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ProjectTemplates\Direct3D12UWPGameCppWinRTDR.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ProjectTemplates\Direct3D12UWPGameDR.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ProjectTemplates\Direct3D12Win32Game.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="ProjectTemplates\Direct3D12Win32GameDR.zip">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="MIT.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -92,6 +104,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wizards\Wizards.csproj">
+      <Project>{499B39C0-BE39-4AE8-9897-9D74B3832666}</Project>
+      <Name>Wizards</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
