@@ -12,7 +12,7 @@ using namespace DirectX;
 using Microsoft::WRL::ComPtr;
 
 Game::Game() :
-    m_window(0),
+    m_window(nullptr),
     m_outputWidth(800),
     m_outputHeight(600),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
