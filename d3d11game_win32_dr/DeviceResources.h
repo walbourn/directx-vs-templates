@@ -34,12 +34,9 @@ namespace DX
         RECT GetOutputSize() const { return m_outputSize; }
 
         // Direct3D Accessors.
-        ID3D11Device*           GetD3DDevice() const                    { return m_d3dDevice.Get(); }
-        ID3D11Device1*          GetD3DDevice1() const                   { return m_d3dDevice1.Get(); }
-        ID3D11DeviceContext*    GetD3DDeviceContext() const             { return m_d3dContext.Get(); }
-        ID3D11DeviceContext1*   GetD3DDeviceContext1() const            { return m_d3dContext1.Get(); }
-        IDXGISwapChain*         GetSwapChain() const                    { return m_swapChain.Get(); }
-        IDXGISwapChain1*        GetSwapChain1() const                   { return m_swapChain1.Get(); }
+        ID3D11Device1*          GetD3DDevice() const                    { return m_d3dDevice.Get(); }
+        ID3D11DeviceContext1*   GetD3DDeviceContext() const             { return m_d3dContext.Get(); }
+        IDXGISwapChain1*        GetSwapChain() const                    { return m_swapChain.Get(); }
         D3D_FEATURE_LEVEL       GetDeviceFeatureLevel() const           { return m_d3dFeatureLevel; }
         ID3D11Texture2D*        GetRenderTarget() const                 { return m_renderTarget.Get(); }
         ID3D11Texture2D*        GetDepthStencil() const                 { return m_depthStencil.Get(); }
@@ -53,39 +50,27 @@ namespace DX
         // Performance events
         void PIXBeginEvent(_In_z_ const wchar_t* name)
         {
-            if (m_d3dAnnotation)
-            {
-                m_d3dAnnotation->BeginEvent(name);
-            }
+            m_d3dAnnotation->BeginEvent(name);
         }
 
         void PIXEndEvent()
         {
-            if (m_d3dAnnotation)
-            {
-                m_d3dAnnotation->EndEvent();
-            }
+            m_d3dAnnotation->EndEvent();
         }
 
         void PIXSetMarker(_In_z_ const wchar_t* name)
         {
-            if (m_d3dAnnotation)
-            {
-                m_d3dAnnotation->SetMarker(name);
-            }
+            m_d3dAnnotation->SetMarker(name);
         }
 
     private:
         void GetHardwareAdapter(IDXGIAdapter1** ppAdapter);
 
         // Direct3D objects.
-        Microsoft::WRL::ComPtr<ID3D11Device>            m_d3dDevice;
-        Microsoft::WRL::ComPtr<ID3D11Device1>           m_d3dDevice1;
-        Microsoft::WRL::ComPtr<ID3D11DeviceContext>     m_d3dContext;
-        Microsoft::WRL::ComPtr<ID3D11DeviceContext1>    m_d3dContext1;
-        Microsoft::WRL::ComPtr<IDXGISwapChain>          m_swapChain;
-        Microsoft::WRL::ComPtr<IDXGISwapChain1>         m_swapChain1;
-        Microsoft::WRL::ComPtr<ID3DUserDefinedAnnotation> m_d3dAnnotation;
+        Microsoft::WRL::ComPtr<ID3D11Device1>               m_d3dDevice;
+        Microsoft::WRL::ComPtr<ID3D11DeviceContext1>        m_d3dContext;
+        Microsoft::WRL::ComPtr<IDXGISwapChain1>             m_swapChain;
+        Microsoft::WRL::ComPtr<ID3DUserDefinedAnnotation>   m_d3dAnnotation;
 
         // Direct3D rendering objects. Required for 3D.
         Microsoft::WRL::ComPtr<ID3D11Texture2D>         m_renderTarget;

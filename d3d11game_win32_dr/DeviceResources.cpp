@@ -1,6 +1,6 @@
 ﻿//
 // DeviceResources.cpp - A wrapper for the Direct3D 11 device and swapchain
-//                       (requires DirectX 11.0 Runtime)
+//                       (requires DirectX 11.1 Runtime)
 //
 
 #include "pch.h"
@@ -94,6 +94,9 @@ void DeviceResources::CreateDeviceResources()
     GetHardwareAdapter(adapter.GetAddressOf());
 
     // Create the Direct3D 11 API device object and a corresponding context.
+    ComPtr<ID3D11Device> device;
+    ComPtr<ID3D11DeviceContext> context;
+
     HRESULT hr = E_FAIL;
     if (adapter)
     {
@@ -105,29 +108,10 @@ void DeviceResources::CreateDeviceResources()
             s_featureLevels,
             featLevelCount,
             D3D11_SDK_VERSION,
-            m_d3dDevice.ReleaseAndGetAddressOf(),   // Returns the Direct3D device created.
-            &m_d3dFeatureLevel,                     // Returns feature level of device created.
-            m_d3dContext.ReleaseAndGetAddressOf()   // Returns the device immediate context.
+            device.GetAddressOf(),  // Returns the Direct3D device created.
+            &m_d3dFeatureLevel,     // Returns feature level of device created.
+            context.GetAddressOf()  // Returns the device immediate context.
             );
-
-        if (hr == E_INVALIDARG && featLevelCount > 1)
-        {
-            assert(s_featureLevels[0] == D3D_FEATURE_LEVEL_11_1);
-
-            // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
-            hr = D3D11CreateDevice(
-                adapter.Get(),
-                D3D_DRIVER_TYPE_UNKNOWN,
-                nullptr,
-                creationFlags,
-                &s_featureLevels[1],
-                featLevelCount - 1,
-                D3D11_SDK_VERSION,
-                m_d3dDevice.ReleaseAndGetAddressOf(),
-                &m_d3dFeatureLevel,
-                m_d3dContext.ReleaseAndGetAddressOf()
-                );
-        }
     }
 #if defined(NDEBUG)
     else
@@ -148,29 +132,10 @@ void DeviceResources::CreateDeviceResources()
             s_featureLevels,
             featLevelCount,
             D3D11_SDK_VERSION,
-            m_d3dDevice.ReleaseAndGetAddressOf(),
+            device.GetAddressOf(),
             &m_d3dFeatureLevel,
-            m_d3dContext.ReleaseAndGetAddressOf()
+            context.GetAddressOf()
             );
-
-        if (hr == E_INVALIDARG && featLevelCount > 1)
-        {
-            assert(s_featureLevels[0] == D3D_FEATURE_LEVEL_11_1);
-
-            // DirectX 11.0 platforms will not recognize D3D_FEATURE_LEVEL_11_1 so we need to retry without it
-            hr = D3D11CreateDevice(
-                nullptr,
-                D3D_DRIVER_TYPE_WARP,
-                nullptr,
-                creationFlags,
-                &s_featureLevels[1],
-                featLevelCount - 1,
-                D3D11_SDK_VERSION,
-                m_d3dDevice.ReleaseAndGetAddressOf(),
-                &m_d3dFeatureLevel,
-                m_d3dContext.ReleaseAndGetAddressOf()
-                );
-        }
 
         if (SUCCEEDED(hr))
         {
@@ -183,7 +148,7 @@ void DeviceResources::CreateDeviceResources()
 
 #ifndef NDEBUG
     ComPtr<ID3D11Debug> d3dDebug;
-    if (SUCCEEDED(m_d3dDevice.As(&d3dDebug)))
+    if (SUCCEEDED(device.As(&d3dDebug)))
     {
         ComPtr<ID3D11InfoQueue> d3dInfoQueue;
         if (SUCCEEDED(d3dDebug.As(&d3dInfoQueue)))
@@ -204,12 +169,9 @@ void DeviceResources::CreateDeviceResources()
     }
 #endif
 
-    // Obtain Direct3D 11.1 interfaces (if available)
-    if (SUCCEEDED(m_d3dDevice.As(&m_d3dDevice1)))
-    {
-        (void) m_d3dContext.As(&m_d3dContext1);
-        (void) m_d3dContext.As(&m_d3dAnnotation);
-    }
+    ThrowIfFailed(device.As(&m_d3dDevice));
+    ThrowIfFailed(context.As(&m_d3dContext));
+    ThrowIfFailed(context.As(&m_d3dAnnotation));
 }
 
 // These resources need to be recreated every time the window size is changed.
@@ -274,60 +236,33 @@ void DeviceResources::CreateWindowSizeDependentResources()
         ComPtr<IDXGIAdapter> dxgiAdapter;
         ThrowIfFailed(dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()));
 
-        ComPtr<IDXGIFactory1> dxgiFactory;
+        ComPtr<IDXGIFactory2> dxgiFactory;
         ThrowIfFailed(dxgiAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
 
-        ComPtr<IDXGIFactory2> dxgiFactory2;
-        if (SUCCEEDED(dxgiFactory.As(&dxgiFactory2)))
-        {
-            // DirectX 11.1 or later
-            DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
-            swapChainDesc.Width = backBufferWidth;
-            swapChainDesc.Height = backBufferHeight;
-            swapChainDesc.Format = m_backBufferFormat;
-            swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-            swapChainDesc.BufferCount = m_backBufferCount;
-            swapChainDesc.SampleDesc.Count = 1;
-            swapChainDesc.SampleDesc.Quality = 0;
-            swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
-            swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-            swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
+        // Create a descriptor for the swap chain.
+        DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+        swapChainDesc.Width = backBufferWidth;
+        swapChainDesc.Height = backBufferHeight;
+        swapChainDesc.Format = m_backBufferFormat;
+        swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+        swapChainDesc.BufferCount = m_backBufferCount;
+        swapChainDesc.SampleDesc.Count = 1;
+        swapChainDesc.SampleDesc.Quality = 0;
+        swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
+        swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+        swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
 
-            DXGI_SWAP_CHAIN_FULLSCREEN_DESC fsSwapChainDesc = { 0 };
-            fsSwapChainDesc.Windowed = TRUE;
+        DXGI_SWAP_CHAIN_FULLSCREEN_DESC fsSwapChainDesc = { 0 };
+        fsSwapChainDesc.Windowed = TRUE;
 
-            // Create a SwapChain from a Win32 window.
-            ThrowIfFailed(dxgiFactory2->CreateSwapChainForHwnd(
-                m_d3dDevice.Get(),
-                m_window,
-                &swapChainDesc,
-                &fsSwapChainDesc,
-                nullptr, m_swapChain1.ReleaseAndGetAddressOf()
-                ));
-
-            ThrowIfFailed(m_swapChain1.As(&m_swapChain));
-        }
-        else
-        {
-            // DirectX 11.0
-            DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-            swapChainDesc.BufferDesc.Width = backBufferWidth;
-            swapChainDesc.BufferDesc.Height = backBufferHeight;
-            swapChainDesc.BufferDesc.Format = m_backBufferFormat;
-            swapChainDesc.SampleDesc.Count = 1;
-            swapChainDesc.SampleDesc.Quality = 0;
-            swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-            swapChainDesc.BufferCount = m_backBufferCount;
-            swapChainDesc.OutputWindow = m_window;
-            swapChainDesc.Windowed = TRUE;
-            swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-
-            ThrowIfFailed(dxgiFactory->CreateSwapChain(
-                m_d3dDevice.Get(),
-                &swapChainDesc,
-                m_swapChain.ReleaseAndGetAddressOf()
-                ));
-        }
+        // Create a SwapChain from a Win32 window.
+        ThrowIfFailed(dxgiFactory->CreateSwapChainForHwnd(
+            m_d3dDevice.Get(),
+            m_window,
+            &swapChainDesc,
+            &fsSwapChainDesc,
+            nullptr, m_swapChain.ReleaseAndGetAddressOf()
+            ));
 
         // This class does not support exclusive full-screen mode and prevents DXGI from responding to the ALT+ENTER shortcut
         ThrowIfFailed(dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
@@ -417,11 +352,8 @@ void DeviceResources::HandleDeviceLost()
     m_renderTarget.Reset();
     m_depthStencil.Reset();
     m_swapChain.Reset();
-    m_swapChain1.Reset();
     m_d3dContext.Reset();
-    m_d3dContext1.Reset();
     m_d3dAnnotation.Reset();
-    m_d3dDevice1.Reset();
 
 #ifdef _DEBUG
     {
@@ -452,18 +384,15 @@ void DeviceResources::Present()
     // frames that will never be displayed to the screen.
     HRESULT hr = m_swapChain->Present(1, 0);
 
-    if (m_d3dContext1)
-    {
-        // Discard the contents of the render target.
-        // This is a valid operation only when the existing contents will be entirely
-        // overwritten. If dirty or scroll rects are used, this call should be removed.
-        m_d3dContext1->DiscardView(m_d3dRenderTargetView.Get());
+    // Discard the contents of the render target.
+    // This is a valid operation only when the existing contents will be entirely
+    // overwritten. If dirty or scroll rects are used, this call should be removed.
+    m_d3dContext->DiscardView(m_d3dRenderTargetView.Get());
 
-        if(m_d3dDepthStencilView)
-        {
-            // Discard the contents of the depth stencil.
-            m_d3dContext1->DiscardView(m_d3dDepthStencilView.Get());
-        }
+    if (m_d3dDepthStencilView)
+    {
+        // Discard the contents of the depth stencil.
+        m_d3dContext->DiscardView(m_d3dDepthStencilView.Get());
     }
 
     // If the device was removed either by a disconnection or a driver upgrade, we 
