@@ -117,6 +117,26 @@ void DeviceResources::CreateDeviceResources()
     }
 #endif
 
+#if defined(_DEBUG)
+    bool debugDXGI = false;
+    {
+        ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
+        if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
+        {
+            debugDXGI = true;
+
+            ThrowIfFailed(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+
+            dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
+            dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
+        }
+    }
+
+    if (!debugDXGI)
+#endif
+
+    ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+
     // Determine DirectX hardware feature levels this app will support.
     static const D3D_FEATURE_LEVEL s_featureLevels[] =
     {
@@ -280,18 +300,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
     }
     else
     {
-        // Otherwise, create a new one using the same adapter as the existing Direct3D device.
-
-        // This sequence obtains the DXGI factory that was used to create the Direct3D device above.
-        ComPtr<IDXGIDevice3> dxgiDevice;
-        ThrowIfFailed(m_d3dDevice.As(&dxgiDevice));
-
-        ComPtr<IDXGIAdapter> dxgiAdapter;
-        ThrowIfFailed(dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()));
-
-        ComPtr<IDXGIFactory2> dxgiFactory;
-        ThrowIfFailed(dxgiAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
-
+        // Create a descriptor for the swap chain.
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
         swapChainDesc.Width = backBufferWidth;
         swapChainDesc.Height = backBufferHeight;
@@ -305,8 +314,9 @@ void DeviceResources::CreateWindowSizeDependentResources()
         swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
         swapChainDesc.Flags = (m_options & c_AllowTearing) ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
 
+        // Create a swap chain for the window.
         ComPtr<IDXGISwapChain1> swapChain;
-        ThrowIfFailed(dxgiFactory->CreateSwapChainForCoreWindow(
+        ThrowIfFailed(m_dxgiFactory->CreateSwapChainForCoreWindow(
             m_d3dDevice.Get(),
             m_window,
             &swapChainDesc,
@@ -318,6 +328,8 @@ void DeviceResources::CreateWindowSizeDependentResources()
 
         // Ensure that DXGI does not queue more than one frame at a time. This both reduces latency and
         // ensures that the application will only render after each VSync, minimizing power consumption.
+        ComPtr<IDXGIDevice3> dxgiDevice;
+        ThrowIfFailed(m_d3dDevice.As(&dxgiDevice));
         ThrowIfFailed(dxgiDevice->SetMaximumFrameLatency(1));
     }
 
@@ -428,17 +440,8 @@ void DeviceResources::ValidateDevice()
 
     DXGI_ADAPTER_DESC previousDesc;
     {
-        ComPtr<IDXGIDevice3> dxgiDevice;
-        ThrowIfFailed(m_d3dDevice.As(&dxgiDevice));
-
-        ComPtr<IDXGIAdapter> deviceAdapter;
-        ThrowIfFailed(dxgiDevice->GetAdapter(deviceAdapter.GetAddressOf()));
-
-        ComPtr<IDXGIFactory2> deviceFactory;
-        ThrowIfFailed(deviceAdapter->GetParent(IID_PPV_ARGS(deviceFactory.GetAddressOf())));
-
         ComPtr<IDXGIAdapter1> previousDefaultAdapter;
-        ThrowIfFailed(deviceFactory->EnumAdapters1(0, previousDefaultAdapter.GetAddressOf()));
+        ThrowIfFailed(m_dxgiFactory->EnumAdapters1(0, previousDefaultAdapter.GetAddressOf()));
 
         ThrowIfFailed(previousDefaultAdapter->GetDesc(&previousDesc));
     }
@@ -485,6 +488,7 @@ void DeviceResources::HandleDeviceLost()
     m_swapChain.Reset();
     m_d3dContext.Reset();
     m_d3dDevice.Reset();
+    m_dxgiFactory.Reset();
 
 #ifdef _DEBUG
     {
@@ -567,34 +571,13 @@ void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
 {
     *ppAdapter = nullptr;
 
-    ComPtr<IDXGIFactory2> dxgiFactory;
-#ifdef _DEBUG
-    bool debugDXGI = false;
-    {
-        ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
-        if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
-        {
-            debugDXGI = true;
-
-            ThrowIfFailed(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
-
-            dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
-            dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
-        }
-    }
-
-    if (!debugDXGI)
-#endif
-
-    ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
-
     // Determines whether tearing support is available for fullscreen borderless windows.
     if (m_options & c_AllowTearing)
     {
         BOOL allowTearing = FALSE;
 
         ComPtr<IDXGIFactory5> factory5;
-        HRESULT hr = dxgiFactory.As(&factory5);
+        HRESULT hr = m_dxgiFactory.As(&factory5);
         if (SUCCEEDED(hr))
         {
             hr = factory5->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING, &allowTearing, sizeof(allowTearing));
@@ -610,7 +593,7 @@ void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
     }
 
     ComPtr<IDXGIAdapter1> adapter;
-    for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); adapterIndex++)
+    for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != m_dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); adapterIndex++)
     {
         DXGI_ADAPTER_DESC1 desc;
         adapter->GetDesc1(&desc);

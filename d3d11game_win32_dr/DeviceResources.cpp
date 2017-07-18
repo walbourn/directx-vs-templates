@@ -66,6 +66,26 @@ void DeviceResources::CreateDeviceResources()
     }
 #endif
 
+#if defined(_DEBUG)
+    bool debugDXGI = false;
+    {
+        ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
+        if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
+        {
+            debugDXGI = true;
+
+            ThrowIfFailed(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+
+            dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
+            dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
+        }
+    }
+
+    if (!debugDXGI)
+#endif
+
+    ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+
     // Determine DirectX hardware feature levels this app will support.
     static const D3D_FEATURE_LEVEL s_featureLevels[] =
     {
@@ -227,18 +247,6 @@ void DeviceResources::CreateWindowSizeDependentResources()
     }
     else
     {
-        // Otherwise, create a new one using the same adapter as the existing Direct3D device.
-
-        // This sequence obtains the DXGI factory that was used to create the Direct3D device above.
-        ComPtr<IDXGIDevice1> dxgiDevice;
-        ThrowIfFailed(m_d3dDevice.As(&dxgiDevice));
-
-        ComPtr<IDXGIAdapter> dxgiAdapter;
-        ThrowIfFailed(dxgiDevice->GetAdapter(dxgiAdapter.GetAddressOf()));
-
-        ComPtr<IDXGIFactory2> dxgiFactory;
-        ThrowIfFailed(dxgiAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
-
         // Create a descriptor for the swap chain.
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
         swapChainDesc.Width = backBufferWidth;
@@ -256,7 +264,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
         fsSwapChainDesc.Windowed = TRUE;
 
         // Create a SwapChain from a Win32 window.
-        ThrowIfFailed(dxgiFactory->CreateSwapChainForHwnd(
+        ThrowIfFailed(m_dxgiFactory->CreateSwapChainForHwnd(
             m_d3dDevice.Get(),
             m_window,
             &swapChainDesc,
@@ -265,7 +273,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
             ));
 
         // This class does not support exclusive full-screen mode and prevents DXGI from responding to the ALT+ENTER shortcut
-        ThrowIfFailed(dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
+        ThrowIfFailed(m_dxgiFactory->MakeWindowAssociation(m_window, DXGI_MWA_NO_ALT_ENTER));
     }
 
     // Create a render target view of the swap chain back buffer.
@@ -354,6 +362,7 @@ void DeviceResources::HandleDeviceLost()
     m_swapChain.Reset();
     m_d3dContext.Reset();
     m_d3dAnnotation.Reset();
+    m_dxgiFactory.Reset();
 
 #ifdef _DEBUG
     {
@@ -418,11 +427,8 @@ void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
 {
     *ppAdapter = nullptr;
 
-    ComPtr<IDXGIFactory1> dxgiFactory;
-    ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(dxgiFactory.GetAddressOf())));
-
     ComPtr<IDXGIAdapter1> adapter;
-    for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); adapterIndex++)
+    for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != m_dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); adapterIndex++)
     {
         DXGI_ADAPTER_DESC1 desc;
         adapter->GetDesc1(&desc);

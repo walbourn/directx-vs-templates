@@ -59,6 +59,7 @@ namespace DX
         void GetHardwareAdapter(IDXGIAdapter1** ppAdapter);
 
         // Direct3D objects.
+        Microsoft::WRL::ComPtr<IDXGIFactory2>           m_dxgiFactory;
         Microsoft::WRL::ComPtr<ID3D11Device3>           m_d3dDevice;
         Microsoft::WRL::ComPtr<ID3D11DeviceContext2>    m_d3dContext;
         Microsoft::WRL::ComPtr<IDXGISwapChain3>         m_swapChain;
