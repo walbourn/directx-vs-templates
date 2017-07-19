@@ -110,6 +110,7 @@ namespace DX
         IUnknown*                                           m_window;
         D3D_FEATURE_LEVEL                                   m_d3dFeatureLevel;
         DXGI_MODE_ROTATION                                  m_rotation;
+        DWORD                                               m_dxgiFactoryFlags;
         RECT                                                m_outputSize;
 
         // DeviceResources options (see flags above)

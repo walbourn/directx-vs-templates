@@ -106,6 +106,7 @@ namespace DX
         // Cached device properties.
         HWND                                                m_window;
         D3D_FEATURE_LEVEL                                   m_d3dFeatureLevel;
+        DWORD                                               m_dxgiFactoryFlags;
         RECT                                                m_outputSize;
 
         // DeviceResources options (see flags above)

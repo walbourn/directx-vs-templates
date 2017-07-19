@@ -37,6 +37,7 @@ DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depth
     m_d3dMinFeatureLevel(minFeatureLevel),
     m_window(nullptr),
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_11_0),
+    m_dxgiFactoryFlags(0),
     m_outputSize{0, 0, 1, 1},
     m_options(flags),
     m_deviceNotify(nullptr)
@@ -66,7 +67,6 @@ void DeviceResources::CreateDeviceResources()
     // Enable the debug layer (requires the Graphics Tools "optional feature").
     //
     // NOTE: Enabling the debug layer after device creation will invalidate the active device.
-    bool debugDXGI = false;
     {
         ComPtr<ID3D12Debug> debugController;
         if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(debugController.GetAddressOf()))))
@@ -81,19 +81,15 @@ void DeviceResources::CreateDeviceResources()
         ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
         if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
         {
-            debugDXGI = true;
-
-            ThrowIfFailed(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+            m_dxgiFactoryFlags = DXGI_CREATE_FACTORY_DEBUG;
 
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
         }
     }
-
-    if (!debugDXGI)
 #endif
 
-    ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+    ThrowIfFailed(CreateDXGIFactory2(m_dxgiFactoryFlags, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
 
     // Determines whether tearing support is available for fullscreen borderless windows.
     if (m_options & c_AllowTearing)

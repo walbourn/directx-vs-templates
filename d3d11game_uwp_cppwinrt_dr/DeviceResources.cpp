@@ -93,6 +93,7 @@ DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depth
     m_window(nullptr),
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
     m_rotation(DXGI_MODE_ROTATION_IDENTITY),
+    m_dxgiFactoryFlags(0),
     m_outputSize{0, 0, 1, 1},
     m_orientationTransform3D(ScreenRotation::Rotation0),
     m_options(flags),
@@ -118,24 +119,19 @@ void DeviceResources::CreateDeviceResources()
 #endif
 
 #if defined(_DEBUG)
-    bool debugDXGI = false;
     {
         ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
         if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
         {
-            debugDXGI = true;
-
-            ThrowIfFailed(CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+            m_dxgiFactoryFlags = DXGI_CREATE_FACTORY_DEBUG;
 
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
         }
     }
-
-    if (!debugDXGI)
 #endif
 
-    ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+    ThrowIfFailed(CreateDXGIFactory2(m_dxgiFactoryFlags, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
 
     // Determines whether tearing support is available for fullscreen borderless windows.
     if (m_options & c_AllowTearing)
@@ -470,7 +466,7 @@ void DeviceResources::ValidateDevice()
     DXGI_ADAPTER_DESC currentDesc;
     {
         ComPtr<IDXGIFactory2> currentFactory;
-        ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(currentFactory.GetAddressOf())));
+        ThrowIfFailed(CreateDXGIFactory2(m_dxgiFactoryFlags, IID_PPV_ARGS(currentFactory.GetAddressOf())));
 
         ComPtr<IDXGIAdapter1> currentDefaultAdapter;
         ThrowIfFailed(currentFactory->EnumAdapters1(0, currentDefaultAdapter.GetAddressOf()));
