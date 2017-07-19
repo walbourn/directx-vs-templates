@@ -137,6 +137,27 @@ void DeviceResources::CreateDeviceResources()
 
     ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
 
+    // Determines whether tearing support is available for fullscreen borderless windows.
+    if (m_options & c_AllowTearing)
+    {
+        BOOL allowTearing = FALSE;
+
+        ComPtr<IDXGIFactory5> factory5;
+        HRESULT hr = m_dxgiFactory.As(&factory5);
+        if (SUCCEEDED(hr))
+        {
+            hr = factory5->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING, &allowTearing, sizeof(allowTearing));
+        }
+
+        if (FAILED(hr) || !allowTearing)
+        {
+            m_options &= ~c_AllowTearing;
+#ifdef _DEBUG
+            OutputDebugStringA("WARNING: Variable refresh rate displays not supported");
+#endif
+        }
+    }
+
     // Determine DirectX hardware feature levels this app will support.
     static const D3D_FEATURE_LEVEL s_featureLevels[] =
     {
@@ -570,27 +591,6 @@ void DeviceResources::Present()
 void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
 {
     *ppAdapter = nullptr;
-
-    // Determines whether tearing support is available for fullscreen borderless windows.
-    if (m_options & c_AllowTearing)
-    {
-        BOOL allowTearing = FALSE;
-
-        ComPtr<IDXGIFactory5> factory5;
-        HRESULT hr = m_dxgiFactory.As(&factory5);
-        if (SUCCEEDED(hr))
-        {
-            hr = factory5->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING, &allowTearing, sizeof(allowTearing));
-        }
-
-        if (FAILED(hr) || !allowTearing)
-        {
-            m_options &= ~c_AllowTearing;
-#ifdef _DEBUG
-            OutputDebugStringA("WARNING: Variable refresh rate displays not supported");
-#endif
-        }
-    }
 
     ComPtr<IDXGIAdapter1> adapter;
     for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != m_dxgiFactory->EnumAdapters1(adapterIndex, adapter.ReleaseAndGetAddressOf()); adapterIndex++)

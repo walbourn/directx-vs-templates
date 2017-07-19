@@ -36,7 +36,7 @@ namespace
 };
 
 // Constructor for DeviceResources.
-DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel) :
+DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel, unsigned int flags) :
     m_screenViewport{},
     m_backBufferFormat(backBufferFormat),
     m_depthBufferFormat(depthBufferFormat),
@@ -45,6 +45,7 @@ DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depth
     m_window(nullptr),
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
     m_outputSize{0, 0, 1, 1},
+    m_options(flags),
     m_deviceNotify(nullptr)
 {
 }
@@ -85,6 +86,27 @@ void DeviceResources::CreateDeviceResources()
 #endif
 
     ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+
+    // Determines whether tearing support is available for fullscreen borderless windows.
+    if (m_options & c_AllowTearing)
+    {
+        BOOL allowTearing = FALSE;
+
+        ComPtr<IDXGIFactory5> factory5;
+        HRESULT hr = m_dxgiFactory.As(&factory5);
+        if (SUCCEEDED(hr))
+        {
+            hr = factory5->CheckFeatureSupport(DXGI_FEATURE_PRESENT_ALLOW_TEARING, &allowTearing, sizeof(allowTearing));
+        }
+
+        if (FAILED(hr) || !allowTearing)
+        {
+            m_options &= ~c_AllowTearing;
+#ifdef _DEBUG
+            OutputDebugStringA("WARNING: Variable refresh rate displays not supported");
+#endif
+        }
+    }
 
     // Determine DirectX hardware feature levels this app will support.
     static const D3D_FEATURE_LEVEL s_featureLevels[] =
@@ -223,7 +245,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
             backBufferWidth,
             backBufferHeight,
             m_backBufferFormat,
-            0
+            (m_options & c_AllowTearing) ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0
             );
 
         if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
@@ -257,8 +279,9 @@ void DeviceResources::CreateWindowSizeDependentResources()
         swapChainDesc.SampleDesc.Count = 1;
         swapChainDesc.SampleDesc.Quality = 0;
         swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
-        swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+        swapChainDesc.SwapEffect = (m_options & c_AllowTearing) ? DXGI_SWAP_EFFECT_FLIP_DISCARD : DXGI_SWAP_EFFECT_DISCARD;
         swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
+        swapChainDesc.Flags = (m_options & c_AllowTearing) ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
 
         DXGI_SWAP_CHAIN_FULLSCREEN_DESC fsSwapChainDesc = { 0 };
         fsSwapChainDesc.Windowed = TRUE;
@@ -388,10 +411,19 @@ void DeviceResources::HandleDeviceLost()
 // Present the contents of the swap chain to the screen.
 void DeviceResources::Present() 
 {
-    // The first argument instructs DXGI to block until VSync, putting the application
-    // to sleep until the next VSync. This ensures we don't waste any cycles rendering
-    // frames that will never be displayed to the screen.
-    HRESULT hr = m_swapChain->Present(1, 0);
+    HRESULT hr;
+    if (m_options & c_AllowTearing)
+    {
+        // Recommended to always use tearing if supported when using a sync interval of 0.
+        hr = m_swapChain->Present(0, DXGI_PRESENT_ALLOW_TEARING);
+    }
+    else
+    {
+        // The first argument instructs DXGI to block until VSync, putting the application
+        // to sleep until the next VSync. This ensures we don't waste any cycles rendering
+        // frames that will never be displayed to the screen.
+        hr = m_swapChain->Present(1, 0);
+    }
 
     // Discard the contents of the render target.
     // This is a valid operation only when the existing contents will be entirely
