@@ -145,6 +145,12 @@ void Game::OnResuming()
     // TODO: Game is being power-resumed (or returning from minimize).
 }
 
+void Game::OnWindowMoved()
+{
+    auto r = m_deviceResources->GetOutputSize();
+    m_deviceResources->WindowSizeChanged(r.right, r.bottom);
+}
+
 void Game::OnWindowSizeChanged(int width, int height)
 {
     if (!m_deviceResources->WindowSizeChanged(width, height))

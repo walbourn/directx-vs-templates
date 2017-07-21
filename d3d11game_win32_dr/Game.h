@@ -31,6 +31,7 @@ public:
     void OnDeactivated();
     void OnSuspending();
     void OnResuming();
+    void OnWindowMoved();
     void OnWindowSizeChanged(int width, int height);
 
     // Properties

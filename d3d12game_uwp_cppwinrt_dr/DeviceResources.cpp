@@ -77,6 +77,7 @@ DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depth
     m_dxgiFactoryFlags(0),
     m_outputSize{0, 0, 1, 1},
     m_orientationTransform3D(ScreenRotation::Rotation0),
+    m_colorSpace(DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709),
     m_options(flags),
     m_deviceNotify(nullptr)
 {
@@ -334,6 +335,9 @@ void DeviceResources::CreateWindowSizeDependentResources()
         ThrowIfFailed(swapChain.As(&m_swapChain));
     }
 
+    // Handle color space settings for HDR
+    UpdateColorSpace();
+
     // Set the proper orientation for the swap chain, and generate
     // matrix transformations for rendering to the rotated swap chain.
     switch (m_rotation)
@@ -454,6 +458,9 @@ bool DeviceResources::WindowSizeChanged(int width, int height, DXGI_MODE_ROTATIO
         && newRc.bottom == m_outputSize.bottom
         && rotation == m_rotation)
     {
+        // Handle color space settings for HDR
+        UpdateColorSpace();
+
         return false;
     }
 
@@ -605,6 +612,12 @@ void DeviceResources::Present(D3D12_RESOURCE_STATES beforeState)
         ThrowIfFailed(hr);
 
         MoveToNextFrame();
+
+        if (!m_dxgiFactory->IsCurrent())
+        {
+            // Output information is cached on the DXGI Factory. If it is stale we need to create a new factory.
+            ThrowIfFailed(CreateDXGIFactory2(m_dxgiFactoryFlags, IID_PPV_ARGS(m_dxgiFactory.ReleaseAndGetAddressOf())));
+        }
     }
 }
 
@@ -699,4 +712,62 @@ void DeviceResources::GetAdapter(IDXGIAdapter1** ppAdapter)
     }
 
     *ppAdapter = adapter.Detach();
+}
+
+// Sets the color space for the swap chain in order to handle HDR output.
+void DeviceResources::UpdateColorSpace()
+{
+    DXGI_COLOR_SPACE_TYPE colorSpace = DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709;
+
+    bool isdisplayhdr10 = false;
+
+#if defined(NTDDI_WIN10_RS2)
+    if (m_swapChain)
+    {
+        ComPtr<IDXGIOutput> output;
+        if (SUCCEEDED(m_swapChain->GetContainingOutput(output.GetAddressOf())))
+        {
+            ComPtr<IDXGIOutput6> output6;
+            if (SUCCEEDED(output.As(&output6)))
+            {
+                DXGI_OUTPUT_DESC1 desc;
+                ThrowIfFailed(output6->GetDesc1(&desc));
+
+                if (desc.ColorSpace == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020)
+                {
+                    // Display output is HDR10.
+                    isdisplayhdr10 = true;
+                }
+            }
+        }
+    }
+#endif
+
+    if ((m_options & c_EnableHDR) && isdisplayhdr10)
+    {
+        switch (m_backBufferFormat)
+        {
+        case DXGI_FORMAT_R10G10B10A2_UNORM:
+            // The application creates the HDR10 signal.
+            colorSpace = DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020;
+            break;
+
+        case DXGI_FORMAT_R16G16B16A16_FLOAT:
+            // The system creates the HDR10 signal; application uses linear values.
+            colorSpace = DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709;
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    m_colorSpace = colorSpace;
+
+    UINT colorSpaceSupport = 0;
+    if (SUCCEEDED(m_swapChain->CheckColorSpaceSupport(colorSpace, &colorSpaceSupport))
+        && (colorSpaceSupport & DXGI_SWAP_CHAIN_COLOR_SPACE_SUPPORT_FLAG_PRESENT))
+    {
+        ThrowIfFailed(m_swapChain->SetColorSpace1(colorSpace));
+    }
 }

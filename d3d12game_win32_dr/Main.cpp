@@ -129,6 +129,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         EndPaint(hWnd, &ps);
         break;
 
+    case WM_MOVE:
+        if (game)
+        {
+            game->OnWindowMoved();
+        }
+        break;
+
     case WM_SIZE:
         if (wParam == SIZE_MINIMIZED)
         {
