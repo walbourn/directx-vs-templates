@@ -182,6 +182,8 @@ void DeviceResources::CreateDeviceResources()
 
     ThrowIfFailed(m_d3dDevice->CreateDescriptorHeap(&rtvDescriptorHeapDesc, IID_PPV_ARGS(m_rtvDescriptorHeap.ReleaseAndGetAddressOf())));
 
+    m_rtvDescriptorHeap->SetName(L"DeviceResources");
+
     m_rtvDescriptorSize = m_d3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
     if (m_depthBufferFormat != DXGI_FORMAT_UNKNOWN)
@@ -191,6 +193,8 @@ void DeviceResources::CreateDeviceResources()
         dsvDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 
         ThrowIfFailed(m_d3dDevice->CreateDescriptorHeap(&dsvDescriptorHeapDesc, IID_PPV_ARGS(m_dsvDescriptorHeap.ReleaseAndGetAddressOf())));
+
+        m_dsvDescriptorHeap->SetName(L"DeviceResources");
     }
 
     // Create a command allocator for each back buffer that will be rendered to.
