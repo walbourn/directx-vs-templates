@@ -37,8 +37,14 @@
   </Assets>
   <Prerequisites>
     <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,16.0)" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.VC.CoreIde" Version="[15.0,16.0)" />
     <Prerequisite Id="Microsoft.VisualStudio.Component.VC.Tools.x86.x64" Version="[15.0,16.0)" />
     <Prerequisite Id="Microsoft.VisualStudio.Component.VC.Tools.ARM" Version="[15.0,16.0)" />
     <Prerequisite Id="Microsoft.VisualStudio.Component.UWP.Support" Version="[15.0,16.0)" />
+    <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.UWP.VC" Version="[15.0,16.0)" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.Windows10SDK" Version="[15.0,16.0)" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.Windows10SDK.15063.Desktop" Version="[15.0,16.0)" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.Windows10SDK.15063.UWP" Version="[15.0,16.0)" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.Windows10SDK.15063.UWP.Native" Version="[15.0,16.0)" />
   </Prerequisites>
 </PackageManifest>
