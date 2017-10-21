@@ -73,6 +73,15 @@ public:
 
         dispatcher.AcceleratorKeyActivated({ this, &ViewProvider::OnAcceleratorKeyActivated });
 
+        auto navigation = SystemNavigationManager::GetForCurrentView();
+
+        // UWP on Xbox One triggers a back request whenever the B button is pressed
+        // which can result in the app being suspended if unhandled
+        navigation.BackRequested([](const winrt::Windows::Foundation::IInspectable&, const BackRequestedEventArgs& args)
+        {
+            args.Handled(true);
+        });
+
         auto currentDisplayInformation = DisplayInformation::GetForCurrentView();
 
         currentDisplayInformation.DpiChanged({ this, &ViewProvider::OnDpiChanged });
