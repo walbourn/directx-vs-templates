@@ -211,6 +211,8 @@ void DeviceResources::CreateDeviceResources()
     ThrowIfFailed(m_d3dDevice->CreateFence(m_fenceValues[m_backBufferIndex], D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_fence.ReleaseAndGetAddressOf())));
     m_fenceValues[m_backBufferIndex]++;
 
+    m_fence->SetName(L"DeviceResources");
+
     m_fenceEvent.Attach(CreateEvent(nullptr, FALSE, FALSE, nullptr));
     if (!m_fenceEvent.IsValid())
     {
