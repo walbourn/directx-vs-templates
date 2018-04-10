@@ -123,7 +123,8 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
-      <LanguageStandard>stdcpp17</LanguageStandard>$endif$
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>$endif$
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -141,7 +142,8 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
-      <LanguageStandard>stdcpp17</LanguageStandard>$endif$
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>$endif$
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -159,7 +161,8 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
-      <LanguageStandard>stdcpp17</LanguageStandard>$endif$
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>$endif$
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -178,7 +181,8 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
-      <LanguageStandard>stdcpp17</LanguageStandard>$endif$
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>$endif$
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -197,7 +201,8 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
-      <LanguageStandard>stdcpp17</LanguageStandard>$endif$
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>$endif$
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -215,7 +220,8 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
-      <LanguageStandard>stdcpp17</LanguageStandard>$endif$
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>$endif$
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
