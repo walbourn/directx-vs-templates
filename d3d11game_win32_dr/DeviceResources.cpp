@@ -57,7 +57,7 @@ DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depth
     m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
     m_outputSize{0, 0, 1, 1},
     m_colorSpace(DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709),
-    m_options(flags),
+    m_options(flags | c_FlipPresent),
     m_deviceNotify(nullptr)
 {
 }
@@ -111,6 +111,19 @@ void DeviceResources::CreateDeviceResources()
             m_options &= ~c_EnableHDR;
 #ifdef _DEBUG
             OutputDebugStringA("WARNING: HDR swap chains not supported");
+#endif
+        }
+    }
+
+    // Disable FLIP if not on a supporting OS
+    if (m_options & c_FlipPresent)
+    {
+        ComPtr<IDXGIFactory4> factory4;
+        if (FAILED(m_dxgiFactory.As(&factory4)))
+        {
+            m_options &= ~c_FlipPresent;
+#ifdef _DEBUG
+            OutputDebugStringA("INFO: Flip swap effects not supported");
 #endif
         }
     }
@@ -243,7 +256,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
     // Determine the render target size in pixels.
     UINT backBufferWidth = std::max<UINT>(m_outputSize.right - m_outputSize.left, 1);
     UINT backBufferHeight = std::max<UINT>(m_outputSize.bottom - m_outputSize.top, 1);
-    DXGI_FORMAT backBufferFormat = (m_options & (c_AllowTearing | c_EnableHDR)) ? NoSRGB(m_backBufferFormat) : m_backBufferFormat;
+    DXGI_FORMAT backBufferFormat = (m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ? NoSRGB(m_backBufferFormat) : m_backBufferFormat;
 
     if (m_swapChain)
     {
@@ -287,7 +300,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
         swapChainDesc.SampleDesc.Count = 1;
         swapChainDesc.SampleDesc.Quality = 0;
         swapChainDesc.Scaling = DXGI_SCALING_STRETCH;
-        swapChainDesc.SwapEffect = (m_options & (c_AllowTearing | c_EnableHDR)) ? DXGI_SWAP_EFFECT_FLIP_DISCARD : DXGI_SWAP_EFFECT_DISCARD;
+        swapChainDesc.SwapEffect = (m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ? DXGI_SWAP_EFFECT_FLIP_DISCARD : DXGI_SWAP_EFFECT_DISCARD;
         swapChainDesc.AlphaMode = DXGI_ALPHA_MODE_IGNORE;
         swapChainDesc.Flags = (m_options & c_AllowTearing) ? DXGI_SWAP_CHAIN_FLAG_ALLOW_TEARING : 0;
 
