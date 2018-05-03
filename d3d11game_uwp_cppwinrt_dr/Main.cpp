@@ -108,7 +108,8 @@ public:
             std::swap(outputWidth, outputHeight);
         }
 
-        m_game->Initialize(reinterpret_cast<::IUnknown*>(winrt::get_abi(window)), outputWidth, outputHeight, rotation);
+        auto windowPtr = static_cast<::IUnknown*>(winrt::get_abi(window));
+        m_game->Initialize(windowPtr, outputWidth, outputHeight, rotation);
     }
 
     void Load(winrt::hstring const &)
