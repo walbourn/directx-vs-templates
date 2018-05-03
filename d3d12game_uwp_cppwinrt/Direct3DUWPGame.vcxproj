@@ -287,7 +287,4 @@
     <Import Project="$(VSINSTALLDIR)\Common7\IDE\Extensions\Microsoft\VsGraphics\MeshContentTask.targets" />
     <Import Project="$(VSINSTALLDIR)\Common7\IDE\Extensions\Microsoft\VsGraphics\ShaderGraphContentTask.targets" />
   </ImportGroup>
-  <Target Name="D3DGameEnsureNuGet" BeforeTargets="PrepareForBuild">
-    <Error Condition="!Exists('packages.config')" Text="This project requires the cppwinrt NuGet package. Use NuGet Package Manager to add it to the project." />
-  </Target>
 </Project>
