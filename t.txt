@@ -1,0 +1,4 @@
+d3d11game_uwp_cppwinrt\Main.cpp
+d3d11game_uwp_cppwinrt_dr\Main.cpp
+d3d12game_uwp_cppwinrt\Main.cpp
+d3d12game_uwp_cppwinrt_dr\Main.cpp
