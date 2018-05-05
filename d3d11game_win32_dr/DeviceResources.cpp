@@ -52,7 +52,7 @@ DeviceResources::DeviceResources(
     DXGI_FORMAT depthBufferFormat,
     UINT backBufferCount,
     D3D_FEATURE_LEVEL minFeatureLevel,
-    unsigned int flags) noexcept:
+    unsigned int flags) noexcept :
         m_screenViewport{},
         m_backBufferFormat(backBufferFormat),
         m_depthBufferFormat(depthBufferFormat),

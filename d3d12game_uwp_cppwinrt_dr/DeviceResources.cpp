@@ -166,6 +166,8 @@ void DeviceResources::CreateDeviceResources()
         IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
         ));
 
+    m_d3dDevice->SetName(L"DeviceResources");
+
 #ifndef NDEBUG
     // Configure debug device (if active).
     ComPtr<ID3D12InfoQueue> d3dInfoQueue;
@@ -218,6 +220,8 @@ void DeviceResources::CreateDeviceResources()
 
     ThrowIfFailed(m_d3dDevice->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(m_commandQueue.ReleaseAndGetAddressOf())));
 
+    m_commandQueue->SetName(L"DeviceResources");
+
     // Create descriptor heaps for render target views and depth stencil views.
     D3D12_DESCRIPTOR_HEAP_DESC rtvDescriptorHeapDesc = {};
     rtvDescriptorHeapDesc.NumDescriptors = m_backBufferCount;
@@ -244,11 +248,17 @@ void DeviceResources::CreateDeviceResources()
     for (UINT n = 0; n < m_backBufferCount; n++)
     {
         ThrowIfFailed(m_d3dDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_commandAllocators[n].ReleaseAndGetAddressOf())));
+
+        wchar_t name[25] = {};
+        swprintf_s(name, L"Render target %u", n);
+        m_commandAllocators[n]->SetName(name);
     }
 
     // Create a command list for recording graphics commands.
     ThrowIfFailed(m_d3dDevice->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_commandAllocators[0].Get(), nullptr, IID_PPV_ARGS(m_commandList.ReleaseAndGetAddressOf())));
     ThrowIfFailed(m_commandList->Close());
+
+    m_commandList->SetName(L"DeviceResources");
 
     // Create a fence for tracking GPU execution progress.
     ThrowIfFailed(m_d3dDevice->CreateFence(m_fenceValues[m_backBufferIndex], D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(m_fence.ReleaseAndGetAddressOf())));
