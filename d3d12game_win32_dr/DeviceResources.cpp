@@ -210,6 +210,7 @@ void DeviceResources::CreateDeviceResources()
     for (UINT n = 0; n < m_backBufferCount; n++)
     {
         ThrowIfFailed(m_d3dDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(m_commandAllocators[n].ReleaseAndGetAddressOf())));
+
         wchar_t name[25] = {};
         swprintf_s(name, L"Render target %u", n);
         m_commandAllocators[n]->SetName(name);
