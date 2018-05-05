@@ -13,7 +13,7 @@ class Game
 {
 public:
 
-    Game();
+    Game() noexcept;
 
     // Initialization and management
     void Initialize(::IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation);

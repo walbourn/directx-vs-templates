@@ -13,7 +13,7 @@ class Game
 {
 public:
 
-    Game();
+    Game() noexcept;
     ~Game();
 
     // Initialization and management

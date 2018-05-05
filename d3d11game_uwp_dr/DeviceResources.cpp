@@ -84,21 +84,26 @@ namespace ScreenRotation
 };
 
 // Constructor for DeviceResources.
-DeviceResources::DeviceResources(DXGI_FORMAT backBufferFormat, DXGI_FORMAT depthBufferFormat, UINT backBufferCount, D3D_FEATURE_LEVEL minFeatureLevel, unsigned int flags) :
-    m_screenViewport{},
-    m_backBufferFormat(backBufferFormat),
-    m_depthBufferFormat(depthBufferFormat),
-    m_backBufferCount(backBufferCount),
-    m_d3dMinFeatureLevel(minFeatureLevel),
-    m_window(nullptr),
-    m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
-    m_rotation(DXGI_MODE_ROTATION_IDENTITY),
-    m_dxgiFactoryFlags(0),
-    m_outputSize{0, 0, 1, 1},
-    m_orientationTransform3D(ScreenRotation::Rotation0),
-    m_colorSpace(DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709),
-    m_options(flags),
-    m_deviceNotify(nullptr)
+DeviceResources::DeviceResources(
+    DXGI_FORMAT backBufferFormat,
+    DXGI_FORMAT depthBufferFormat,
+    UINT backBufferCount,
+    D3D_FEATURE_LEVEL minFeatureLevel,
+    unsigned int flags) noexcept :
+        m_screenViewport{},
+        m_backBufferFormat(backBufferFormat),
+        m_depthBufferFormat(depthBufferFormat),
+        m_backBufferCount(backBufferCount),
+        m_d3dMinFeatureLevel(minFeatureLevel),
+        m_window(nullptr),
+        m_d3dFeatureLevel(D3D_FEATURE_LEVEL_9_1),
+        m_rotation(DXGI_MODE_ROTATION_IDENTITY),
+        m_dxgiFactoryFlags(0),
+        m_outputSize{0, 0, 1, 1},
+        m_orientationTransform3D(ScreenRotation::Rotation0),
+        m_colorSpace(DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709),
+        m_options(flags),
+        m_deviceNotify(nullptr)
 {
 }
 

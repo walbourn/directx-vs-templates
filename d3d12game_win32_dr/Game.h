@@ -14,7 +14,7 @@ class Game : public DX::IDeviceNotify
 {
 public:
 
-    Game();
+    Game() noexcept(false);
     ~Game();
 
     // Initialization and management

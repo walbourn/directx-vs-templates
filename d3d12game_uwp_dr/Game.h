@@ -14,7 +14,7 @@ class Game : public DX::IDeviceNotify
 {
 public:
 
-    Game();
+    Game() noexcept(false);
 
     // Initialization and management
     void Initialize(IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation);

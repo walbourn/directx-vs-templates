@@ -11,7 +11,7 @@ using namespace DirectX;
 
 using Microsoft::WRL::ComPtr;
 
-Game::Game() :
+Game::Game() noexcept :
     m_window(nullptr),
     m_outputWidth(800),
     m_outputHeight(600),

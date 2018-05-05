@@ -13,7 +13,7 @@ namespace DX
     class StepTimer
     {
     public:
-        StepTimer() : 
+        StepTimer() noexcept(false) :
             m_elapsedTicks(0),
             m_totalTicks(0),
             m_leftOverTicks(0),

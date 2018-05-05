@@ -13,7 +13,7 @@ class Game
 {
 public:
 
-    Game();
+    Game() noexcept;
 
     // Initialization and management
     void Initialize(HWND window, int width, int height);
