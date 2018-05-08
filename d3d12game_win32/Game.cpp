@@ -17,6 +17,7 @@ Game::Game() noexcept :
     m_outputHeight(600),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
+    m_rtvDescriptorSize(0),
     m_fenceValues{}
 {
 }

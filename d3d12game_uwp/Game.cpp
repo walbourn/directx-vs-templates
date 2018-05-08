@@ -18,6 +18,7 @@ Game::Game() noexcept :
     m_outputRotation(DXGI_MODE_ROTATION_IDENTITY),
     m_featureLevel(D3D_FEATURE_LEVEL_11_0),
     m_backBufferIndex(0),
+    m_rtvDescriptorSize(0),
     m_fenceValues{}
 {
 }
