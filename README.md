@@ -17,11 +17,9 @@ The package requires the [Visual C++](https://blogs.msdn.microsoft.com/vcblog/20
 > For C++/WinRT projects, use cppwinrt NuGet package [2017.2.28](https://www.nuget.org/packages/cppwinrt/2017.2.28.4) with the Windows 10 Anniversary Update SDK (14393).
 
 # VS 2017
-The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2017. Use of the Visual Studio 2017 15.5 update or later is recommended.
+The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2017. Use of the Visual Studio 2017 15.7 update or later is recommended.
 
-The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 Fall Creators Update SDK (16299).
-
-> For C++/WinRT projects, use cppwinrt NuGet package [2017.8.25](https://www.nuget.org/packages/cppwinrt/2017.10.13.1) with the Windows 10 Fall Creators Update SDK ([16299](https://blogs.msdn.microsoft.com/chuckw/2018/03/06/vs-2017-15-6-update/)).
+The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 April 2018 Update SDK (17134).
 
 # Rebuilding the VSIX
 Building the VSIX project requires VS 2017 with the *Visual Studio extension development* (``Microsoft.VisualStudio.Workload.VisualStudioExtension``) and *.NET desktop development* (``Microsoft.VisualStudio.Workload.ManagedDesktop``) workloads.
