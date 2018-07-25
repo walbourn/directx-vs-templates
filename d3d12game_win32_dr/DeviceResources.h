@@ -43,6 +43,7 @@ namespace DX
         // Direct3D Accessors.
         ID3D12Device*               GetD3DDevice() const            { return m_d3dDevice.Get(); }
         IDXGISwapChain3*            GetSwapChain() const            { return m_swapChain.Get(); }
+        IDXGIFactory4*              GetDXGIFactory() const          { return m_dxgiFactory.Get(); }
         D3D_FEATURE_LEVEL           GetDeviceFeatureLevel() const   { return m_d3dFeatureLevel; }
         ID3D12Resource*             GetRenderTarget() const         { return m_renderTargets[m_backBufferIndex].Get(); }
         ID3D12Resource*             GetDepthStencil() const         { return m_depthStencil.Get(); }
