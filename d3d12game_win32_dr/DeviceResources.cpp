@@ -726,14 +726,10 @@ void DeviceResources::UpdateColorSpace()
 
     m_colorSpace = colorSpace;
 
-    ComPtr<IDXGISwapChain3> swapChain3;
-    if (SUCCEEDED(m_swapChain.As(&swapChain3)))
+    UINT colorSpaceSupport = 0;
+    if (SUCCEEDED(m_swapChain->CheckColorSpaceSupport(colorSpace, &colorSpaceSupport))
+        && (colorSpaceSupport & DXGI_SWAP_CHAIN_COLOR_SPACE_SUPPORT_FLAG_PRESENT))
     {
-        UINT colorSpaceSupport = 0;
-        if (SUCCEEDED(swapChain3->CheckColorSpaceSupport(colorSpace, &colorSpaceSupport))
-            && (colorSpaceSupport & DXGI_SWAP_CHAIN_COLOR_SPACE_SUPPORT_FLAG_PRESENT))
-        {
-            ThrowIfFailed(swapChain3->SetColorSpace1(colorSpace));
-        }
+        ThrowIfFailed(m_swapChain->SetColorSpace1(colorSpace));
     }
 }
