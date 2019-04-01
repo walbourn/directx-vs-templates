@@ -1,7 +1,7 @@
 # Direct3D Game VS project templates
 This repo contains simplified Visual C++ project templates. They are primarily intended for developer education, samples, and tutorials.
 
-See [this blog post](http://blogs.msdn.com/b/chuckw/archive/2015/01/06/direct3d-win32-game-visual-studio-template.aspx) and [this one](http://blogs.msdn.com/b/chuckw/archive/2015/12/17/direct3d-game-visual-studio-templates-redux.aspx).
+See [this blog post](https://walbourn.github.io/direct3d-win32-game-visual-studio-template/) and [this one](https://walbourn.github.io/direct3d-game-visual-studio-templates-redux/).
 
 Documentation is available on [GitHub](https://github.com/walbourn/directx-vs-templates/wiki).
 
@@ -12,7 +12,7 @@ For the UWP templates, there are C++/WinRT variants that use [C++ Windows Runtim
 # VS 2015
 ``VSIX\Direct3DUWPGame.vsix`` installs the Direct3D UWP Game templates and the Direct3D Win32 Game templates for VS 2015
 
-The package requires the [Visual C++](https://blogs.msdn.microsoft.com/vcblog/2015/07/24/setup-changes-in-visual-studio-2015-affecting-c-developers/) and [Windows Tools](https://blogs.msdn.microsoft.com/vcblog/2015/07/29/developing-for-windows-10-with-visual-c-2015/) optional features are installed, and requires Windows 10 Anniversary Update SDK (14393) or later.
+The package requires the [Visual C++](https://blogs.msdn.microsoft.com/vcblog/2015/07/24/setup-changes-in-visual-studio-2015-affecting-c-developers/) and [Windows Tools](https://devblogs.microsoft.com/cppblog/developing-for-windows-10-with-visual-c-2015/) optional features are installed, and requires Windows 10 Anniversary Update SDK (14393) or later.
 
 > For C++/WinRT projects, use cppwinrt NuGet package [2017.2.28](https://www.nuget.org/packages/cppwinrt/2017.2.28.4) with the Windows 10 Anniversary Update SDK (14393).
 
