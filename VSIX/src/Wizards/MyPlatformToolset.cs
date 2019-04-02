@@ -13,7 +13,11 @@ namespace Wizards
 
             string regRoot = dte2.RegistryRoot.ToUpperInvariant();
 
-            if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\15.0"))
+            if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\16.0"))
+            {
+                replacementsDictionary["$platformtoolset$"] = "v142";
+            }
+            else if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\15.0"))
             {
                 replacementsDictionary["$platformtoolset$"] = "v141";
             }
