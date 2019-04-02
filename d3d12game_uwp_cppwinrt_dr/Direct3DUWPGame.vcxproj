@@ -24,7 +24,7 @@
     <ProjectConfiguration Include="Release|ARM">
       <Configuration>Release</Configuration>
       <Platform>ARM</Platform>
-    </ProjectConfiguration>$if$('$platformtoolset$'=='v141')
+    </ProjectConfiguration>$if$('$platformtoolset$'!='v140')
     <ProjectConfiguration Include="Debug|ARM64">
       <Configuration>Debug</Configuration>
       <Platform>ARM64</Platform>
@@ -85,7 +85,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>$platformtoolset$</PlatformToolset>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
-  </PropertyGroup>$if$('$platformtoolset$'=='v141')
+  </PropertyGroup>$if$('$platformtoolset$'!='v140')
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -122,7 +122,7 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>$if$('$platformtoolset$'=='v141')
+  </ImportGroup>$if$('$platformtoolset$'!='v140')
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -149,7 +149,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
+      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'!='v140')
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>$endif$
     </ClCompile>
@@ -171,7 +171,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
+      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'!='v140')
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>$endif$
     </ClCompile>
@@ -193,7 +193,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
+      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'!='v140')
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>$endif$
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -216,7 +216,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
+      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'!='v140')
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>$endif$
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
@@ -239,7 +239,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
+      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'!='v140')
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>$endif$
     </ClCompile>
@@ -261,14 +261,14 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'=='v141')
+      <CompileAsWinRT>false</CompileAsWinRT>$if$('$platformtoolset$'!='v140')
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>$endif$
     </ClCompile>
     <FXCompile>
       <ShaderModel>5.1</ShaderModel>
     </FXCompile>
-  </ItemDefinitionGroup>$if$('$platformtoolset$'=='v141')
+  </ItemDefinitionGroup>$if$('$platformtoolset$'!='v140')
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <Link>
       <AdditionalDependencies>d2d1.lib; d3d12.lib; dxgi.lib; dxguid.lib; windowscodecs.lib; dwrite.lib; ole32.lib; %(AdditionalDependencies)</AdditionalDependencies>
@@ -330,7 +330,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>$if$('$platformtoolset$'=='v141')
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>$if$('$platformtoolset$'!='v140')
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">Create</PrecompiledHeader>$endif$
     </ClCompile>
