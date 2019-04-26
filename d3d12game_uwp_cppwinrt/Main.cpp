@@ -16,7 +16,7 @@ using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Graphics::Display;
 using namespace DirectX;
 
-class ViewProvider final : public winrt::implements<ViewProvider, IFrameworkView>
+class ViewProvider : public winrt::implements<ViewProvider, IFrameworkView>
 {
 public:
     ViewProvider() :
@@ -344,7 +344,7 @@ private:
     }
 };
 
-class ViewProviderFactory final : public winrt::implements<ViewProviderFactory, IFrameworkViewSource>
+class ViewProviderFactory : public winrt::implements<ViewProviderFactory, IFrameworkViewSource>
 {
 public:
     IFrameworkView CreateView()
@@ -367,7 +367,7 @@ int WINAPI wWinMain(
         throw std::exception("XMVerifyCPUSupport");
     }
 
-    ViewProviderFactory viewProviderFactory;
+    auto viewProviderFactory = winrt::make<ViewProviderFactory>();
     CoreApplication::Run(viewProviderFactory);
     return 0;
 }
