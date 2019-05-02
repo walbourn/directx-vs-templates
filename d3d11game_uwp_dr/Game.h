@@ -10,7 +10,7 @@
 
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
-class Game : public DX::IDeviceNotify
+class Game final : public DX::IDeviceNotify
 {
 public:
 
