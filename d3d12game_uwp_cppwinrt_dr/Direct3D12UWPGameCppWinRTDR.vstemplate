@@ -4,7 +4,7 @@
     <Description>A project for a universal Windows app game that uses Direct3D 12 and C++/WinRT with DeviceResources abstraction</Description>
     <ProjectType>VC</ProjectType>
     <TemplateGroupID>WinRT-Native</TemplateGroupID>
-    <TemplateID>Microsoft.DirectX.Direct3DUWPGameCppWinRTDR</TemplateID>
+    <TemplateID>Microsoft.DirectX.Direct3D12UWPGameCppWinRTDR</TemplateID>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>Direct3D UWP Game</DefaultName>
