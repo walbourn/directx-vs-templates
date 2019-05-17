@@ -108,7 +108,7 @@ DeviceResources::DeviceResources(
 }
 
 // Configures the Direct3D device, and stores handles to it and the device context.
-void DeviceResources::CreateDeviceResources() 
+void DeviceResources::CreateDeviceResources()
 {
     UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 
@@ -227,7 +227,7 @@ void DeviceResources::CreateDeviceResources()
     if (FAILED(hr))
     {
         // If the initialization fails, fall back to the WARP device.
-        // For more information on WARP, see: 
+        // For more information on WARP, see:
         // http://go.microsoft.com/fwlink/?LinkId=286690
         hr = D3D11CreateDevice(
             nullptr,
@@ -279,7 +279,7 @@ void DeviceResources::CreateDeviceResources()
 }
 
 // These resources need to be recreated every time the window size is changed.
-void DeviceResources::CreateWindowSizeDependentResources() 
+void DeviceResources::CreateWindowSizeDependentResources()
 {
     if (!m_window)
     {
@@ -296,8 +296,8 @@ void DeviceResources::CreateWindowSizeDependentResources()
     m_d3dContext->Flush();
 
     // Determine the render target size in pixels.
-    UINT backBufferWidth = std::max<UINT>(m_outputSize.right - m_outputSize.left, 1);
-    UINT backBufferHeight = std::max<UINT>(m_outputSize.bottom - m_outputSize.top, 1);
+    UINT backBufferWidth = std::max<UINT>(static_cast<UINT>(m_outputSize.right - m_outputSize.left), 1u);
+    UINT backBufferHeight = std::max<UINT>(static_cast<UINT>(m_outputSize.bottom - m_outputSize.top), 1u);
     DXGI_FORMAT backBufferFormat = NoSRGB(m_backBufferFormat);
 
     if (m_swapChain)
@@ -321,7 +321,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
             // If the device was removed for any reason, a new device and swap chain will need to be created.
             HandleDeviceLost();
 
-            // Everything is set up now. Do not continue execution of this method. HandleDeviceLost will reenter this method 
+            // Everything is set up now. Do not continue execution of this method. HandleDeviceLost will reenter this method
             // and correctly set up the new device.
             return;
         }
@@ -427,7 +427,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
             m_d3dDepthStencilView.ReleaseAndGetAddressOf()
             ));
     }
-    
+
     // Set the 3D rendering viewport to target the entire window.
     m_screenViewport = CD3D11_VIEWPORT(
         0.0f,
@@ -547,7 +547,7 @@ void DeviceResources::HandleDeviceLost()
     }
 }
 
-// Call this method when the app suspends. It provides a hint to the driver that the app 
+// Call this method when the app suspends. It provides a hint to the driver that the app
 // is entering an idle state and that temporary buffers can be reclaimed for use by other apps.
 void DeviceResources::Trim()
 {
@@ -559,7 +559,7 @@ void DeviceResources::Trim()
 }
 
 // Present the contents of the swap chain to the screen.
-void DeviceResources::Present() 
+void DeviceResources::Present()
 {
     HRESULT hr;
     if (m_options & c_AllowTearing)
@@ -586,7 +586,7 @@ void DeviceResources::Present()
         m_d3dContext->DiscardView(m_d3dDepthStencilView.Get());
     }
 
-    // If the device was removed either by a disconnection or a driver upgrade, we 
+    // If the device was removed either by a disconnection or a driver upgrade, we
     // must recreate all device resources.
     if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
     {
