@@ -545,7 +545,7 @@ void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
             adapterIndex++)
         {
             DXGI_ADAPTER_DESC1 desc;
-            adapter->GetDesc1(&desc);
+            ThrowIfFailed(adapter->GetDesc1(&desc));
 
             if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
             {
@@ -571,7 +571,7 @@ void DeviceResources::GetHardwareAdapter(IDXGIAdapter1** ppAdapter)
         adapterIndex++)
     {
         DXGI_ADAPTER_DESC1 desc;
-        adapter->GetDesc1(&desc);
+        ThrowIfFailed(adapter->GetDesc1(&desc));
 
         if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
         {
