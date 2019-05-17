@@ -96,7 +96,9 @@ void Game::Clear()
     m_commandList->ResourceBarrier(1, &barrier);
 
     // Clear the views.
-    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(), m_backBufferIndex, m_rtvDescriptorSize);
+    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(
+        m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+        static_cast<INT>(m_backBufferIndex), m_rtvDescriptorSize);
     CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
     m_commandList->OMSetRenderTargets(1, &rtvDescriptor, FALSE, &dsvDescriptor);
     m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::CornflowerBlue, 0, nullptr);
