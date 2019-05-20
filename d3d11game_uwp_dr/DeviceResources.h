@@ -41,7 +41,7 @@ namespace DX
         DXGI_MODE_ROTATION GetRotation() const { return m_rotation; }
 
         // Direct3D Accessors.
-        ID3D11Device2*          GetD3DDevice() const                  { return m_d3dDevice.Get(); }
+        ID3D11Device3*          GetD3DDevice() const                  { return m_d3dDevice.Get(); }
         ID3D11DeviceContext2*   GetD3DDeviceContext() const           { return m_d3dContext.Get(); }
         IDXGISwapChain3*        GetSwapChain() const                  { return m_swapChain.Get(); }
         D3D_FEATURE_LEVEL       GetDeviceFeatureLevel() const         { return m_d3dFeatureLevel; }
