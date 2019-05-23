@@ -3,6 +3,7 @@
     <Name>Direct3D Win32 Game DR</Name>
     <Description>A project for a Win32 desktop game that uses Direct3D 11 with DeviceResources abstraction</Description>
     <ProjectType>VC</ProjectType>
+    <TemplateID>Microsoft.DirectX.Direct3DWin32GameDR</TemplateID>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>Direct3D Win32 Game</DefaultName>
@@ -11,6 +12,11 @@
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
     <Icon>__TemplateIcon.ico</Icon>
     <PreviewImage>preview.png</PreviewImage>
+    <LanguageTag>C++</LanguageTag>
+    <PlatformTag>Windows</PlatformTag>
+    <ProjectTypeTag>Games</ProjectTypeTag>
+    <ProjectTypeTag>Desktop</ProjectTypeTag>
+    <ProjectTypeTag>DeviceResources</ProjectTypeTag>
   </TemplateData>
   <TemplateContent>
     <Project ReplaceParameters="true" File="Direct3DWin32Game.vcxproj">

@@ -3,6 +3,7 @@
     <Name>Direct3D12 Win32 Game</Name>
     <Description>A project for a Win32 desktop game that uses Direct3D 12</Description>
     <ProjectType>VC</ProjectType>
+    <TemplateID>Microsoft.DirectX.Direct3D12Win32Game</TemplateID>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>Direct3D Win32 Game</DefaultName>
@@ -11,6 +12,10 @@
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
     <Icon>__TemplateIcon.ico</Icon>
     <PreviewImage>preview.png</PreviewImage>
+    <LanguageTag>C++</LanguageTag>
+    <PlatformTag>Windows</PlatformTag>
+    <ProjectTypeTag>Games</ProjectTypeTag>
+    <ProjectTypeTag>Desktop</ProjectTypeTag>
   </TemplateData>
   <TemplateContent>
     <Project ReplaceParameters="true" File="Direct3DWin32Game.vcxproj">

@@ -15,6 +15,13 @@
     <RequiredPlatformVersion>6.1.0</RequiredPlatformVersion>
     <Icon>__TemplateIcon.ico</Icon>
     <PreviewImage>preview.png</PreviewImage>
+    <LanguageTag>C++</LanguageTag>
+    <PlatformTag>Windows</PlatformTag>
+    <PlatformTag>Xbox</PlatformTag>
+    <ProjectTypeTag>Games</ProjectTypeTag>
+    <ProjectTypeTag>UWP</ProjectTypeTag>
+    <ProjectTypeTag>C++/WinRT</ProjectTypeTag>
+    <ProjectTypeTag>DeviceResources</ProjectTypeTag>
   </TemplateData>
   <TemplateContent>
     <Project ReplaceParameters="true" File="Direct3DUWPGame.vcxproj">
