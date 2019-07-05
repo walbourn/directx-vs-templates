@@ -13,7 +13,7 @@ namespace DX
         virtual void OnDeviceRestored() = 0;
 
     protected:
-        ~IDeviceNotify() {}
+        ~IDeviceNotify() = default;
     };
 
     // Controls all the DirectX device resources.
