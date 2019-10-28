@@ -12,10 +12,10 @@
     <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
     <Icon>__TemplateIcon.ico</Icon>
     <PreviewImage>preview.png</PreviewImage>
-    <LanguageTag>C++</LanguageTag>
-    <PlatformTag>Windows</PlatformTag>
-    <ProjectTypeTag>Games</ProjectTypeTag>
-    <ProjectTypeTag>Desktop</ProjectTypeTag>
+    <LanguageTag>cpp</LanguageTag>
+    <PlatformTag>windows</PlatformTag>
+    <ProjectTypeTag>games</ProjectTypeTag>
+    <ProjectTypeTag>desktop</ProjectTypeTag>
   </TemplateData>
   <TemplateContent>
     <Project ReplaceParameters="true" File="Direct3DWin32Game.vcxproj">
