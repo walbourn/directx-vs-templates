@@ -1,4 +1,4 @@
-﻿//
+//
 // DeviceResources.h - A wrapper for the Direct3D 11 device and swapchain
 //
 
@@ -44,9 +44,10 @@ namespace DX
         DXGI_MODE_ROTATION GetRotation() const { return m_rotation; }
 
         // Direct3D Accessors.
-        ID3D11Device3*          GetD3DDevice() const                  { return m_d3dDevice.Get(); }
-        ID3D11DeviceContext2*   GetD3DDeviceContext() const           { return m_d3dContext.Get(); }
-        IDXGISwapChain3*        GetSwapChain() const                  { return m_swapChain.Get(); }
+        auto                    GetD3DDevice() const                  { return m_d3dDevice.Get(); }
+        auto                    GetD3DDeviceContext() const           { return m_d3dContext.Get(); }
+        auto                    GetSwapChain() const                  { return m_swapChain.Get(); }
+        auto                    GetDXGIFactory() const                { return m_dxgiFactory.Get(); }
         D3D_FEATURE_LEVEL       GetDeviceFeatureLevel() const         { return m_d3dFeatureLevel; }
         ID3D11Texture2D*        GetRenderTarget() const               { return m_renderTarget.Get(); }
         ID3D11Texture2D*        GetDepthStencil() const               { return m_depthStencil.Get(); }

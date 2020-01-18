@@ -1,4 +1,4 @@
-﻿//
+//
 // DeviceResources.h - A wrapper for the Direct3D 12 device and swapchain
 //
 
@@ -47,15 +47,15 @@ namespace DX
         DXGI_MODE_ROTATION GetRotation() const { return m_rotation; }
 
         // Direct3D Accessors.
-        ID3D12Device*               GetD3DDevice() const              { return m_d3dDevice.Get(); }
-        IDXGISwapChain3*            GetSwapChain() const              { return m_swapChain.Get(); }
-        IDXGIFactory4*              GetDXGIFactory() const            { return m_dxgiFactory.Get(); }
+        auto                        GetD3DDevice() const              { return m_d3dDevice.Get(); }
+        auto                        GetSwapChain() const              { return m_swapChain.Get(); }
+        auto                        GetDXGIFactory() const            { return m_dxgiFactory.Get(); }
         D3D_FEATURE_LEVEL           GetDeviceFeatureLevel() const     { return m_d3dFeatureLevel; }
         ID3D12Resource*             GetRenderTarget() const           { return m_renderTargets[m_backBufferIndex].Get(); }
         ID3D12Resource*             GetDepthStencil() const           { return m_depthStencil.Get(); }
         ID3D12CommandQueue*         GetCommandQueue() const           { return m_commandQueue.Get(); }
         ID3D12CommandAllocator*     GetCommandAllocator() const       { return m_commandAllocators[m_backBufferIndex].Get(); }
-        ID3D12GraphicsCommandList*  GetCommandList() const            { return m_commandList.Get(); }
+        auto                        GetCommandList() const            { return m_commandList.Get(); }
         DXGI_FORMAT                 GetBackBufferFormat() const       { return m_backBufferFormat; }
         DXGI_FORMAT                 GetDepthBufferFormat() const      { return m_depthBufferFormat; }
         D3D12_VIEWPORT              GetScreenViewport() const         { return m_screenViewport; }
