@@ -5,8 +5,8 @@
 #pragma once
 
 #include <cmath>
+#include <cstdint>
 #include <exception>
-#include <stdint.h>
 
 namespace DX
 {
