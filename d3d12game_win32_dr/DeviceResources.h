@@ -48,6 +48,7 @@ namespace DX
         auto                        GetD3DDevice() const noexcept          { return m_d3dDevice.Get(); }
         auto                        GetSwapChain() const noexcept          { return m_swapChain.Get(); }
         auto                        GetDXGIFactory() const noexcept        { return m_dxgiFactory.Get(); }
+        HWND                        GetWindow() const noexcept             { return m_window; }
         D3D_FEATURE_LEVEL           GetDeviceFeatureLevel() const noexcept { return m_d3dFeatureLevel; }
         ID3D12Resource*             GetRenderTarget() const noexcept       { return m_renderTargets[m_backBufferIndex].Get(); }
         ID3D12Resource*             GetDepthStencil() const noexcept       { return m_depthStencil.Get(); }
