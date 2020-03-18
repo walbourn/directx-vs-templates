@@ -295,11 +295,11 @@ void Game::CreateResources()
     m_depthStencilView.Reset();
     m_d3dContext->Flush();
 
-    UINT backBufferWidth = static_cast<UINT>(m_outputWidth);
-    UINT backBufferHeight = static_cast<UINT>(m_outputHeight);
-    DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
-    DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    UINT backBufferCount = 2;
+    const UINT backBufferWidth = static_cast<UINT>(m_outputWidth);
+    const UINT backBufferHeight = static_cast<UINT>(m_outputHeight);
+    const DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
+    const DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    const UINT backBufferCount = 2;
 
     // If the swap chain already exists, resize it, otherwise create one.
     if (m_swapChain)
