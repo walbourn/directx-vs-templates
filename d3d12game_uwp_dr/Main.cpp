@@ -407,7 +407,7 @@ int __cdecl main(Platform::Array<Platform::String^>^ /*argv*/)
 
 
 // Exit helper
-void ExitGame()
+void ExitGame() noexcept
 {
     Windows::ApplicationModel::Core::CoreApplication::Exit();
 }

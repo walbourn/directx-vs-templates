@@ -21,7 +21,7 @@ namespace
 {
 #if defined(_DEBUG)
     // Check for SDK Layer support.
-    inline bool SdkLayersAvailable()
+    inline bool SdkLayersAvailable() noexcept
     {
         HRESULT hr = D3D11CreateDevice(
             nullptr,
@@ -40,7 +40,7 @@ namespace
     }
 #endif
 
-    inline DXGI_FORMAT NoSRGB(DXGI_FORMAT fmt)
+    inline DXGI_FORMAT NoSRGB(DXGI_FORMAT fmt) noexcept
     {
         switch (fmt)
         {
@@ -50,7 +50,7 @@ namespace
         default:                                return fmt;
         }
     }
-};
+}
 
 // Constructor for DeviceResources.
 DeviceResources::DeviceResources(
@@ -265,9 +265,9 @@ void DeviceResources::CreateWindowSizeDependentResources()
     m_d3dContext->Flush();
 
     // Determine the render target size in pixels.
-    UINT backBufferWidth = std::max<UINT>(static_cast<UINT>(m_outputSize.right - m_outputSize.left), 1u);
-    UINT backBufferHeight = std::max<UINT>(static_cast<UINT>(m_outputSize.bottom - m_outputSize.top), 1u);
-    DXGI_FORMAT backBufferFormat = (m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ? NoSRGB(m_backBufferFormat) : m_backBufferFormat;
+    const UINT backBufferWidth = std::max<UINT>(static_cast<UINT>(m_outputSize.right - m_outputSize.left), 1u);
+    const UINT backBufferHeight = std::max<UINT>(static_cast<UINT>(m_outputSize.bottom - m_outputSize.top), 1u);
+    const DXGI_FORMAT backBufferFormat = (m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ? NoSRGB(m_backBufferFormat) : m_backBufferFormat;
 
     if (m_swapChain)
     {
@@ -380,7 +380,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
 }
 
 // This method is called when the Win32 window is created (or re-created).
-void DeviceResources::SetWindow(HWND window, int width, int height)
+void DeviceResources::SetWindow(HWND window, int width, int height) noexcept
 {
     m_window = window;
 
@@ -450,7 +450,7 @@ void DeviceResources::HandleDeviceLost()
 // Present the contents of the swap chain to the screen.
 void DeviceResources::Present()
 {
-    HRESULT hr;
+    HRESULT hr = E_FAIL;
     if (m_options & c_AllowTearing)
     {
         // Recommended to always use tearing if supported when using a sync interval of 0.

@@ -174,6 +174,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_GETMINMAXINFO:
+        if (lParam)
         {
             auto info = reinterpret_cast<MINMAXINFO*>(lParam);
             info->ptMinTrackSize.x = 320;
@@ -262,7 +263,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 // Exit helper
-void ExitGame()
+void ExitGame() noexcept
 {
     PostQuitMessage(0);
 }

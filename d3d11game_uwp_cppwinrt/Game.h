@@ -30,7 +30,7 @@ public:
     void ValidateDevice();
 
     // Properties
-    void GetDefaultSize( int& width, int& height ) const;
+    void GetDefaultSize( int& width, int& height ) const noexcept;
 
 private:
 

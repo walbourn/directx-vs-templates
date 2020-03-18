@@ -374,7 +374,7 @@ int WINAPI wWinMain(
 
 
 // Exit helper
-void ExitGame()
+void ExitGame() noexcept
 {
     winrt::Windows::ApplicationModel::Core::CoreApplication::Exit();
 }
