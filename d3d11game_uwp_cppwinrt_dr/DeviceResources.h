@@ -28,6 +28,13 @@ namespace DX
                         UINT backBufferCount = 2,
                         D3D_FEATURE_LEVEL minFeatureLevel = D3D_FEATURE_LEVEL_9_3,
                         unsigned int flags = 0) noexcept;
+        ~DeviceResources() = default;
+
+        DeviceResources(DeviceResources&&) = default;
+        DeviceResources& operator= (DeviceResources&&) = default;
+
+        DeviceResources(DeviceResources const&) = delete;
+        DeviceResources& operator= (DeviceResources const&) = delete;
 
         void CreateDeviceResources();
         void CreateWindowSizeDependentResources();

@@ -229,7 +229,7 @@ void Game::CreateResources()
     const UINT backBufferHeight = static_cast<UINT>(m_outputHeight);
     const DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
     const DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    const UINT backBufferCount = 2;
+    constexpr UINT backBufferCount = 2;
 
     // If the swap chain already exists, resize it, otherwise create one.
     if (m_swapChain)
