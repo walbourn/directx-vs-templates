@@ -7,6 +7,13 @@
 
 using namespace DirectX;
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wswitch-enum"
+#endif
+
+#pragma warning(disable : 4061)
+
 namespace
 {
     std::unique_ptr<Game> g_game;
