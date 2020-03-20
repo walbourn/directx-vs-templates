@@ -9,17 +9,10 @@ There are two versions of each template. The DR version adds a ``DeviceResources
 
 For the UWP templates, there are C++/WinRT variants that use [C++ Windows Runtime language projections](https://docs.microsoft.com/en-us/windows/uwp/cpp-and-winrt-apis/) rather than the C++/CX language extensions (``/ZW``).
 
-# VS 2015
-``VSIX\Direct3DUWPGame.vsix`` installs the Direct3D UWP Game templates and the Direct3D Win32 Game templates for VS 2015
-
-The package requires the [Visual C++](https://devblogs.microsoft.com/cppblog/setup-changes-in-visual-studio-2015-affecting-c-developers/) and [Windows Tools](https://devblogs.microsoft.com/cppblog/developing-for-windows-10-with-visual-c-2015/) optional features are installed, and requires Windows 10 Anniversary Update SDK (14393) or later.
-
-> For C++/WinRT projects, use cppwinrt NuGet package [2017.2.28](https://www.nuget.org/packages/cppwinrt/2017.2.28.4) with the Windows 10 Anniversary Update SDK (14393).
-
 # VS 2017
-The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2017. Use of the Visual Studio 2017 15.9 update is recommended.
+The ``VSIX\Direct3DUWPGame.vsix`` supports Visual Studio 2017. Use of the Visual Studio 2017 15.9 update is recommended.
 
-The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 October 2018 Update SDK (17763).
+The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 October 2018 Update SDK (17763) or alter.
 
 # VS 2019
 The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2019.
