@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "Game.h"
 
-extern void ExitGame();
+extern void ExitGame() noexcept;
 
 using namespace DirectX;
 
@@ -145,7 +145,7 @@ void Game::OnWindowSizeChanged(int width, int height)
 }
 
 // Properties
-void Game::GetDefaultSize(int& width, int& height) const
+void Game::GetDefaultSize(int& width, int& height) const noexcept
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
     width = 800;

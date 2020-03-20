@@ -13,6 +13,7 @@ using Microsoft::WRL::ComPtr;
 
 #ifdef __clang__
 #pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wswitch-enum"
 #endif
 
 #pragma warning(disable : 4061)
@@ -21,7 +22,7 @@ namespace
 {
 #if defined(_DEBUG)
     // Check for SDK Layer support.
-    inline bool SdkLayersAvailable()
+    inline bool SdkLayersAvailable() noexcept
     {
         HRESULT hr = D3D11CreateDevice(
             nullptr,
@@ -40,7 +41,7 @@ namespace
     }
 #endif
 
-    inline DXGI_FORMAT NoSRGB(DXGI_FORMAT fmt)
+    inline DXGI_FORMAT NoSRGB(DXGI_FORMAT fmt) noexcept
     {
         switch (fmt)
         {
@@ -50,7 +51,7 @@ namespace
         default:                                return fmt;
         }
     }
-};
+}
 
 // Constructor for DeviceResources.
 DeviceResources::DeviceResources(
@@ -265,9 +266,9 @@ void DeviceResources::CreateWindowSizeDependentResources()
     m_d3dContext->Flush();
 
     // Determine the render target size in pixels.
-    UINT backBufferWidth = std::max<UINT>(static_cast<UINT>(m_outputSize.right - m_outputSize.left), 1u);
-    UINT backBufferHeight = std::max<UINT>(static_cast<UINT>(m_outputSize.bottom - m_outputSize.top), 1u);
-    DXGI_FORMAT backBufferFormat = (m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ? NoSRGB(m_backBufferFormat) : m_backBufferFormat;
+    const UINT backBufferWidth = std::max<UINT>(static_cast<UINT>(m_outputSize.right - m_outputSize.left), 1u);
+    const UINT backBufferHeight = std::max<UINT>(static_cast<UINT>(m_outputSize.bottom - m_outputSize.top), 1u);
+    const DXGI_FORMAT backBufferFormat = (m_options & (c_FlipPresent | c_AllowTearing | c_EnableHDR)) ? NoSRGB(m_backBufferFormat) : m_backBufferFormat;
 
     if (m_swapChain)
     {
@@ -284,7 +285,8 @@ void DeviceResources::CreateWindowSizeDependentResources()
         {
 #ifdef _DEBUG
             char buff[64] = {};
-            sprintf_s(buff, "Device Lost on ResizeBuffers: Reason code 0x%08X\n", (hr == DXGI_ERROR_DEVICE_REMOVED) ? m_d3dDevice->GetDeviceRemovedReason() : hr);
+            sprintf_s(buff, "Device Lost on ResizeBuffers: Reason code 0x%08X\n",
+                static_cast<unsigned int>((hr == DXGI_ERROR_DEVICE_REMOVED) ? m_d3dDevice->GetDeviceRemovedReason() : hr));
             OutputDebugStringA(buff);
 #endif
             // If the device was removed for any reason, a new device and swap chain will need to be created.
@@ -380,7 +382,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
 }
 
 // This method is called when the Win32 window is created (or re-created).
-void DeviceResources::SetWindow(HWND window, int width, int height)
+void DeviceResources::SetWindow(HWND window, int width, int height) noexcept
 {
     m_window = window;
 
@@ -450,7 +452,7 @@ void DeviceResources::HandleDeviceLost()
 // Present the contents of the swap chain to the screen.
 void DeviceResources::Present()
 {
-    HRESULT hr;
+    HRESULT hr = E_FAIL;
     if (m_options & c_AllowTearing)
     {
         // Recommended to always use tearing if supported when using a sync interval of 0.
@@ -481,7 +483,8 @@ void DeviceResources::Present()
     {
 #ifdef _DEBUG
         char buff[64] = {};
-        sprintf_s(buff, "Device Lost on Present: Reason code 0x%08X\n", (hr == DXGI_ERROR_DEVICE_REMOVED) ? m_d3dDevice->GetDeviceRemovedReason() : hr);
+        sprintf_s(buff, "Device Lost on Present: Reason code 0x%08X\n",
+            static_cast<unsigned int>((hr == DXGI_ERROR_DEVICE_REMOVED) ? m_d3dDevice->GetDeviceRemovedReason() : hr));
         OutputDebugStringA(buff);
 #endif
         HandleDeviceLost();

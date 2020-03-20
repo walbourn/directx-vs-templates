@@ -19,7 +19,7 @@ using namespace DirectX;
 class ViewProvider : public winrt::implements<ViewProvider, IFrameworkView>
 {
 public:
-    ViewProvider() :
+    ViewProvider() noexcept :
         m_exit(false),
         m_visible(true),
         m_in_sizemove(false),
@@ -43,7 +43,7 @@ public:
         m_game = std::make_unique<Game>();
     }
 
-    void Uninitialize()
+    void Uninitialize() noexcept
     {
         m_game.reset();
     }
@@ -112,7 +112,7 @@ public:
         m_game->Initialize(windowPtr, outputWidth, outputHeight, rotation);
     }
 
-    void Load(winrt::hstring const &)
+    void Load(winrt::hstring const &) noexcept
     {
     }
 
@@ -266,17 +266,17 @@ private:
     winrt::Windows::Graphics::Display::DisplayOrientations	m_nativeOrientation;
     winrt::Windows::Graphics::Display::DisplayOrientations	m_currentOrientation;
 
-    inline int ConvertDipsToPixels(float dips) const
+    inline int ConvertDipsToPixels(float dips) const noexcept
     {
         return int(dips * m_DPI / 96.f + 0.5f);
     }
 
-    inline float ConvertPixelsToDips(int pixels) const
+    inline float ConvertPixelsToDips(int pixels) const noexcept
     {
         return (float(pixels) * 96.f / m_DPI);
     }
 
-    DXGI_MODE_ROTATION ComputeDisplayRotation() const
+    DXGI_MODE_ROTATION ComputeDisplayRotation() const noexcept
     {
         DXGI_MODE_ROTATION rotation = DXGI_MODE_ROTATION_UNSPECIFIED;
 
@@ -374,7 +374,7 @@ int WINAPI wWinMain(
 
 
 // Exit helper
-void ExitGame()
+void ExitGame() noexcept
 {
     winrt::Windows::ApplicationModel::Core::CoreApplication::Exit();
 }

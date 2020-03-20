@@ -15,6 +15,13 @@ class Game final : public DX::IDeviceNotify
 public:
 
     Game() noexcept(false);
+    ~Game() = default;
+
+    Game(Game&&) = default;
+    Game& operator= (Game&&) = default;
+
+    Game(Game const&) = delete;
+    Game& operator= (Game const&) = delete;
 
     // Initialization and management
     void Initialize(IUnknown* window, int width, int height, DXGI_MODE_ROTATION rotation);
@@ -35,7 +42,7 @@ public:
     void ValidateDevice();
 
     // Properties
-    void GetDefaultSize( int& width, int& height ) const;
+    void GetDefaultSize( int& width, int& height ) const noexcept;
 
 private:
 

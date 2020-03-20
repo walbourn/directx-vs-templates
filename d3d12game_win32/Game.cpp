@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "Game.h"
 
-extern void ExitGame();
+extern void ExitGame() noexcept;
 
 using namespace DirectX;
 
@@ -174,7 +174,7 @@ void Game::OnWindowSizeChanged(int width, int height)
 }
 
 // Properties
-void Game::GetDefaultSize(int& width, int& height) const
+void Game::GetDefaultSize(int& width, int& height) const noexcept
 {
     // TODO: Change to desired default window size (note minimum size is 320x200).
     width = 800;
@@ -298,10 +298,10 @@ void Game::CreateResources()
         m_fenceValues[n] = m_fenceValues[m_backBufferIndex];
     }
 
-    DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
-    DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D32_FLOAT;
-    UINT backBufferWidth = static_cast<UINT>(m_outputWidth);
-    UINT backBufferHeight = static_cast<UINT>(m_outputHeight);
+    const DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
+    const DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D32_FLOAT;
+    const UINT backBufferWidth = static_cast<UINT>(m_outputWidth);
+    const UINT backBufferHeight = static_cast<UINT>(m_outputHeight);
 
     // If the swap chain already exists, resize it, otherwise create one.
     if (m_swapChain)
