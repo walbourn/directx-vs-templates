@@ -17,7 +17,7 @@ using namespace DirectX;
 namespace
 {
     std::unique_ptr<Game> g_game;
-};
+}
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
