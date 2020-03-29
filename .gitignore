@@ -19,6 +19,7 @@
 bin/
 obj/
 wiki/
+out/
 /VSIX/src/Direct3DGame/ProjectTemplates/
 d3d11game_xdk/
 d3d11game_xdk_dr/

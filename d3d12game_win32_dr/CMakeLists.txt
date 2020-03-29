@@ -29,6 +29,10 @@ add_executable(${PROJECT_NAME} WIN32
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE "$<$<CONFIG:DEBUG>:_DEBUG>" "$<$<CONFIG:RELEASE>:NDEBUG>")
 
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
+    target_precompile_headers(${PROJECT_NAME} PRIVATE pch.h )
+endif()
+
 target_link_libraries(${PROJECT_NAME} PRIVATE
     d3d12.lib dxgi.lib dxguid.lib uuid.lib
     kernel32.lib user32.lib
