@@ -8,6 +8,8 @@ project (CMakeDirect3D12Game LANGUAGES CXX)
 
 option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 
+option(ENABLE_CODE_ANALYSIS "Use Static Code Analysis on build" OFF)
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -60,7 +62,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
         "-Wno-missing-prototypes" "-Wno-missing-variable-declarations" "-Wno-reserved-id-macro"
         "-Wno-float-equal" "-Wno-switch-enum" "-Wno-tautological-type-limit-compare")
 
-    if(BUILD_TEST_TEMPLATE MATCHES ON)
+    if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-unused-value")
     endif()
 endif()
@@ -70,7 +72,15 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
          "/wd4061" "/wd4365" "/wd4514" "/wd4571" "/wd4668" "/wd4710" "/wd4820" "/wd5039" "/wd5045"
          "/wd4265" "/wd4625" "/wd4626" "/wd4986" "/wd5204")
 
-    if(BUILD_TEST_TEMPLATE MATCHES ON)
+    if(ENABLE_CODE_ANALYSIS)
+       target_compile_options(${PROJECT_NAME} PRIVATE /analyze)
+    endif()
+
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.26)
+        target_compile_options(${PROJECT_NAME} PRIVATE /Zc:preprocessor /wd5105)
+    endif()
+
+    if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "/wd4555")
     endif()
 endif()
