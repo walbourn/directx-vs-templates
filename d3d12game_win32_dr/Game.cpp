@@ -92,9 +92,9 @@ void Game::Render()
     PIXEndEvent(commandList);
 
     // Show the new frame.
-    PIXBeginEvent(m_deviceResources->GetCommandQueue(), PIX_COLOR_DEFAULT, L"Present");
+    PIXBeginEvent(PIX_COLOR_DEFAULT, L"Present");
     m_deviceResources->Present();
-    PIXEndEvent(m_deviceResources->GetCommandQueue());
+    PIXEndEvent();
 }
 
 // Helper method to clear the back buffers.

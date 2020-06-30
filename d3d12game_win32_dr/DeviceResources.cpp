@@ -138,11 +138,12 @@ void DeviceResources::CreateDeviceResources()
     GetAdapter(adapter.GetAddressOf());
 
     // Create the DX12 API device object.
-    ThrowIfFailed(D3D12CreateDevice(
+    HRESULT hr = D3D12CreateDevice(
         adapter.Get(),
         m_d3dMinFeatureLevel,
         IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
         ));
+    ThrowIfFailed(hr);
 
     m_d3dDevice->SetName(L"DeviceResources");
 
@@ -182,7 +183,7 @@ void DeviceResources::CreateDeviceResources()
         _countof(s_featureLevels), s_featureLevels, D3D_FEATURE_LEVEL_11_0
     };
 
-    HRESULT hr = m_d3dDevice->CheckFeatureSupport(D3D12_FEATURE_FEATURE_LEVELS, &featLevels, sizeof(featLevels));
+    hr = m_d3dDevice->CheckFeatureSupport(D3D12_FEATURE_FEATURE_LEVELS, &featLevels, sizeof(featLevels));
     if (SUCCEEDED(hr))
     {
         m_d3dFeatureLevel = featLevels.MaxSupportedFeatureLevel;
