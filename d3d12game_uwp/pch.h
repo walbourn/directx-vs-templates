@@ -18,6 +18,8 @@
 #include "d3dx12.h"
 
 #include <algorithm>
+#include <cmath>
+#include <cstdint>
 #include <exception>
 #include <memory>
 #include <stdexcept>
