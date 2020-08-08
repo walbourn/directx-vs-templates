@@ -43,7 +43,7 @@ namespace DX
         void ValidateDevice();
         void HandleDeviceLost();
         void RegisterDeviceNotify(IDeviceNotify* deviceNotify) noexcept { m_deviceNotify = deviceNotify; }
-        void Trim();
+        void Trim() noexcept;
         void Present();
 
         // Device Accessors.
