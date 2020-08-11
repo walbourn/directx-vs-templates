@@ -142,7 +142,7 @@ void DeviceResources::CreateDeviceResources()
         adapter.Get(),
         m_d3dMinFeatureLevel,
         IID_PPV_ARGS(m_d3dDevice.ReleaseAndGetAddressOf())
-        ));
+        );
     ThrowIfFailed(hr);
 
     m_d3dDevice->SetName(L"DeviceResources");
