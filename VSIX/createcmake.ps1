@@ -16,7 +16,24 @@ This is name of the project (such as "Direct3DGame")
 This is the name of the target directory for the project (must not already exist)
 
 .EXAMPLE
-createcmake ../d3d11game_win32 Direct3DGame $Env:USERPROFILE\source\Direct3DGame
+This creates a new instance of the Direct3D 11 Game template:
+
+.\createcmake.ps1 ../d3d11game_win32 Direct3DGame $Env:USERPROFILE\source\Direct3DGame
+
+.EXAMPLE
+This creates a new instance of the Direct3D 11 Game with Device Resources template:
+
+.\createcmake.ps1 ../d3d11game_win32_dr Direct3DGame $Env:USERPROFILE\source\Direct3DGameDR
+
+.EXAMPLE
+This creates a new instance of the Direct3D 12 Game template:
+
+.\createcmake.ps1 ../d3d12game_win32 Direct3DGame $Env:USERPROFILE\source\Direct3D12Game
+
+.EXAMPLE
+This creates a new instance of the Direct3D 12 Game with Device Resources template:
+
+.\createcmake.ps1 ../d3d12game_win32_dr Direct3DGame $Env:USERPROFILE\source\Direct3D12GameDR
 
 .LINK
 https://github.com/walbourn/directx-vs-templates/wiki
