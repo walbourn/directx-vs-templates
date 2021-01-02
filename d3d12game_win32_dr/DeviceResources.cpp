@@ -104,7 +104,7 @@ void DeviceResources::CreateDeviceResources()
                 80 /* IDXGISwapChain::GetContainingOutput: The swapchain's adapter does not control the output on which the swapchain's window resides. */,
             };
             DXGI_INFO_QUEUE_FILTER filter = {};
-            filter.DenyList.NumIDs = _countof(hide);
+            filter.DenyList.NumIDs = static_cast<UINT>(std::size(hide));
             filter.DenyList.pIDList = hide;
             dxgiInfoQueue->AddStorageFilterEntries(DXGI_DEBUG_DXGI, &filter);
         }
@@ -163,7 +163,7 @@ void DeviceResources::CreateDeviceResources()
             D3D12_MESSAGE_ID_EXECUTECOMMANDLISTS_WRONGSWAPCHAINBUFFERREFERENCE
         };
         D3D12_INFO_QUEUE_FILTER filter = {};
-        filter.DenyList.NumIDs = _countof(hide);
+        filter.DenyList.NumIDs = static_cast<UINT>(std::size(hide));
         filter.DenyList.pIDList = hide;
         d3dInfoQueue->AddStorageFilterEntries(&filter);
     }
@@ -180,7 +180,7 @@ void DeviceResources::CreateDeviceResources()
 
     D3D12_FEATURE_DATA_FEATURE_LEVELS featLevels =
     {
-        _countof(s_featureLevels), s_featureLevels, D3D_FEATURE_LEVEL_11_0
+        static_cast<UINT>(std::size(s_featureLevels)), s_featureLevels, D3D_FEATURE_LEVEL_11_0
     };
 
     hr = m_d3dDevice->CheckFeatureSupport(D3D12_FEATURE_FEATURE_LEVELS, &featLevels, sizeof(featLevels));

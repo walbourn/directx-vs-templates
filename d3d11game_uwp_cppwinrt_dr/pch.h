@@ -26,6 +26,7 @@
 #include <cstdint>
 #include <exception>
 #include <future>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 

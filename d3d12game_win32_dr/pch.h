@@ -51,6 +51,7 @@
 #include <cstdint>
 #include <cstring>
 #include <exception>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 

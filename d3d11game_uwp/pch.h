@@ -19,6 +19,7 @@
 #include <cmath>
 #include <cstdint>
 #include <exception>
+#include <iterator>
 #include <memory>
 #include <stdexcept>
 

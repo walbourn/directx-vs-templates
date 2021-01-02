@@ -178,7 +178,7 @@ void Game::CreateDevice()
         nullptr,
         creationFlags,
         featureLevels,
-        _countof(featureLevels),
+        static_cast<UINT>(std::size(featureLevels)),
         D3D11_SDK_VERSION,
         device.ReleaseAndGetAddressOf(),    // returns the Direct3D device created
         &m_featureLevel,                    // returns feature level of device created
@@ -202,7 +202,7 @@ void Game::CreateDevice()
                 // TODO: Add more message IDs here as needed.
             };
             D3D11_INFO_QUEUE_FILTER filter = {};
-            filter.DenyList.NumIDs = _countof(hide);
+            filter.DenyList.NumIDs = static_cast<UINT>(std::size(hide));
             filter.DenyList.pIDList = hide;
             d3dInfoQueue->AddStorageFilterEntries(&filter);
         }
@@ -220,7 +220,7 @@ void Game::CreateResources()
 {
     // Clear the previous window size specific context.
     ID3D11RenderTargetView* nullViews [] = { nullptr };
-    m_d3dContext->OMSetRenderTargets(_countof(nullViews), nullViews, nullptr);
+    m_d3dContext->OMSetRenderTargets(static_cast<UINT>(std::size(nullViews)), nullViews, nullptr);
     m_renderTargetView.Reset();
     m_depthStencilView.Reset();
     m_d3dContext->Flush();

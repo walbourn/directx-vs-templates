@@ -153,7 +153,7 @@ void DeviceResources::CreateDeviceResources()
     };
 
     UINT featLevelCount = 0;
-    for (; featLevelCount < _countof(s_featureLevels); ++featLevelCount)
+    for (; featLevelCount < static_cast<UINT>(std::size(s_featureLevels)); ++featLevelCount)
     {
         if (s_featureLevels[featLevelCount] < m_d3dMinFeatureLevel)
             break;
@@ -236,7 +236,7 @@ void DeviceResources::CreateDeviceResources()
                 D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
             };
             D3D11_INFO_QUEUE_FILTER filter = {};
-            filter.DenyList.NumIDs = _countof(hide);
+            filter.DenyList.NumIDs = static_cast<UINT>(std::size(hide));
             filter.DenyList.pIDList = hide;
             d3dInfoQueue->AddStorageFilterEntries(&filter);
         }
@@ -258,7 +258,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
 
     // Clear the previous window size specific context.
     ID3D11RenderTargetView* nullViews[] = {nullptr};
-    m_d3dContext->OMSetRenderTargets(_countof(nullViews), nullViews, nullptr);
+    m_d3dContext->OMSetRenderTargets(static_cast<UINT>(std::size(nullViews)), nullViews, nullptr);
     m_d3dRenderTargetView.Reset();
     m_d3dDepthStencilView.Reset();
     m_renderTarget.Reset();
@@ -521,7 +521,7 @@ void DeviceResources::CreateFactory()
                 80 /* IDXGISwapChain::GetContainingOutput: The swapchain's adapter does not control the output on which the swapchain's window resides. */,
             };
             DXGI_INFO_QUEUE_FILTER filter = {};
-            filter.DenyList.NumIDs = _countof(hide);
+            filter.DenyList.NumIDs = static_cast<UINT>(std::size(hide));
             filter.DenyList.pIDList = hide;
             dxgiInfoQueue->AddStorageFilterEntries(DXGI_DEBUG_DXGI, &filter);
         }

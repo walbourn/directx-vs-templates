@@ -235,7 +235,7 @@ void Game::CreateDevice()
             D3D12_MESSAGE_ID_UNMAP_INVALID_NULLRANGE
         };
         D3D12_INFO_QUEUE_FILTER filter = {};
-        filter.DenyList.NumIDs = _countof(hide);
+        filter.DenyList.NumIDs = static_cast<UINT>(std::size(hide));
         filter.DenyList.pIDList = hide;
         d3dInfoQueue->AddStorageFilterEntries(&filter);
     }
