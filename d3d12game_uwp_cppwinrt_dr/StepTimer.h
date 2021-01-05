@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <exception>
 
+
 namespace DX
 {
     // Helper class for animation and simulation timing.
@@ -27,12 +28,12 @@ namespace DX
         {
             if (!QueryPerformanceFrequency(&m_qpcFrequency))
             {
-                throw std::exception( "QueryPerformanceFrequency" );
+                throw std::exception();
             }
 
             if (!QueryPerformanceCounter(&m_qpcLastTime))
             {
-                throw std::exception( "QueryPerformanceCounter" );
+                throw std::exception();
             }
 
             // Initialize max delta to 1/10 of a second.
@@ -40,18 +41,18 @@ namespace DX
         }
 
         // Get elapsed time since the previous Update call.
-        uint64_t GetElapsedTicks() const noexcept           { return m_elapsedTicks; }
-        double GetElapsedSeconds() const noexcept           { return TicksToSeconds(m_elapsedTicks); }
+        uint64_t GetElapsedTicks() const noexcept { return m_elapsedTicks; }
+        double GetElapsedSeconds() const noexcept { return TicksToSeconds(m_elapsedTicks); }
 
         // Get total time since the start of the program.
-        uint64_t GetTotalTicks() const noexcept             { return m_totalTicks; }
-        double GetTotalSeconds() const noexcept             { return TicksToSeconds(m_totalTicks); }
+        uint64_t GetTotalTicks() const noexcept { return m_totalTicks; }
+        double GetTotalSeconds() const noexcept { return TicksToSeconds(m_totalTicks); }
 
         // Get total number of updates since start of the program.
-        uint32_t GetFrameCount() const noexcept             { return m_frameCount; }
+        uint32_t GetFrameCount() const noexcept { return m_frameCount; }
 
         // Get the current framerate.
-        uint32_t GetFramesPerSecond() const noexcept        { return m_framesPerSecond; }
+        uint32_t GetFramesPerSecond() const noexcept { return m_framesPerSecond; }
 
         // Set whether to use fixed or variable timestep mode.
         void SetFixedTimeStep(bool isFixedTimestep) noexcept { m_isFixedTimeStep = isFixedTimestep; }
@@ -63,7 +64,7 @@ namespace DX
         // Integer format represents time using 10,000,000 ticks per second.
         static const uint64_t TicksPerSecond = 10000000;
 
-        static constexpr double TicksToSeconds(uint64_t ticks) noexcept   { return static_cast<double>(ticks) / TicksPerSecond; }
+        static constexpr double TicksToSeconds(uint64_t ticks) noexcept { return static_cast<double>(ticks) / TicksPerSecond; }
         static constexpr uint64_t SecondsToTicks(double seconds) noexcept { return static_cast<uint64_t>(seconds * TicksPerSecond); }
 
         // After an intentional timing discontinuity (for instance a blocking IO operation)
@@ -74,7 +75,7 @@ namespace DX
         {
             if (!QueryPerformanceCounter(&m_qpcLastTime))
             {
-                throw std::exception("QueryPerformanceCounter");
+                throw std::exception();
             }
 
             m_leftOverTicks = 0;
@@ -92,7 +93,7 @@ namespace DX
 
             if (!QueryPerformanceCounter(&currentTime))
             {
-                throw std::exception( "QueryPerformanceCounter" );
+                throw std::exception();
             }
 
             uint64_t timeDelta = static_cast<uint64_t>(currentTime.QuadPart - m_qpcLastTime.QuadPart);
