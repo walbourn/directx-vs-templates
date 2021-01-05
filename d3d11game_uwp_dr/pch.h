@@ -24,12 +24,12 @@
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
+#include <cstdio>
 #include <exception>
 #include <iterator>
 #include <memory>
 #include <stdexcept>
 
-#include <stdio.h>
 #include <pix.h>
 
 #ifdef _DEBUG

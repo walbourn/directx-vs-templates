@@ -397,7 +397,7 @@ int __cdecl main(Platform::Array<Platform::String^>^ /*argv*/)
 {
     if (!XMVerifyCPUSupport())
     {
-        throw std::exception("XMVerifyCPUSupport");
+        throw std::runtime_error("XMVerifyCPUSupport");
     }
 
     auto viewProviderFactory = ref new ViewProviderFactory();

@@ -279,7 +279,7 @@ void Game::CreateDevice()
     m_fenceEvent.Attach(CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
     if (!m_fenceEvent.IsValid())
     {
-        throw std::exception("CreateEvent");
+        throw std::system_error(std::error_code(static_cast<int>(GetLastError()), std::system_category()), "CreateEventEx");
     }
 
     // TODO: Initialize device dependent objects here (independent of window size).
@@ -484,14 +484,14 @@ void Game::GetAdapter(IDXGIAdapter1** ppAdapter)
     {
         if (FAILED(m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(adapter.ReleaseAndGetAddressOf()))))
         {
-            throw std::exception("WARP12 not available. Enable the 'Graphics Tools' optional feature");
+            throw std::runtime_error("WARP12 not available. Enable the 'Graphics Tools' optional feature");
         }
     }
 #endif
 
     if (!adapter)
     {
-        throw std::exception("No Direct3D 12 device found");
+        throw std::runtime_error("No Direct3D 12 device found");
     }
 
     *ppAdapter = adapter.Detach();

@@ -249,7 +249,7 @@ void DeviceResources::CreateDeviceResources()
     m_fenceEvent.Attach(CreateEventEx(nullptr, nullptr, 0, EVENT_MODIFY_STATE | SYNCHRONIZE));
     if (!m_fenceEvent.IsValid())
     {
-        throw std::exception("CreateEvent");
+        throw std::system_error(std::error_code(static_cast<int>(GetLastError()), std::system_category()), "CreateEventEx");
     }
 }
 
@@ -258,7 +258,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
 {
     if (!m_window)
     {
-        throw std::exception("Call SetWindow with a valid Win32 window handle");
+        throw std::logic_error("Call SetWindow with a valid Win32 window handle");
     }
 
     // Wait until all previous GPU work is complete.
@@ -686,7 +686,7 @@ void DeviceResources::GetAdapter(IDXGIAdapter1** ppAdapter)
         // Try WARP12 instead
         if (FAILED(m_dxgiFactory->EnumWarpAdapter(IID_PPV_ARGS(adapter.ReleaseAndGetAddressOf()))))
         {
-            throw std::exception("WARP12 not available. Enable the 'Graphics Tools' optional feature");
+            throw std::runtime_error("WARP12 not available. Enable the 'Graphics Tools' optional feature");
         }
 
         OutputDebugStringA("Direct3D Adapter - WARP12\n");
@@ -695,7 +695,7 @@ void DeviceResources::GetAdapter(IDXGIAdapter1** ppAdapter)
 
     if (!adapter)
     {
-        throw std::exception("No Direct3D 12 device found");
+        throw std::runtime_error("No Direct3D 12 device found");
     }
 
     *ppAdapter = adapter.Detach();
