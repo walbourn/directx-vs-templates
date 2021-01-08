@@ -25,6 +25,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstdio>
+#include <cwchar>
 #include <exception>
 #include <future>
 #include <iterator>

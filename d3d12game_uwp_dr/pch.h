@@ -29,6 +29,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <cwchar>
 #include <exception>
 #include <iterator>
 #include <memory>

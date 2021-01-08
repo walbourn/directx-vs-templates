@@ -44,6 +44,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <cwchar>
 #include <exception>
 #include <iterator>
 #include <memory>
