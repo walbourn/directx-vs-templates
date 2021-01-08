@@ -364,7 +364,7 @@ int WINAPI wWinMain(
 {
     if (!XMVerifyCPUSupport())
     {
-        throw std::exception("XMVerifyCPUSupport");
+        throw std::runtime_error("XMVerifyCPUSupport");
     }
 
     auto viewProviderFactory = winrt::make<ViewProviderFactory>();

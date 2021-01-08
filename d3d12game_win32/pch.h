@@ -49,6 +49,7 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
+#include <system_error>
 
 #ifdef _DEBUG
 #include <dxgidebug.h>
