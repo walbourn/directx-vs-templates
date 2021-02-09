@@ -1,10 +1,8 @@
-#
-# CMakeList.txt : CMake example for Direct3D 12 Game (Win32)
-#
-
 cmake_minimum_required (VERSION 3.11)
 
-project (CMakeDirect3D12Game LANGUAGES CXX)
+project(CMakeDirect3D12Game
+  DESCRIPTION "CMake example for Direct3D 12 Game (Win32)"
+  LANGUAGES CXX)
 
 option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 

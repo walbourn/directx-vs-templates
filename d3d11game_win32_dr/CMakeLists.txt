@@ -1,10 +1,8 @@
-#
-# CMakeList.txt : CMake example for Direct3D 11 Game (Win32) w/ DeviceResources
-#
-
 cmake_minimum_required (VERSION 3.11)
 
-project (CMakeDirect3DGameDR LANGUAGES CXX)
+project (CMakeDirect3DGameDR
+  DESCRIPTION "CMake example for Direct3D 11 Game (Win32) w/ DeviceResources"
+  LANGUAGES CXX)
 
 option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 
