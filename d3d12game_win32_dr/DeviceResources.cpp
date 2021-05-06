@@ -172,6 +172,9 @@ void DeviceResources::CreateDeviceResources()
     // Determine maximum supported feature level for this device
     static const D3D_FEATURE_LEVEL s_featureLevels[] =
     {
+#if defined(NTDDI_WIN10_FE) && (NTDDI_VERSION >= NTDDI_WIN10_FE)
+        D3D_FEATURE_LEVEL_12_2,
+#endif
         D3D_FEATURE_LEVEL_12_1,
         D3D_FEATURE_LEVEL_12_0,
         D3D_FEATURE_LEVEL_11_1,
