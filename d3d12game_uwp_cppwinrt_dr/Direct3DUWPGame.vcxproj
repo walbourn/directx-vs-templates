@@ -206,7 +206,7 @@
       <ShaderModel>6.0</ShaderModel>
       <EnableDebuggingInformation>true</EnableDebuggingInformation>
       <AdditionalOptions>/Fd "$(OutDir)%(Filename).pdb" %(AdditionalOptions)</AdditionalOptions>
-3    </FXCompile>
+    </FXCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Link>
@@ -255,7 +255,7 @@
       <ShaderModel>6.0</ShaderModel>
       <EnableDebuggingInformation>true</EnableDebuggingInformation>
       <AdditionalOptions>/Fd "$(OutDir)%(Filename).pdb" %(AdditionalOptions)</AdditionalOptions>
-3    </FXCompile>
+    </FXCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
