@@ -52,7 +52,6 @@ public:
     {
         window.SizeChanged({ this, &ViewProvider::OnWindowSizeChanged });
 
-#if defined(NTDDI_WIN10_RS2) && (NTDDI_VERSION >= NTDDI_WIN10_RS2)
         try
         {
             window.ResizeStarted([this](auto&&, auto&&) { m_in_sizemove = true; });
@@ -63,7 +62,6 @@ public:
         {
             // Requires Windows 10 Creators Update (10.0.15063) or later
         }
-#endif
 
         window.VisibilityChanged({ this, &ViewProvider::OnVisibilityChanged });
 
