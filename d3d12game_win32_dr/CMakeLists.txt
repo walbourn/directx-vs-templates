@@ -48,10 +48,15 @@ if(MSVC)
     string(REPLACE "/W3 " "/Wall " CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
     string(REPLACE "/W3 " "/Wall " CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
     string(REPLACE "/W3 " "/Wall " CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+
+    target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
 endif()
 
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
+if ((NOT WIN32) OR VCPKG_TOOLCHAIN)
+    message("INFO: Using VCPKG for DirectX-Headers and DirectXMath.")
+    find_package(directx-headers CONFIG REQUIRED)
+    find_package(directxmath CONFIG REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX-Headers Microsoft::DirectXMath)
 endif()
 
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
@@ -70,7 +75,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     target_compile_options(${PROJECT_NAME} PRIVATE
          /permissive- /Zc:__cplusplus
          "/wd4061" "/wd4365" "/wd4514" "/wd4571" "/wd4668" "/wd4710" "/wd4820" "/wd5039" "/wd5045"
-         "/wd4265" "/wd4625" "/wd4626" "/wd4986" "/wd5204")
+         "/wd4265" "/wd4625" "/wd4626" "/wd4986" "/wd5204" "/wd5220")
 
     if(ENABLE_CODE_ANALYSIS)
         target_compile_options(${PROJECT_NAME} PRIVATE /analyze)
