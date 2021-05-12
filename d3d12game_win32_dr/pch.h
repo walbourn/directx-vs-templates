@@ -32,7 +32,13 @@
 #include <wrl/client.h>
 #include <wrl/event.h>
 
+#ifdef USING_DIRECTX_HEADERS
+#include <directx/dxgiformat.h>
+#include <directx/d3d12.h>
+#else
 #include <d3d12.h>
+#endif
+
 #include <dxgi1_6.h>
 
 #include <DirectXMath.h>
