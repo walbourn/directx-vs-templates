@@ -6,7 +6,9 @@
 #pragma once
 
 #include <winsdkver.h>
+#ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0601
+#endif
 #include <sdkddkver.h>
 
 // Use the C++ standard templated min/max
