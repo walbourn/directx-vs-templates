@@ -51,8 +51,9 @@
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Wizards" Path="|Wizards|" AssemblyName="|Wizards;AssemblyName|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
-        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.Tools.x86.x64" Version="[15.0,)" DisplayName="Visual C++ x86/x64 Compiler Toolset" />
-        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.UWP.VC" Version="[15.0,)"  DisplayName="Visual C++ UWP Toolset" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,18.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.CoreIde" Version="[15.0,18.0)" DisplayName="C++ core features" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.Tools.x86.x64" Version="[15.0,18.0)" DisplayName="Visual C++ x86/x64 Compiler Toolset" />
+        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.UWP.VC" Version="[15.0,18.0)"  DisplayName="Visual C++ UWP Toolset" />
     </Prerequisites>
 </PackageManifest>
