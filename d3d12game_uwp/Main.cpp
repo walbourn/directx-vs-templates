@@ -19,6 +19,8 @@ using namespace Windows::Foundation;
 using namespace Windows::Graphics::Display;
 using namespace DirectX;
 
+void ExitGame() noexcept;
+
 ref class ViewProvider sealed : public IFrameworkView
 {
 public:

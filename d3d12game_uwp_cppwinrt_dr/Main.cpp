@@ -16,6 +16,8 @@ using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Graphics::Display;
 using namespace DirectX;
 
+void ExitGame() noexcept;
+
 class ViewProvider : public winrt::implements<ViewProvider, IFrameworkView>
 {
 public:

@@ -22,6 +22,7 @@ namespace
 LPCWSTR g_szAppName = L"$projectname$";
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+void ExitGame() noexcept;
 
 // Indicates to hybrid graphics systems to prefer the discrete part by default
 extern "C"
