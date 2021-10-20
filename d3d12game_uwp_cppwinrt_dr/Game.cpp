@@ -86,6 +86,10 @@ void Game::Render()
     // Show the new frame.
     PIXBeginEvent(m_deviceResources->GetCommandQueue(), PIX_COLOR_DEFAULT, L"Present");
     m_deviceResources->Present();
+
+    // If using the DirectX Tool Kit for DX12, uncomment this line:
+    // m_graphicsMemory->Commit(m_deviceResources->GetCommandQueue());
+
     PIXEndEvent(m_deviceResources->GetCommandQueue());
 }
 
@@ -178,6 +182,9 @@ void Game::CreateDeviceDependentResources()
         throw std::runtime_error("Shader Model 6.0 is not supported!");
     }
 
+    // If using the DirectX Tool Kit for DX12, uncomment this line:
+    // m_graphicsMemory = std::make_unique<GraphicsMemory>(device);
+
     // TODO: Initialize device dependent objects here (independent of window size).
 }
 
@@ -190,6 +197,9 @@ void Game::CreateWindowSizeDependentResources()
 void Game::OnDeviceLost()
 {
     // TODO: Add Direct3D resource cleanup here.
+
+    // If using the DirectX Tool Kit for DX12, uncomment this line:
+    // m_graphicsMemory.reset();
 }
 
 void Game::OnDeviceRestored()

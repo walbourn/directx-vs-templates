@@ -134,6 +134,9 @@ void Game::Present()
 
         MoveToNextFrame();
     }
+
+    // If using the DirectX Tool Kit for DX12, uncomment this line:
+    // m_graphicsMemory->Commit(m_commandQueue.Get());
 }
 
 // Message handlers
@@ -314,6 +317,9 @@ void Game::CreateDevice()
 #endif
         throw std::runtime_error("Shader Model 6.0 is not supported!");
     }
+
+    // If using the DirectX Tool Kit for DX12, uncomment this line:
+    // m_graphicsMemory = std::make_unique<GraphicsMemory>(m_d3dDevice.Get());
 
     // TODO: Initialize device dependent objects here (independent of window size).
 }
@@ -537,6 +543,9 @@ void Game::OnDeviceLost()
     m_commandQueue.Reset();
     m_d3dDevice.Reset();
     m_dxgiFactory.Reset();
+
+    // If using the DirectX Tool Kit for DX12, uncomment this line:
+    // m_graphicsMemory.reset();
 
     CreateDevice();
     CreateResources();

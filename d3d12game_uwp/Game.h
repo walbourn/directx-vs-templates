@@ -85,4 +85,7 @@ private:
 
     // Game state
     DX::StepTimer                                       m_timer;
+
+    // If using the DirectX Tool Kit for DX12, uncomment this line:
+    // std::unique_ptr<DirectX::GraphicsMemory> m_graphicsMemory;
 };
