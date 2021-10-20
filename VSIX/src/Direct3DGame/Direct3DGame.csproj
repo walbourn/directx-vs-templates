@@ -7,6 +7,7 @@
     <OldToolsVersion>14.0</OldToolsVersion>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Package.ico</ApplicationIcon>
@@ -22,7 +23,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Direct3DGame</RootNamespace>
     <AssemblyName>Direct3DUWPGame</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
