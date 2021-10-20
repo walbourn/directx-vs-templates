@@ -16,14 +16,17 @@ namespace Wizards
             if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\17.0"))
             {
                 replacementsDictionary["$platformtoolset$"] = "v143";
+                replacementsDictionary["$targetplatformversion$"] = "10.0";
             }
             else if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\16.0"))
             {
                 replacementsDictionary["$platformtoolset$"] = "v142";
+                replacementsDictionary["$targetplatformversion$"] = "10.0";
             }
             else if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\15.0"))
             {
                 replacementsDictionary["$platformtoolset$"] = "v141";
+                replacementsDictionary["$targetplatformversion$"] = "10.0.19041.0";
             }
             else
             {
