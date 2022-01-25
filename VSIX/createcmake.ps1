@@ -13,27 +13,27 @@ Provides the directory to read for the source template (d3d11game_win32, etc.)
 This is name of the project (such as "Direct3DGame")
 
 .PARAMETER targetdir
-This is the name of the target directory for the project (must not already exist)
+This is the name of the target directory for the project (must not already exist). Defaults to the user's source directory.
 
 .EXAMPLE
 This creates a new instance of the Direct3D 11 Game template:
 
-.\createcmake.ps1 ../d3d11game_win32 Direct3DGame $Env:USERPROFILE\source\Direct3DGame
+.\createcmake.ps1 d3d11game_win32 Direct3DGame $Env:USERPROFILE\source
 
 .EXAMPLE
 This creates a new instance of the Direct3D 11 Game with Device Resources template:
 
-.\createcmake.ps1 ../d3d11game_win32_dr Direct3DGame $Env:USERPROFILE\source\Direct3DGameDR
+.\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR $Env:USERPROFILE\source
 
 .EXAMPLE
 This creates a new instance of the Direct3D 12 Game template:
 
-.\createcmake.ps1 ../d3d12game_win32 Direct3DGame $Env:USERPROFILE\source\Direct3D12Game
+.\createcmake.ps1 d3d12game_win32 Direct3D12Game $Env:USERPROFILE\source
 
 .EXAMPLE
 This creates a new instance of the Direct3D 12 Game with Device Resources template:
 
-.\createcmake.ps1 ../d3d12game_win32_dr Direct3DGame $Env:USERPROFILE\source\Direct3D12GameDR
+.\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR $Env:USERPROFILE\source
 
 .LINK
 https://github.com/walbourn/directx-vs-templates/wiki
@@ -41,17 +41,20 @@ https://github.com/walbourn/directx-vs-templates/wiki
 #>
 
 param (
-    [string]$templatedir,
-    [string]$projectname,
-    [string]$targetdir
+    [string]$templatedir = "d3d11game_win32",
+    [string]$projectname = "Direct3DGame",
+    [string]$targetdir = "$Env:USERPROFILE\source"
 )
 
-$cmake = $templatedir + "\CMakeLists.txt"
+$templatedir = "..\" + $templatedir
 
+$cmake = $templatedir + "\CMakeLists.txt"
 
 if (-not (Test-Path -Path $cmake)) {
     Write-Error -Message "$templatedir does not contain a CMake" -ErrorAction Stop
 }
+
+$targetdir = $targetdir + "\" + $projectname
 
 if (-not (Test-Path $targetdir)) {
     try {

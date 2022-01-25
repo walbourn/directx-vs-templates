@@ -20,6 +20,7 @@ bin/
 obj/
 wiki/
 out/
+CMakeUserPresets.json
 packages
 /VSIX/src/Direct3DGame/ProjectTemplates/
 d3d11game_xdk/
