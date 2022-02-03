@@ -141,6 +141,11 @@ void Game::OnResuming()
     // TODO: Game is being power-resumed.
 }
 
+void Game::OnDisplayChange()
+{
+    m_deviceResources->UpdateColorSpace();
+}
+
 void Game::OnWindowSizeChanged(int width, int height, DXGI_MODE_ROTATION rotation)
 {
     if (!m_deviceResources->WindowSizeChanged(width, height, rotation))

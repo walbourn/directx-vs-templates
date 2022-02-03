@@ -134,6 +134,11 @@ void Game::OnWindowMoved()
     m_deviceResources->WindowSizeChanged(r.right, r.bottom);
 }
 
+void Game::OnDisplayChange()
+{
+    m_deviceResources->UpdateColorSpace();
+}
+
 void Game::OnWindowSizeChanged(int width, int height)
 {
     if (!m_deviceResources->WindowSizeChanged(width, height))

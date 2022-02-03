@@ -47,6 +47,7 @@ namespace DX
                      D3D12_RESOURCE_STATES afterState = D3D12_RESOURCE_STATE_RENDER_TARGET);
         void Present(D3D12_RESOURCE_STATES beforeState = D3D12_RESOURCE_STATE_RENDER_TARGET);
         void WaitForGpu() noexcept;
+        void UpdateColorSpace();
 
         // Device Accessors.
         RECT GetOutputSize() const noexcept             { return m_outputSize; }
@@ -86,7 +87,6 @@ namespace DX
     private:
         void MoveToNextFrame();
         void GetAdapter(IDXGIAdapter1** ppAdapter);
-        void UpdateColorSpace();
 
         static constexpr size_t MAX_BACK_BUFFER_COUNT = 3;
 

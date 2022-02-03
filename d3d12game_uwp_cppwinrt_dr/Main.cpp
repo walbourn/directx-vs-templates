@@ -252,6 +252,7 @@ protected:
     void OnDisplayContentsInvalidated(DisplayInformation const & /*sender*/, IInspectable const & /*args*/)
     {
         m_game->ValidateDevice();
+        m_game->OnDisplayChange();
     }
 
 private:
