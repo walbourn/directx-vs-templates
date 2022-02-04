@@ -306,6 +306,9 @@ private:
             case DisplayOrientations::PortraitFlipped:
                 rotation = DXGI_MODE_ROTATION_ROTATE90;
                 break;
+
+            default:
+                break;
             }
             break;
 
@@ -327,7 +330,13 @@ private:
             case DisplayOrientations::PortraitFlipped:
                 rotation = DXGI_MODE_ROTATION_ROTATE180;
                 break;
+
+            default:
+                break;
             }
+            break;
+
+        default:
             break;
         }
 
