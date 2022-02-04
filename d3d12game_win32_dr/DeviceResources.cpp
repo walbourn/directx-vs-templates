@@ -32,7 +32,7 @@ namespace
 
     inline long ComputeIntersectionArea(
         long ax1, long ay1, long ax2, long ay2,
-        long bx1, long by1, long bx2, long by2)
+        long bx1, long by1, long bx2, long by2) noexcept
     {
         return std::max(0l, std::min(ax2, bx2) - std::max(ax1, bx1)) * std::max(0l, std::min(ay2, by2) - std::max(ay1, by1));
     }
