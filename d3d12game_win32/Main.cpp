@@ -132,7 +132,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         else
         {
             PAINTSTRUCT ps;
-            (void)BeginPaint(hWnd, &ps);
+            std::ignore = BeginPaint(hWnd, &ps);
             EndPaint(hWnd, &ps);
         }
         break;

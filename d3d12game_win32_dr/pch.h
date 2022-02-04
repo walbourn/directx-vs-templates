@@ -60,6 +60,7 @@
 #include <memory>
 #include <stdexcept>
 #include <system_error>
+#include <tuple>
 
 // To use graphics and CPU markup events with the latest version of PIX, change this to include <pix3.h>
 // then add the NuGet package WinPixEventRuntime to the project.
