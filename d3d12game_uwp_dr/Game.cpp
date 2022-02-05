@@ -14,6 +14,9 @@ using Microsoft::WRL::ComPtr;
 Game::Game() noexcept(false)
 {
     m_deviceResources = std::make_unique<DX::DeviceResources>();
+    // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
+    //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
+    //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
@@ -139,6 +142,11 @@ void Game::OnResuming()
     m_timer.ResetElapsedTime();
 
     // TODO: Game is being power-resumed.
+}
+
+void Game::OnDisplayChange()
+{
+    m_deviceResources->UpdateColorSpace();
 }
 
 void Game::OnWindowSizeChanged(int width, int height, DXGI_MODE_ROTATION rotation)

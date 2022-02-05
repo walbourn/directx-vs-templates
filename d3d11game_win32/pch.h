@@ -45,6 +45,7 @@
 #include <iterator>
 #include <memory>
 #include <stdexcept>
+#include <tuple>
 
 namespace DX
 {
