@@ -318,7 +318,7 @@ private:
     Windows::Graphics::Display::DisplayOrientations	m_nativeOrientation;
     Windows::Graphics::Display::DisplayOrientations	m_currentOrientation;
 
-    DXGI_MODE_ROTATION ComputeDisplayRotation() const
+    DXGI_MODE_ROTATION ComputeDisplayRotation() const noexcept
     {
         DXGI_MODE_ROTATION rotation = DXGI_MODE_ROTATION_UNSPECIFIED;
 
