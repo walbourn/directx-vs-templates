@@ -111,7 +111,7 @@ namespace DX
             timeDelta *= TicksPerSecond;
             timeDelta /= static_cast<uint64_t>(m_qpcFrequency.QuadPart);
 
-            uint32_t lastFrameCount = m_frameCount;
+            const uint32_t lastFrameCount = m_frameCount;
 
             if (m_isFixedTimeStep)
             {
