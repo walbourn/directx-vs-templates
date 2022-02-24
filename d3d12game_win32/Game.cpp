@@ -92,11 +92,13 @@ void Game::Clear()
     DX::ThrowIfFailed(m_commandList->Reset(m_commandAllocators[m_backBufferIndex].Get(), nullptr));
 
     // Transition the render target into the correct state to allow for drawing into it.
-    D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_backBufferIndex].Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+    const D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+        m_renderTargets[m_backBufferIndex].Get(),
+        D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
     m_commandList->ResourceBarrier(1, &barrier);
 
     // Clear the views.
-    CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(
+    const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(
         m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
         static_cast<INT>(m_backBufferIndex), m_rtvDescriptorSize);
     CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
@@ -105,8 +107,8 @@ void Game::Clear()
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
     // Set the viewport and scissor rect.
-    D3D12_VIEWPORT viewport = { 0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
-    D3D12_RECT scissorRect = { 0, 0, static_cast<LONG>(m_outputWidth), static_cast<LONG>(m_outputHeight) };
+    const D3D12_VIEWPORT viewport = { 0.0f, 0.0f, static_cast<float>(m_outputWidth), static_cast<float>(m_outputHeight), D3D12_MIN_DEPTH, D3D12_MAX_DEPTH };
+    const D3D12_RECT scissorRect = { 0, 0, static_cast<LONG>(m_outputWidth), static_cast<LONG>(m_outputHeight) };
     m_commandList->RSSetViewports(1, &viewport);
     m_commandList->RSSetScissorRects(1, &scissorRect);
 }
@@ -115,7 +117,9 @@ void Game::Clear()
 void Game::Present()
 {
     // Transition the render target to the state that allows it to be presented to the display.
-    D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(m_renderTargets[m_backBufferIndex].Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+    const D3D12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
+        m_renderTargets[m_backBufferIndex].Get(),
+        D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
     m_commandList->ResourceBarrier(1, &barrier);
 
     // Send the command list off to the GPU for processing.
@@ -315,8 +319,8 @@ void Game::CreateResources()
         m_fenceValues[n] = m_fenceValues[m_backBufferIndex];
     }
 
-    const DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
-    const DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D32_FLOAT;
+    constexpr DXGI_FORMAT backBufferFormat = DXGI_FORMAT_B8G8R8A8_UNORM;
+    constexpr DXGI_FORMAT depthBufferFormat = DXGI_FORMAT_D32_FLOAT;
     const UINT backBufferWidth = static_cast<UINT>(m_outputWidth);
     const UINT backBufferHeight = static_cast<UINT>(m_outputHeight);
 
@@ -384,7 +388,7 @@ void Game::CreateResources()
         swprintf_s(name, L"Render target %u", n);
         m_renderTargets[n]->SetName(name);
 
-        CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(
+        const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(
             m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
             static_cast<INT>(n), m_rtvDescriptorSize);
         m_d3dDevice->CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvDescriptor);
@@ -395,7 +399,7 @@ void Game::CreateResources()
 
     // Allocate a 2-D surface as the depth/stencil buffer and create a depth/stencil view
     // on this surface.
-    CD3DX12_HEAP_PROPERTIES depthHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
+    const CD3DX12_HEAP_PROPERTIES depthHeapProperties(D3D12_HEAP_TYPE_DEFAULT);
 
     D3D12_RESOURCE_DESC depthStencilDesc = CD3DX12_RESOURCE_DESC::Tex2D(
         depthBufferFormat,
