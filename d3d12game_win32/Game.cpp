@@ -442,7 +442,7 @@ void Game::WaitForGpu() noexcept
             // Wait until the Signal has been processed.
             if (SUCCEEDED(m_fence->SetEventOnCompletion(fenceValue, m_fenceEvent.Get())))
             {
-                WaitForSingleObjectEx(m_fenceEvent.Get(), INFINITE, FALSE);
+                std::ignore = WaitForSingleObjectEx(m_fenceEvent.Get(), INFINITE, FALSE);
 
                 // Increment the fence value for the current frame.
                 m_fenceValues[m_backBufferIndex]++;
@@ -464,7 +464,7 @@ void Game::MoveToNextFrame()
     if (m_fence->GetCompletedValue() < m_fenceValues[m_backBufferIndex])
     {
         DX::ThrowIfFailed(m_fence->SetEventOnCompletion(m_fenceValues[m_backBufferIndex], m_fenceEvent.Get()));
-        WaitForSingleObjectEx(m_fenceEvent.Get(), INFINITE, FALSE);
+        std::ignore = WaitForSingleObjectEx(m_fenceEvent.Get(), INFINITE, FALSE);
     }
 
     // Set the fence value for the next frame.
