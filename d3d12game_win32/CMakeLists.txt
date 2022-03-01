@@ -50,12 +50,16 @@ if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
 endif()
 
-if ((NOT WIN32) OR VCPKG_TOOLCHAIN)
+if (VCPKG_TOOLCHAIN)
     message("INFO: Using VCPKG for DirectX-Headers and DirectXMath.")
     find_package(directx-headers CONFIG REQUIRED)
     find_package(directxmath CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX-Headers Microsoft::DirectXMath)
     target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
+
+    # Uncomment if using the DirectX Tool Kit
+    # find_package(directxtk12 CONFIG REQUIRED)
+    # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK12)
 endif()
 
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )

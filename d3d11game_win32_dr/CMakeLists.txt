@@ -54,6 +54,10 @@ if (VCPKG_TOOLCHAIN)
     message("INFO: Using VCPKG for DirectXMath.")
     find_package(directxmath CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXMath)
+
+    # Uncomment if using the DirectX Tool Kit
+    # find_package(directxtk CONFIG REQUIRED)
+    # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK)
 endif()
 
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
