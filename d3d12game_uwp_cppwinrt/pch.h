@@ -46,6 +46,9 @@
 #include "winrt/Windows.UI.Input.h"
 #include "winrt/Windows.UI.ViewManagement.h"
 
+// If using the DirectX Tool Kit for DX12, uncomment this line:
+//#include "GraphicsMemory.h"
+
 namespace DX
 {
     inline void ThrowIfFailed(HRESULT hr)
