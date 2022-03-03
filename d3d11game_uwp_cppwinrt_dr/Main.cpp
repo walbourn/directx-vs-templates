@@ -20,6 +20,11 @@ using namespace DirectX;
 void ExitGame() noexcept;
 void GetWindowBounds(_In_ ::IUnknown* window, _Out_ RECT* rect);
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wcovered-switch-default"
+#pragma clang diagnostic ignored "-Wswitch-enum"
+#endif
+
 namespace
 {
     inline int ConvertDipsToPixels(float dips, float dpi) noexcept
@@ -154,7 +159,7 @@ protected:
     {
         if (args.Kind() == ActivationKind::Launch)
         {
-            auto launchArgs = (const LaunchActivatedEventArgs*)(&args);
+            auto launchArgs = reinterpret_cast<const LaunchActivatedEventArgs*>(&args);
 
             if (launchArgs->PrelaunchActivated())
             {
