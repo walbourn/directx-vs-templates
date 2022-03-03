@@ -382,8 +382,13 @@ int WINAPI wWinMain(
         throw std::runtime_error("XMVerifyCPUSupport");
     }
 
+    winrt::init_apartment();
+
     auto viewProviderFactory = winrt::make<ViewProviderFactory>();
     CoreApplication::Run(viewProviderFactory);
+
+    winrt::uninit_apartment();
+
     return 0;
 }
 
