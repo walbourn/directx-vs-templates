@@ -1,14 +1,14 @@
 cmake_minimum_required (VERSION 3.11)
 
-project (CMakeDirect3DGameDR
-  DESCRIPTION "CMake example for Direct3D 11 Game (Win32) w/ DeviceResources"
+project(CMakeDirect3DGameDR
+  DESCRIPTION "CMake example for Direct3D 11 Game (UWP) w/ DeviceResources"
   LANGUAGES CXX)
 
 option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 
 option(ENABLE_CODE_ANALYSIS "Use Static Code Analysis on build" OFF)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -33,11 +33,7 @@ if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
-    d3d11.lib dxgi.lib dxguid.lib uuid.lib
-    kernel32.lib user32.lib
-    comdlg32.lib advapi32.lib shell32.lib
-    ole32.lib oleaut32.lib
-)
+    d3d11.lib dxgi.lib dxguid.lib uuid.lib)
 
 target_link_options(${PROJECT_NAME} PRIVATE /DYNAMICBASE /NXCOMPAT)
 
@@ -67,6 +63,8 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
         "-Wno-exit-time-destructors" "-Wno-global-constructors" "-Wno-language-extension-token"
         "-Wno-missing-prototypes" "-Wno-missing-variable-declarations" "-Wno-reserved-id-macro")
 
+    target_compile_definitions(${PROJECT_NAME} PRIVATE _SILENCE_CLANG_COROUTINE_MESSAGE)
+
     if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-unused-value")
     endif()
@@ -74,7 +72,11 @@ endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     target_compile_options(${PROJECT_NAME} PRIVATE
          /permissive- /Zc:__cplusplus
-         "/wd4061" "/wd4365" "/wd4514" "/wd4571" "/wd4668" "/wd4710" "/wd4820" "/wd5039" "/wd5045")
+         "/wd4061" "/wd4265" "/wd4297" "/wd4355" "/wd4365" "/wd4371" "/wd4514" "/wd4555"
+         "/wd4571" "/wd4623" "/wd4625" "/wd4626" "/wd4668" "/wd4710" "/wd4820" "/wd4946"
+         "/wd5026" "/wd5027" "/wd5039" "/wd5045" "/wd5204" "/wd5220")
+
+    target_compile_options(${PROJECT_NAME} PRIVATE /await)
 
     if(ENABLE_CODE_ANALYSIS)
         target_compile_options(${PROJECT_NAME} PRIVATE /analyze)
@@ -90,7 +92,31 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
 endif()
 
 if(WIN32)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE _UNICODE UNICODE _WIN32_WINNT=0x0601)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE _WIN32_WINNT=0x0A00 WINAPI_FAMILY=WINAPI_FAMILY_APP)
 endif()
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+# The Package.appxmanifest works for development purposes, but is currently missing
+# Identity ProcessorArchitecture, TargetDeviceFamily MaxVersionTested, and the
+# Dependencies block for the C/C++ Runtime.
+# http://go.microsoft.com/fwlink/?LinkID=241727
+configure_file(Package.appxmanifest AppxManifest.xml @ONLY)
+
+add_custom_command(
+  TARGET ${PROJECT_NAME} POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy
+    ${CMAKE_CURRENT_BINARY_DIR}/AppxManifest.xml
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+  COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_CURRENT_SOURCE_DIR}/Assets
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/Assets
+    )
+
+# Loose install from PowerShell
+# Add-AppxPackage -Register <cmake_binary_dir>\bin\CMake\AppxManifest.xml
+#
+# Visual Studio: Debug -> Other Debug Targets -> Debug Installed App Package...
+#
+# Remove from PowerShell
+# Get-AppxPackage -Name <guid-in-package.appxmanifest> | Remove-AppxPackage

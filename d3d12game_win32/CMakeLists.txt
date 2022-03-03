@@ -81,7 +81,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
          "/wd4265" "/wd4625" "/wd4626" "/wd4986" "/wd5204" "/wd5220")
 
     if(ENABLE_CODE_ANALYSIS)
-       target_compile_options(${PROJECT_NAME} PRIVATE /analyze)
+        target_compile_options(${PROJECT_NAME} PRIVATE /analyze)
     endif()
 
     if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.26)
