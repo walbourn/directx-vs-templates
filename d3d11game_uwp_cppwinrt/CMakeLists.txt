@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.11)
+cmake_minimum_required (VERSION 3.13)
 
 project(CMakeDirect3DGame
   DESCRIPTION "CMake example for Direct3D 11 Game (UWP)"
@@ -33,8 +33,6 @@ endif()
 target_link_libraries(${PROJECT_NAME} PRIVATE
     d3d11.lib dxgi.lib dxguid.lib uuid.lib)
 
-target_link_options(${PROJECT_NAME} PRIVATE /DYNAMICBASE /NXCOMPAT)
-
 if(MSVC)
     # Use max Warning Level 
     string(REPLACE "/W3 " "/Wall " CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
@@ -42,6 +40,12 @@ if(MSVC)
     string(REPLACE "/W3 " "/Wall " CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
 
     target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast)
+
+    if((${CMAKE_SIZEOF_VOID_P} EQUAL 4) AND (NOT ${DIRECTX_ARCH} MATCHES "arm"))
+        target_compile_options(${PROJECT_NAME} PRIVATE /arch:SSE2)
+    endif()
+
+    target_link_options(${PROJECT_NAME} PRIVATE /DYNAMICBASE /NXCOMPAT)
 endif()
 
 if (VCPKG_TOOLCHAIN)
@@ -80,8 +84,16 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
         target_compile_options(${PROJECT_NAME} PRIVATE /analyze)
     endif()
 
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.24)
+        target_compile_options(${PROJECT_NAME} PRIVATE /ZH:SHA_256)
+    endif()
+
     if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.26)
         target_compile_options(${PROJECT_NAME} PRIVATE /Zc:preprocessor /wd5105)
+    endif()
+
+    if ((CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.27) AND (NOT (${DIRECTX_ARCH} MATCHES "arm(64)?")))
+        target_link_options(meshconvert PRIVATE /CETCOMPAT)
     endif()
 
     if(BUILD_TEST_TEMPLATE)
