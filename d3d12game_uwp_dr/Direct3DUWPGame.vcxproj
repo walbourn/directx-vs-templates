@@ -147,6 +147,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
@@ -166,6 +167,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
@@ -186,6 +188,7 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
@@ -206,6 +209,7 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
@@ -225,6 +229,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
@@ -244,6 +249,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
@@ -263,6 +269,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
@@ -282,6 +289,7 @@
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
