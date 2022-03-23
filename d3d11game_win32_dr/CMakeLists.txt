@@ -93,7 +93,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     endif()
 
     if ((CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.27) AND (NOT (${DIRECTX_ARCH} MATCHES "arm(64)?")))
-        target_link_options(meshconvert PRIVATE /CETCOMPAT)
+        target_link_options(${PROJECT_NAME} PRIVATE /CETCOMPAT)
     endif()
 
     if(BUILD_TEST_TEMPLATE)
