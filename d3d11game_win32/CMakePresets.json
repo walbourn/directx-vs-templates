@@ -52,7 +52,6 @@
     {
       "name": "VCPKG",
       "cacheVariables": {
-        "BUILD_TOOLS" : true,
         "CMAKE_TOOLCHAIN_FILE": {
           "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
           "type": "FILEPATH"
