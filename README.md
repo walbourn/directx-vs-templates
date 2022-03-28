@@ -15,7 +15,7 @@ The ``VSIX\Direct3DUWPGame.vsix`` supports Visual Studio 2017. Use of the Visual
 The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 October 2018 Update SDK (17763) or later.
 
 # VS 2019
-The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2019.
+The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2019. Use of Visual Studio 2019 16.4 update or later is recommended.
 
 The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 SDK (19041) or later.
 
@@ -28,6 +28,6 @@ The package requires the *Universal Windows Platform development* workload (``Mi
 Building the VSIX project requires VS 2017 or later with the *Visual Studio extension development* (``Microsoft.VisualStudio.Workload.VisualStudioExtension``) and *.NET desktop development* (``Microsoft.VisualStudio.Workload.ManagedDesktop``) workloads.
 
 # Notices
-All content and source code for this package are subject to the terms of the [MIT License](http://opensource.org/licenses/MIT).
+All content and source code for this package are subject to the terms of the [MIT License](https://github.com/walbourn/directx-vs-templates/blob/main/LICENSE).
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
