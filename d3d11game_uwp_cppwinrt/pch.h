@@ -28,6 +28,8 @@
 #include <dxgidebug.h>
 #endif
 
+#define WINRT_LEAN_AND_MEAN
+
 #include "winrt/Windows.ApplicationModel.h"
 #include "winrt/Windows.ApplicationModel.Core.h"
 #include "winrt/Windows.ApplicationModel.Activation.h"
