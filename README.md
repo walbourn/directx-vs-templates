@@ -15,7 +15,7 @@ The ``VSIX\Direct3DUWPGame.vsix`` supports Visual Studio 2017. Use of the Visual
 The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 October 2018 Update SDK (17763) or later.
 
 # VS 2019
-The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2019. Use of Visual Studio 2019 16.4 update or later is recommended.
+The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2019. Use of Visual Studio 2019 16.7 update or later is recommended.
 
 The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 SDK (19041) or later.
 
