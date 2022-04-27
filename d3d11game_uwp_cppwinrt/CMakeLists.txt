@@ -112,6 +112,10 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
         target_link_options(${PROJECT_NAME} PRIVATE /CETCOMPAT)
     endif()
 
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.32)
+        target_compile_options(${PROJECT_NAME} PRIVATE "/wd5246")
+    endif()
+
     if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "/wd4555")
     endif()
