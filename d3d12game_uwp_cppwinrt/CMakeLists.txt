@@ -59,7 +59,7 @@ if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /fp:fast /bigobj "$<$<NOT:$<CONFIG:DEBUG>>:/guard:cf>")
     target_link_options(${PROJECT_NAME} PRIVATE /DYNAMICBASE /NXCOMPAT /APPCONTAINER /MANIFEST:NO)
 
-    if((${CMAKE_SIZEOF_VOID_P} EQUAL 4) AND (NOT ${DIRECTX_ARCH} MATCHES "arm"))
+    if((${CMAKE_SIZEOF_VOID_P} EQUAL 4) AND (NOT ${DIRECTX_ARCH} MATCHES "^arm"))
         target_compile_options(${PROJECT_NAME} PRIVATE /arch:SSE2)
         target_link_options(${PROJECT_NAME} PRIVATE /SAFESEH)
     endif()
@@ -93,7 +93,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
 endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     target_compile_options(${PROJECT_NAME} PRIVATE
-         /permissive- /Zc:__cplusplus
+         /sdl /permissive- /Zc:__cplusplus
          "/wd4061" "/wd4265" "/wd4297" "/wd4355" "/wd4365" "/wd4371" "/wd4514" "/wd4555"
          "/wd4571" "/wd4623" "/wd4625" "/wd4626" "/wd4668" "/wd4710" "/wd4820" "/wd4946"
          "/wd5026" "/wd5027" "/wd5039" "/wd5045" "/wd5204" "/wd5220")
@@ -112,7 +112,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
         target_compile_options(${PROJECT_NAME} PRIVATE /Zc:preprocessor /wd5105)
     endif()
 
-    if ((CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.27) AND (NOT (${DIRECTX_ARCH} MATCHES "arm(64)?")))
+    if ((CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.27) AND (NOT (${DIRECTX_ARCH} MATCHES "^arm")))
         target_link_options(${PROJECT_NAME} PRIVATE /CETCOMPAT)
     endif()
 
