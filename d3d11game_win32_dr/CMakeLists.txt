@@ -8,7 +8,7 @@ option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 
 option(ENABLE_CODE_ANALYSIS "Use Static Code Analysis on build" OFF)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -40,7 +40,7 @@ add_executable(${PROJECT_NAME} WIN32
     pch.h
 )
 
-if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
+if ((${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16") AND (NOT MINGW))
     target_precompile_headers(${PROJECT_NAME} PRIVATE pch.h )
 endif()
 
@@ -66,7 +66,7 @@ if(MSVC)
     endif()
 endif()
 
-if (VCPKG_TOOLCHAIN)
+if (MINGW OR VCPKG_TOOLCHAIN)
     message("INFO: Using VCPKG for DirectXMath.")
     find_package(directxmath CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXMath)
@@ -86,6 +86,10 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
     if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-unused-value")
     endif()
+endif()
+if(MINGW)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wno-ignored-attributes)
+    target_link_options(${PROJECT_NAME} PRIVATE -municode)
 endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     target_compile_options(${PROJECT_NAME} PRIVATE
