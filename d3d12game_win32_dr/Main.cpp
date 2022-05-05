@@ -42,9 +42,14 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     if (!XMVerifyCPUSupport())
         return 1;
 
+#ifdef __MINGW32__
+    if (FAILED(CoInitializeEx(nullptr, COINITBASE_MULTITHREADED)))
+        return 1;
+#else
     Microsoft::WRL::Wrappers::RoInitializeWrapper initialize(RO_INIT_MULTITHREADED);
     if (FAILED(initialize))
         return 1;
+#endif
 
     g_game = std::make_unique<Game>();
 

@@ -8,7 +8,7 @@ option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 
 option(ENABLE_CODE_ANALYSIS "Use Static Code Analysis on build" OFF)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -39,7 +39,7 @@ add_executable(${PROJECT_NAME} WIN32
     d3dx12.h
 )
 
-if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16")
+if ((${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16") AND (NOT MINGW))
     target_precompile_headers(${PROJECT_NAME} PRIVATE pch.h )
 endif()
 
@@ -61,16 +61,25 @@ if(MSVC)
     target_link_options(${PROJECT_NAME} PRIVATE /DYNAMICBASE /NXCOMPAT)
 
     if((${CMAKE_SIZEOF_VOID_P} EQUAL 4) AND (NOT ${DIRECTX_ARCH} MATCHES "^arm"))
-        target_compile_options(${PROJECT_NAME} PRIVATE /arch:SSE2)
         target_link_options(${PROJECT_NAME} PRIVATE /SAFESEH)
     endif()
 endif()
 
-if (VCPKG_TOOLCHAIN)
+if(NOT ${DIRECTX_ARCH} MATCHES "^arm")
+    if (${CMAKE_SIZEOF_VOID_P} EQUAL "4")
+        set(ARCH_SSE2 $<$<CXX_COMPILER_ID:MSVC>:/arch:SSE2> $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-msse2>)
+    else()
+        set(ARCH_SSE2 $<$<NOT:$<CXX_COMPILER_ID:MSVC>>:-msse2>)
+    endif()
+
+    target_compile_options(${PROJECT_NAME} PRIVATE ${ARCH_SSE2})
+endif()
+
+if (MINGW OR VCPKG_TOOLCHAIN)
     message("INFO: Using VCPKG for DirectX-Headers and DirectXMath.")
     find_package(directx-headers CONFIG REQUIRED)
     find_package(directxmath CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX-Headers Microsoft::DirectXMath)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX-Headers Microsoft::DirectX-Guids Microsoft::DirectXMath)
     target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
 
     # Uncomment if using the DirectX Tool Kit
@@ -89,6 +98,10 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
     if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-unused-value")
     endif()
+endif()
+if(MINGW)
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wno-ignored-attributes)
+    target_link_options(${PROJECT_NAME} PRIVATE -municode)
 endif()
 if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     target_compile_options(${PROJECT_NAME} PRIVATE
