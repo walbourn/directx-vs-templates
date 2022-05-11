@@ -85,7 +85,7 @@ if (MINGW OR VCPKG_TOOLCHAIN)
     # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK)
 endif()
 
-if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
+if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM" )
     target_compile_options(${PROJECT_NAME} PRIVATE
         -Wpedantic -Wextra
         "-Wno-c++98-compat" "-Wno-c++98-compat-pedantic"
@@ -124,6 +124,9 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "/wd4555")
     endif()
+endif()
+if ( CMAKE_CXX_COMPILER_ID MATCHES "^Intel$" )
+    target_compile_options(${PROJECT_NAME} PRIVATE /Qwd161)
 endif()
 
 if(WIN32)
