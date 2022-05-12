@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Windows;
+using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.VisualStudio.TemplateWizard;
 
@@ -31,7 +31,7 @@ namespace Wizards
             else
             {
                 MessageBox.Show(string.Format("ERROR: Unrecognized Visual Studio version\n{0}\n{1}", dte2.Version, regRoot),
-                    "Direct3D Game Wizard", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    "Direct3D Game Wizard", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
 

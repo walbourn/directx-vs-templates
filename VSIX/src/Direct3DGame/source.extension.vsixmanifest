@@ -13,19 +13,19 @@
         <Tags>directx, direct3d, C++, Gaming</Tags>
     </Metadata>
     <Installation>
-        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[15.0,17.0)">
+        <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[16.0,17.0)">
             <ProductArchitecture>x86</ProductArchitecture>
         </InstallationTarget>
         <InstallationTarget Id="Microsoft.VisualStudio.Pro" Version="[17.0,18.0)">
             <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
-        <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[15.0,17.0)">
+        <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[16.0,17.0)">
             <ProductArchitecture>x86</ProductArchitecture>
         </InstallationTarget>
         <InstallationTarget Id="Microsoft.VisualStudio.Enterprise" Version="[17.0,18.0)">
             <ProductArchitecture>amd64</ProductArchitecture>
         </InstallationTarget>
-        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[15.0,17.0)">
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0,17.0)">
             <ProductArchitecture>x86</ProductArchitecture>
         </InstallationTarget>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,18.0)">
@@ -51,9 +51,9 @@
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Wizards" Path="|Wizards|" AssemblyName="|Wizards;AssemblyName|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,18.0)" DisplayName="Visual Studio core editor" />
-        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.CoreIde" Version="[15.0,18.0)" DisplayName="C++ core features" />
-        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.Tools.x86.x64" Version="[15.0,18.0)" DisplayName="Visual C++ x86/x64 Compiler Toolset" />
-        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.UWP.VC" Version="[15.0,18.0)"  DisplayName="Visual C++ UWP Toolset" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,18.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.CoreIde" Version="[16.0,18.0)" DisplayName="C++ core features" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.Tools.x86.x64" Version="[16.0,18.0)" DisplayName="Visual C++ x86/x64 Compiler Toolset" />
+        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.UWP.VC" Version="[16.0,18.0)"  DisplayName="Visual C++ UWP Toolset" />
     </Prerequisites>
 </PackageManifest>
