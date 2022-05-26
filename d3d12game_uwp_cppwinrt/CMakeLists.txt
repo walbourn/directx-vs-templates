@@ -2,7 +2,8 @@ cmake_minimum_required (VERSION 3.13)
 
 project(CMakeDirect3D12Game
   DESCRIPTION "CMake example for Direct3D 12 Game (UWP)"
-  LANGUAGES CXX)
+  LANGUAGES CXX
+  VERSION 1.0.0.0)
 
 option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 
@@ -131,10 +132,9 @@ endif()
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
-# The Package.appxmanifest works for development purposes, but is currently missing
-# Identity ProcessorArchitecture, TargetDeviceFamily MaxVersionTested, and the
-# Dependencies block for the C/C++ Runtime.
-# http://go.microsoft.com/fwlink/?LinkID=241727
+set(UWP_MIN_VERSION 10.0.17763.0)
+set(UWP_MAX_TESTED_VERSION 10.0.19041.0)
+set(UWP_MIN_CRT_VERSION 14.0.30704.0)
 configure_file(Package.appxmanifest AppxManifest.xml @ONLY)
 
 add_custom_command(

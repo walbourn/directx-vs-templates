@@ -100,13 +100,22 @@ $locale = Get-WinSystemLocale
 foreach ($file in $files) {
     $target = $targetdir + "\" + [System.IO.Path]::GetFileName($file)
     $i = Get-Content $file -Raw
-    $o = $i.Replace("`$projectname$", $projectname)
+    $o = $i.Replace("Version=`"1.0.0.0`" />", "Version=`"@CMAKE_PROJECT_VERSION@`" `
+    ProcessorArchitecture=`"@DIRECTX_ARCH@`" />")
+    $o = $o.Replace("<DisplayName>`$projectname$</DisplayName>", "<DisplayName>@PROJECT_NAME@</DisplayName>")
+    $o = $o.Replace("DisplayName=`"`$projectname$`"", "DisplayName=`"@PROJECT_NAME@`"")
+    $o = $o.Replace("Description=`"`$projectname$`"", "Description=`"@CMAKE_PROJECT_DESCRIPTION@`"")
+    $o = $o.Replace("EntryPoint=`"`$safeprojectname$.App`"", "EntryPoint=`"@PROJECT_NAME@.App`"")
+    $o = $o.Replace("`$projectname$", $projectname)
     $o = $o.Replace("`$safeprojectname$", $projectname)
     $o = $o.Replace("`$guid9$", $guid)
     $o = $o.Replace("`$XmlEscapedPublisherDistinguishedName$", "CN=$Env:USERNAME")
     $o = $o.Replace("`$XmlEscapedPublisher$", "$Env:USERNAME")
     $o = $o.Replace("x-generate", $locale)
     $o = $o.Replace("`$targetnametoken$", "@PROJECT_NAME@")
+    $o = $o.Replace("<TargetDeviceFamily Name=`"Windows.Universal`" MinVersion=`"10.0.0.0`" MaxVersionTested=`"10.0.0.0`" />",
+"<TargetDeviceFamily Name=`"Windows.Universal`" MinVersion=`"@UWP_MIN_VERSION@`" MaxVersionTested=`"@UWP_MAX_TESTED_VERSION@`" /> `
+    <PackageDependency Name=`"Microsoft.VCLibs.140.00.Debug`" MinVersion=`"@UWP_MIN_CRT_VERSION@`" Publisher=`"CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US`" />")
 
     $o | Set-Content -Path $target -NoNewline
 }
