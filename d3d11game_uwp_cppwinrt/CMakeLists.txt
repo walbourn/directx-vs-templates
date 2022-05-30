@@ -66,9 +66,10 @@ if(MSVC)
 endif()
 
 if (VCPKG_TOOLCHAIN)
-    message("INFO: Using VCPKG for DirectXMath.")
+    message("INFO: Using VCPKG for C++/WinRT and DirectXMath.")
+    find_package(cppwinrt CONFIG REQUIRED)
     find_package(directxmath CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXMath)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::CppWinRT Microsoft::DirectXMath)
 
     # Uncomment if using the DirectX Tool Kit
     # find_package(directxtk CONFIG REQUIRED)
