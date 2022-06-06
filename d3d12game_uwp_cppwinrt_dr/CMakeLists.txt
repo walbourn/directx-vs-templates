@@ -69,10 +69,11 @@ if(MSVC)
 endif()
 
 if (VCPKG_TOOLCHAIN)
-    message("INFO: Using VCPKG for DirectX-Headers and DirectXMath.")
+    message("INFO: Using VCPKG for C++/WinRT, DirectX-Headers, and DirectXMath.")
+    find_package(cppwinrt CONFIG REQUIRED)
     find_package(directx-headers CONFIG REQUIRED)
     find_package(directxmath CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX-Headers Microsoft::DirectXMath)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::CppWinRT Microsoft::DirectX-Headers Microsoft::DirectXMath)
     target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
 
     # Uncomment if using the DirectX Tool Kit
