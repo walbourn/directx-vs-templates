@@ -280,6 +280,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
+      <GuardEHContMetadata>true</GuardEHContMetadata>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
@@ -330,6 +331,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/Zc:__cplusplus $if$('$platformtoolset$' == 'v142')/ZH:SHA_256 $endif$%(AdditionalOptions)</AdditionalOptions>
+      <GuardEHContMetadata>true</GuardEHContMetadata>
     </ClCompile>
     <FXCompile>
       <ShaderModel>6.0</ShaderModel>
