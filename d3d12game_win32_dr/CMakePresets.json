@@ -124,7 +124,7 @@
       },
       "cacheVariables": {
         "VCPKG_TARGET_TRIPLET": "x86-mingw-static",
-        "VCPKG_HOST_TRIPLET": "x86-mingw-static"
+        "VCPKG_HOST_TRIPLET": "x64-mingw-static"
       }
     },
     {

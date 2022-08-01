@@ -87,6 +87,11 @@ if (MINGW OR VCPKG_TOOLCHAIN)
     # Uncomment if using the DirectX Tool Kit
     # find_package(directxtk12 CONFIG REQUIRED)
     # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK12)
+
+    # Uncomment if using the DXC compiler
+    # find_package(directx-dxc CONFIG REQUIRED)
+    # DIRECTX_DXC_TOOL is the compiler itself
+    # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXShaderCompiler)
 endif()
 
 if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM" )
