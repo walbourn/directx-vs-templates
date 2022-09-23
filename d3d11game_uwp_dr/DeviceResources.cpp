@@ -436,21 +436,15 @@ void DeviceResources::CreateWindowSizeDependentResources()
             m_depthStencil.ReleaseAndGetAddressOf()
             ));
 
-        CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
         ThrowIfFailed(m_d3dDevice->CreateDepthStencilView(
             m_depthStencil.Get(),
-            &depthStencilViewDesc,
+            nullptr,
             m_d3dDepthStencilView.ReleaseAndGetAddressOf()
             ));
     }
 
     // Set the 3D rendering viewport to target the entire window.
-    m_screenViewport = CD3D11_VIEWPORT(
-        0.0f,
-        0.0f,
-        static_cast<float>(backBufferWidth),
-        static_cast<float>(backBufferHeight)
-        );
+    m_screenViewport = { 0.0f, 0.0f, static_cast<float>(backBufferWidth), static_cast<float>(backBufferHeight), 0.f, 1.f };
 }
 
 // This method is called when the CoreWindow is created (or re-created).
