@@ -10,7 +10,7 @@ There are two versions of each template. The DR version adds a ``DeviceResources
 For the UWP templates, there are C++/WinRT variants that use [C++ Windows Runtime language projections](https://docs.microsoft.com/en-us/windows/uwp/cpp-and-winrt-apis/) rather than the C++/CX language extensions (``/ZW``).
 
 # VS 2019
-The ``VSIX\Direct3DUWPGame.vsix`` suports VS 2019. Use of Visual Studio 2019 16.9 update or later is recommended.
+The ``VSIX\Direct3DUWPGame.vsix`` suports VS 2019. Use of Visual Studio 2019 16.11 update is recommended.
 
 The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 SDK (19041) or later.
 
