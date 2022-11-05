@@ -172,6 +172,9 @@ void Game::OnResuming()
 
 void Game::OnWindowSizeChanged(int width, int height)
 {
+    if (!m_window)
+        return;
+
     m_outputWidth = std::max(width, 1);
     m_outputHeight = std::max(height, 1);
 
