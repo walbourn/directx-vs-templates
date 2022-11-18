@@ -4998,7 +4998,7 @@ public:
 #endif // NTDDI_WIN10_NI || USING_D3D12_AGILITY_SDK
 
 
-#if (defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)) && !defined(D3DX12_NO_CHECK_FEATURE_SUPPORT_CLASS)
+#ifndef D3DX12_NO_CHECK_FEATURE_SUPPORT_CLASS
 
 //================================================================================================
 // D3DX12 Check Feature Support
@@ -5111,9 +5111,11 @@ public: // Function declaration
     D3D12_RENDER_PASS_TIER RenderPassesTier() const noexcept;
     D3D12_RAYTRACING_TIER RaytracingTier() const noexcept;
 
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
     // DISPLAYABLE
     BOOL DisplayableTexture() const noexcept;
     // SharedResourceCompatibilityTier handled in D3D12Options4
+#endif
 
     // D3D12_OPTIONS6
     BOOL AdditionalShadingRatesSupported() const noexcept;
@@ -5135,6 +5137,7 @@ public: // Function declaration
     // PROTECTED_RESOURCE_SESSION_TYPES
     std::vector<GUID> ProtectedResourceSessionTypes(UINT NodeIndex = 0) const;
 
+#if defined(NTDDI_WIN10_FE) || defined(USING_D3D12_AGILITY_SDK)
     // D3D12_OPTIONS8
     BOOL UnalignedBlockTexturesSupported() const noexcept;
 
@@ -5145,14 +5148,16 @@ public: // Function declaration
     BOOL AtomicInt64OnGroupSharedSupported() const noexcept;
     BOOL DerivativesInMeshAndAmplificationShadersSupported() const noexcept;
     D3D12_WAVE_MMA_TIER WaveMMATier() const noexcept;
+#endif
 
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
     // D3D12_OPTIONS10
     BOOL VariableRateShadingSumCombinerSupported() const noexcept;
     BOOL MeshShaderPerPrimitiveShadingRateSupported() const noexcept;
 
     // D3D12_OPTIONS11
     BOOL AtomicInt64OnDescriptorHeapResourceSupported() const noexcept;
-
+#endif
 
 #if defined(NTDDI_WIN10_NI) || defined(USING_D3D12_AGILITY_SDK)
     // D3D12_OPTIONS12
@@ -5233,15 +5238,21 @@ private: // Member data
     std::vector<D3D12_FEATURE_DATA_SERIALIZATION> m_dSerialization; // Cat2 NodeIndex
     D3D12_FEATURE_DATA_CROSS_NODE m_dCrossNode;
     D3D12_FEATURE_DATA_D3D12_OPTIONS5 m_dOptions5;
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
     D3D12_FEATURE_DATA_DISPLAYABLE m_dDisplayable;
+#endif
     D3D12_FEATURE_DATA_D3D12_OPTIONS6 m_dOptions6;
     D3D12_FEATURE_DATA_D3D12_OPTIONS7 m_dOptions7;
     std::vector<D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_TYPE_COUNT> m_dProtectedResourceSessionTypeCount; // Cat2 NodeIndex
     std::vector<ProtectedResourceSessionTypesLocal> m_dProtectedResourceSessionTypes; // Cat3
+#if defined(NTDDI_WIN10_FE) || defined(USING_D3D12_AGILITY_SDK)
     D3D12_FEATURE_DATA_D3D12_OPTIONS8 m_dOptions8;
     D3D12_FEATURE_DATA_D3D12_OPTIONS9 m_dOptions9;
+#endif
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
     D3D12_FEATURE_DATA_D3D12_OPTIONS10 m_dOptions10;
     D3D12_FEATURE_DATA_D3D12_OPTIONS11 m_dOptions11;
+#endif
 #if defined(NTDDI_WIN10_NI) || defined(USING_D3D12_AGILITY_SDK)
     D3D12_FEATURE_DATA_D3D12_OPTIONS12 m_dOptions12;
     D3D12_FEATURE_DATA_D3D12_OPTIONS13 m_dOptions13;
@@ -5305,13 +5316,19 @@ inline CD3DX12FeatureSupport::CD3DX12FeatureSupport() noexcept
 , m_dOptions4{}
 , m_dCrossNode{}
 , m_dOptions5{}
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
 , m_dDisplayable{}
+#endif
 , m_dOptions6{}
 , m_dOptions7{}
+#if defined(NTDDI_WIN10_FE) || defined(USING_D3D12_AGILITY_SDK)
 , m_dOptions8{}
 , m_dOptions9{}
+#endif
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
 , m_dOptions10{}
 , m_dOptions11{}
+#endif
 #if defined(NTDDI_WIN10_NI) || defined(USING_D3D12_AGILITY_SDK)
 , m_dOptions12{}
 , m_dOptions13{}
@@ -5415,11 +5432,13 @@ inline HRESULT CD3DX12FeatureSupport::Init(ID3D12Device* pDevice)
         m_dOptions5.RaytracingTier = D3D12_RAYTRACING_TIER_NOT_SUPPORTED;
     }
 
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_DISPLAYABLE, &m_dDisplayable, sizeof(m_dDisplayable))))
     {
         m_dDisplayable.DisplayableTexture = false;
         m_dDisplayable.SharedResourceCompatibilityTier = D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_0;
     }
+#endif
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS6, &m_dOptions6, sizeof(m_dOptions6))))
     {
@@ -5436,6 +5455,7 @@ inline HRESULT CD3DX12FeatureSupport::Init(ID3D12Device* pDevice)
         m_dOptions7.SamplerFeedbackTier = D3D12_SAMPLER_FEEDBACK_TIER_NOT_SUPPORTED;
     }
 
+#if defined(NTDDI_WIN10_FE) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS8, &m_dOptions8, sizeof(m_dOptions8))))
     {
         m_dOptions8.UnalignedBlockTexturesSupported = false;
@@ -5450,7 +5470,9 @@ inline HRESULT CD3DX12FeatureSupport::Init(ID3D12Device* pDevice)
         m_dOptions9.DerivativesInMeshAndAmplificationShadersSupported = false;
         m_dOptions9.WaveMMATier = D3D12_WAVE_MMA_TIER_NOT_SUPPORTED;
     }
+#endif
 
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS10, &m_dOptions10, sizeof(m_dOptions10))))
     {
         m_dOptions10.MeshShaderPerPrimitiveShadingRateSupported = false;
@@ -5461,6 +5483,7 @@ inline HRESULT CD3DX12FeatureSupport::Init(ID3D12Device* pDevice)
     {
         m_dOptions11.AtomicInt64OnDescriptorHeapResourceSupported = false;
     }
+#endif
 
 #if defined(NTDDI_WIN10_NI) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS12, &m_dOptions12, sizeof(m_dOptions12))))
@@ -5767,9 +5790,11 @@ FEATURE_SUPPORT_GET(BOOL, m_dOptions5, SRVOnlyTiledResourceTier3);
 FEATURE_SUPPORT_GET(D3D12_RENDER_PASS_TIER, m_dOptions5, RenderPassesTier);
 FEATURE_SUPPORT_GET(D3D12_RAYTRACING_TIER, m_dOptions5, RaytracingTier);
 
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
 // 28: Displayable
 FEATURE_SUPPORT_GET(BOOL, m_dDisplayable, DisplayableTexture);
 // SharedResourceCompatibilityTier handled in D3D12Options4
+#endif
 
 // 30: D3D12 Options6
 FEATURE_SUPPORT_GET(BOOL, m_dOptions6, AdditionalShadingRatesSupported);
@@ -5795,6 +5820,7 @@ FEATURE_SUPPORT_GET_NODE_INDEXED_NAME(UINT, m_dProtectedResourceSessionTypeCount
 // 34: Protected Resource Session Types
 FEATURE_SUPPORT_GET_NODE_INDEXED_NAME(std::vector<GUID>, m_dProtectedResourceSessionTypes, TypeVec, ProtectedResourceSessionTypes);
 
+#if defined(NTDDI_WIN10_FE) || defined(USING_D3D12_AGILITY_SDK)
 // 36: Options8
 FEATURE_SUPPORT_GET(BOOL, m_dOptions8, UnalignedBlockTexturesSupported);
 
@@ -5805,13 +5831,16 @@ FEATURE_SUPPORT_GET(BOOL, m_dOptions9, AtomicInt64OnTypedResourceSupported);
 FEATURE_SUPPORT_GET(BOOL, m_dOptions9, AtomicInt64OnGroupSharedSupported);
 FEATURE_SUPPORT_GET(BOOL, m_dOptions9, DerivativesInMeshAndAmplificationShadersSupported);
 FEATURE_SUPPORT_GET(D3D12_WAVE_MMA_TIER, m_dOptions9, WaveMMATier);
+#endif
 
+#if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
 // 39: Options10
 FEATURE_SUPPORT_GET(BOOL, m_dOptions10, VariableRateShadingSumCombinerSupported);
 FEATURE_SUPPORT_GET(BOOL, m_dOptions10, MeshShaderPerPrimitiveShadingRateSupported);
 
 // 40: Options11
 FEATURE_SUPPORT_GET(BOOL, m_dOptions11, AtomicInt64OnDescriptorHeapResourceSupported);
+#endif
 
 #if defined(NTDDI_WIN10_NI) || defined(USING_D3D12_AGILITY_SDK)
 // 41: Options12
@@ -5859,7 +5888,9 @@ inline HRESULT CD3DX12FeatureSupport::QueryHighestShaderModel()
 #if defined(NTDDI_WIN10_CU) || defined(USING_D3D12_AGILITY_SDK)
         D3D_SHADER_MODEL_6_8,
 #endif
+#if defined(NTDDI_WIN10_FE) || defined(USING_D3D12_AGILITY_SDK)
         D3D_SHADER_MODEL_6_7,
+#endif
         D3D_SHADER_MODEL_6_6,
         D3D_SHADER_MODEL_6_5,
         D3D_SHADER_MODEL_6_4,
@@ -5938,7 +5969,9 @@ inline HRESULT CD3DX12FeatureSupport::QueryHighestFeatureLevel()
     // Needs to be updated for future feature levels
     const D3D_FEATURE_LEVEL allLevels[] =
     {
+#if defined(NTDDI_WIN10_FE) || defined(USING_D3D12_AGILITY_SDK)
         D3D_FEATURE_LEVEL_12_2,
+#endif
         D3D_FEATURE_LEVEL_12_1,
         D3D_FEATURE_LEVEL_12_0,
         D3D_FEATURE_LEVEL_11_1,
