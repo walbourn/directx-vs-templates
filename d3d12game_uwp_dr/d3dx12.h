@@ -648,9 +648,6 @@ struct CD3DX12_HEAP_PROPERTIES : public D3D12_HEAP_PROPERTIES
     bool IsCPUAccessible() const noexcept
     {
         return Type == D3D12_HEAP_TYPE_UPLOAD || Type == D3D12_HEAP_TYPE_READBACK
-#if defined(NTDDI_WIN10_CU) || defined(USING_D3D12_AGILITY_SDK)
-            || Type == D3D12_HEAP_TYPE_GPU_UPLOAD
-#endif
             || (Type == D3D12_HEAP_TYPE_CUSTOM &&
                 (CPUPageProperty == D3D12_CPU_PAGE_PROPERTY_WRITE_COMBINE || CPUPageProperty == D3D12_CPU_PAGE_PROPERTY_WRITE_BACK));
     }
@@ -1835,13 +1832,6 @@ struct CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC : public D3D12_VERSIONED_ROOT_SIGNA
         Version = D3D_ROOT_SIGNATURE_VERSION_1_1;
         Desc_1_1 = o;
     }
-#if defined(NTDDI_WIN10_CU) || defined(USING_D3D12_AGILITY_SDK)
-    explicit CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC(const D3D12_ROOT_SIGNATURE_DESC2& o) noexcept
-    {
-        Version = D3D_ROOT_SIGNATURE_VERSION_1_2;
-        Desc_1_2 = o;
-    }
-#endif
     CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC(
         UINT numParameters,
         _In_reads_opt_(numParameters) const D3D12_ROOT_PARAMETER* _pParameters,
@@ -1916,24 +1906,6 @@ struct CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC : public D3D12_VERSIONED_ROOT_SIGNA
         desc.Desc_1_1.pStaticSamplers = _pStaticSamplers;
         desc.Desc_1_1.Flags = flags;
     }
-
-#if defined(NTDDI_WIN10_CU) || defined(USING_D3D12_AGILITY_SDK)
-    static inline void Init_1_2(
-        _Out_ D3D12_VERSIONED_ROOT_SIGNATURE_DESC& desc,
-        UINT numParameters,
-        _In_reads_opt_(numParameters) const D3D12_ROOT_PARAMETER1* _pParameters,
-        UINT numStaticSamplers = 0,
-        _In_reads_opt_(numStaticSamplers) const D3D12_STATIC_SAMPLER_DESC1* _pStaticSamplers = nullptr,
-        D3D12_ROOT_SIGNATURE_FLAGS flags = D3D12_ROOT_SIGNATURE_FLAG_NONE) noexcept
-    {
-        desc.Version = D3D_ROOT_SIGNATURE_VERSION_1_2;
-        desc.Desc_1_2.NumParameters = numParameters;
-        desc.Desc_1_2.pParameters = _pParameters;
-        desc.Desc_1_2.NumStaticSamplers = numStaticSamplers;
-        desc.Desc_1_2.pStaticSamplers = _pStaticSamplers;
-        desc.Desc_1_2.Flags = flags;
-    }
-#endif
 };
 
 //------------------------------------------------------------------------------------------------
@@ -2753,9 +2725,6 @@ inline HRESULT D3DX12SerializeVersionedRootSignature(
                     return D3D12SerializeRootSignature(&pRootSignatureDesc->Desc_1_0, D3D_ROOT_SIGNATURE_VERSION_1, ppBlob, ppErrorBlob);
 
                 case D3D_ROOT_SIGNATURE_VERSION_1_1:
-#if defined(NTDDI_WIN10_CU) || defined(USING_D3D12_AGILITY_SDK)
-                case D3D_ROOT_SIGNATURE_VERSION_1_2:
-#endif
                 {
                     HRESULT hr = S_OK;
                     const D3D12_ROOT_SIGNATURE_DESC1& desc_1_1 = pRootSignatureDesc->Desc_1_1;
@@ -2846,9 +2815,6 @@ inline HRESULT D3DX12SerializeVersionedRootSignature(
             break;
 
         case D3D_ROOT_SIGNATURE_VERSION_1_1:
-#if defined(NTDDI_WIN10_CU) || defined(USING_D3D12_AGILITY_SDK)
-        case D3D_ROOT_SIGNATURE_VERSION_1_2:
-#endif
             return D3D12SerializeVersionedRootSignature(pRootSignatureDesc, ppBlob, ppErrorBlob);
     }
 
@@ -5185,11 +5151,7 @@ public: // Function declaration
     BOOL DynamicIndexBufferStripCutSupported() const noexcept;
 
     // D3D12_OPTIONS16
-    BOOL GPUUploadHeapSupported() const noexcept;
     BOOL DynamicDepthBiasSupported() const noexcept;
-
-    // D3D12_OPTIONS17
-    BOOL NonNormalizedCoordinateSamplersSupported() const noexcept;
 #endif
 
 private: // Private structs and helpers declaration
@@ -5261,7 +5223,6 @@ private: // Member data
     D3D12_FEATURE_DATA_D3D12_OPTIONS14 m_dOptions14;
     D3D12_FEATURE_DATA_D3D12_OPTIONS15 m_dOptions15;
     D3D12_FEATURE_DATA_D3D12_OPTIONS16 m_dOptions16;
-    D3D12_FEATURE_DATA_D3D12_OPTIONS17 m_dOptions17;
 #endif
 };
 
@@ -5337,7 +5298,6 @@ inline CD3DX12FeatureSupport::CD3DX12FeatureSupport() noexcept
 , m_dOptions14{}
 , m_dOptions15{}
 , m_dOptions16{}
-, m_dOptions17{}
 #endif
 {}
 
@@ -5354,179 +5314,122 @@ inline HRESULT CD3DX12FeatureSupport::Init(ID3D12Device* pDevice)
     // Initialize static feature support data structures
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS, &m_dOptions, sizeof(m_dOptions))))
     {
-        m_dOptions.DoublePrecisionFloatShaderOps = false;
-        m_dOptions.OutputMergerLogicOp = false;
-        m_dOptions.MinPrecisionSupport = D3D12_SHADER_MIN_PRECISION_SUPPORT_NONE;
-        m_dOptions.TiledResourcesTier = D3D12_TILED_RESOURCES_TIER_NOT_SUPPORTED;
-        m_dOptions.ResourceBindingTier = static_cast<D3D12_RESOURCE_BINDING_TIER>(0);
-        m_dOptions.PSSpecifiedStencilRefSupported = false;
-        m_dOptions.TypedUAVLoadAdditionalFormats = false;
-        m_dOptions.ROVsSupported = false;
-        m_dOptions.ConservativeRasterizationTier = D3D12_CONSERVATIVE_RASTERIZATION_TIER_NOT_SUPPORTED;
-        m_dOptions.MaxGPUVirtualAddressBitsPerResource = 0;
-        m_dOptions.StandardSwizzle64KBSupported = false;
-        m_dOptions.CrossNodeSharingTier = D3D12_CROSS_NODE_SHARING_TIER_NOT_SUPPORTED;
-        m_dOptions.CrossAdapterRowMajorTextureSupported = false;
-        m_dOptions.VPAndRTArrayIndexFromAnyShaderFeedingRasterizerSupportedWithoutGSEmulation = false;
-        m_dOptions.ResourceHeapTier = static_cast<D3D12_RESOURCE_HEAP_TIER>(0);
+        m_dOptions = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_GPU_VIRTUAL_ADDRESS_SUPPORT, &m_dGPUVASupport, sizeof(m_dGPUVASupport))))
     {
-        m_dGPUVASupport.MaxGPUVirtualAddressBitsPerProcess = 0;
-        m_dGPUVASupport.MaxGPUVirtualAddressBitsPerResource = 0;
+        m_dGPUVASupport = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS1, &m_dOptions1, sizeof(m_dOptions1))))
     {
-        m_dOptions1.WaveOps = false;
-        m_dOptions1.WaveLaneCountMax = 0;
-        m_dOptions1.WaveLaneCountMin = 0;
-        m_dOptions1.TotalLaneCount = 0;
-        m_dOptions1.ExpandedComputeResourceStates = 0;
-        m_dOptions1.Int64ShaderOps = 0;
+        m_dOptions1 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS2, &m_dOptions2, sizeof(m_dOptions2))))
     {
-        m_dOptions2.DepthBoundsTestSupported = false;
-        m_dOptions2.ProgrammableSamplePositionsTier = D3D12_PROGRAMMABLE_SAMPLE_POSITIONS_TIER_NOT_SUPPORTED;
+        m_dOptions2 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_SHADER_CACHE, &m_dShaderCache, sizeof(m_dShaderCache))))
     {
-        m_dShaderCache.SupportFlags = D3D12_SHADER_CACHE_SUPPORT_NONE;
+        m_dShaderCache = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS3, &m_dOptions3, sizeof(m_dOptions3))))
     {
-        m_dOptions3.CopyQueueTimestampQueriesSupported = false;
-        m_dOptions3.CastingFullyTypedFormatSupported = false;
-        m_dOptions3.WriteBufferImmediateSupportFlags = D3D12_COMMAND_LIST_SUPPORT_FLAG_NONE;
-        m_dOptions3.ViewInstancingTier = D3D12_VIEW_INSTANCING_TIER_NOT_SUPPORTED;
-        m_dOptions3.BarycentricsSupported = false;
+        m_dOptions3 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_EXISTING_HEAPS, &m_dExistingHeaps, sizeof(m_dExistingHeaps))))
     {
-        m_dExistingHeaps.Supported = false;
+        m_dExistingHeaps = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS4, &m_dOptions4, sizeof(m_dOptions4))))
     {
-        m_dOptions4.MSAA64KBAlignedTextureSupported = false;
-        m_dOptions4.Native16BitShaderOpsSupported = false;
-        m_dOptions4.SharedResourceCompatibilityTier = D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_0;
+        m_dOptions4 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_CROSS_NODE, &m_dCrossNode, sizeof(m_dCrossNode))))
     {
-        m_dCrossNode.SharingTier = D3D12_CROSS_NODE_SHARING_TIER_NOT_SUPPORTED;
-        m_dCrossNode.AtomicShaderInstructions = false;
+        m_dCrossNode = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS5, &m_dOptions5, sizeof(m_dOptions5))))
     {
-        m_dOptions5.SRVOnlyTiledResourceTier3 = false;
-        m_dOptions5.RenderPassesTier = D3D12_RENDER_PASS_TIER_0;
-        m_dOptions5.RaytracingTier = D3D12_RAYTRACING_TIER_NOT_SUPPORTED;
+        m_dOptions5 = {};
     }
 
 #if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_DISPLAYABLE, &m_dDisplayable, sizeof(m_dDisplayable))))
     {
-        m_dDisplayable.DisplayableTexture = false;
-        m_dDisplayable.SharedResourceCompatibilityTier = D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_0;
+        m_dDisplayable = {};
     }
 #endif
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS6, &m_dOptions6, sizeof(m_dOptions6))))
     {
-        m_dOptions6.AdditionalShadingRatesSupported = false;
-        m_dOptions6.PerPrimitiveShadingRateSupportedWithViewportIndexing = false;
-        m_dOptions6.VariableShadingRateTier = D3D12_VARIABLE_SHADING_RATE_TIER_NOT_SUPPORTED;
-        m_dOptions6.ShadingRateImageTileSize = 0;
-        m_dOptions6.BackgroundProcessingSupported = false;
+        m_dOptions6 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS7, &m_dOptions7, sizeof(m_dOptions7))))
     {
-        m_dOptions7.MeshShaderTier = D3D12_MESH_SHADER_TIER_NOT_SUPPORTED;
-        m_dOptions7.SamplerFeedbackTier = D3D12_SAMPLER_FEEDBACK_TIER_NOT_SUPPORTED;
+        m_dOptions7 = {};
     }
 
 #if defined(NTDDI_WIN10_FE) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS8, &m_dOptions8, sizeof(m_dOptions8))))
     {
-        m_dOptions8.UnalignedBlockTexturesSupported = false;
+        m_dOptions8 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS9, &m_dOptions9, sizeof(m_dOptions9))))
     {
-        m_dOptions9.MeshShaderPipelineStatsSupported = false;
-        m_dOptions9.MeshShaderSupportsFullRangeRenderTargetArrayIndex = false;
-        m_dOptions9.AtomicInt64OnGroupSharedSupported = false;
-        m_dOptions9.AtomicInt64OnTypedResourceSupported = false;
-        m_dOptions9.DerivativesInMeshAndAmplificationShadersSupported = false;
-        m_dOptions9.WaveMMATier = D3D12_WAVE_MMA_TIER_NOT_SUPPORTED;
+        m_dOptions9 = {};
     }
 #endif
 
 #if defined(NTDDI_WIN10_CO) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS10, &m_dOptions10, sizeof(m_dOptions10))))
     {
-        m_dOptions10.MeshShaderPerPrimitiveShadingRateSupported = false;
-        m_dOptions10.VariableRateShadingSumCombinerSupported = false;
+        m_dOptions10 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS11, &m_dOptions11, sizeof(m_dOptions11))))
     {
-        m_dOptions11.AtomicInt64OnDescriptorHeapResourceSupported = false;
+        m_dOptions11 = {};
     }
 #endif
 
 #if defined(NTDDI_WIN10_NI) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS12, &m_dOptions12, sizeof(m_dOptions12))))
     {
+        m_dOptions12 = {};
         m_dOptions12.MSPrimitivesPipelineStatisticIncludesCulledPrimitives = D3D12_TRI_STATE::D3D12_TRI_STATE_UNKNOWN;
-        m_dOptions12.EnhancedBarriersSupported = false;
-        m_dOptions12.RelaxedFormatCastingSupported = false;
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS13, &m_dOptions13, sizeof(m_dOptions13))))
     {
-        m_dOptions13.UnrestrictedBufferTextureCopyPitchSupported = false;
-        m_dOptions13.UnrestrictedVertexElementAlignmentSupported = false;
-        m_dOptions13.InvertedViewportHeightFlipsYSupported = false;
-        m_dOptions13.InvertedViewportDepthFlipsZSupported = false;
-        m_dOptions13.TextureCopyBetweenDimensionsSupported = false;
-        m_dOptions13.AlphaBlendFactorSupported = false;
+        m_dOptions13 = {};
     }
 #endif
 
 #if defined(NTDDI_WIN10_CU) || defined(USING_D3D12_AGILITY_SDK)
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS14, &m_dOptions14, sizeof(m_dOptions14))))
     {
-        m_dOptions14.AdvancedTextureOpsSupported = false;
-        m_dOptions14.WriteableMSAATexturesSupported = false;
-        m_dOptions14.IndependentFrontAndBackStencilRefMaskSupported = false;
+        m_dOptions14 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS15, &m_dOptions15, sizeof(m_dOptions15))))
     {
-        m_dOptions15.TriangleFanSupported = false;
-        m_dOptions15.DynamicIndexBufferStripCutSupported = false;
+        m_dOptions15 = {};
     }
 
     if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS16, &m_dOptions16, sizeof(m_dOptions16))))
     {
-        m_dOptions16.GPUUploadHeapSupported = false;
-        m_dOptions16.DynamicDepthBiasSupported = false;
-    }
-
-    if (FAILED(m_pDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS17, &m_dOptions17, sizeof(m_dOptions17))))
-    {
-        m_dOptions17.NonNormalizedCoordinateSamplersSupported = false;
+        m_dOptions16 = {};
     }
 #endif // NTDDI_WIN10_CU || USING_D3D12_AGILITY_SDK
 
@@ -5868,11 +5771,7 @@ FEATURE_SUPPORT_GET(BOOL, m_dOptions15, TriangleFanSupported);
 FEATURE_SUPPORT_GET(BOOL, m_dOptions15, DynamicIndexBufferStripCutSupported);
 
 // 45: Options16
-FEATURE_SUPPORT_GET(BOOL, m_dOptions16, GPUUploadHeapSupported);
 FEATURE_SUPPORT_GET(BOOL, m_dOptions16, DynamicDepthBiasSupported);
-
-// 46: Options17
-FEATURE_SUPPORT_GET(BOOL, m_dOptions17, NonNormalizedCoordinateSamplersSupported);
 #endif // NTDDI_WIN10_CU || USING_D3D12_AGILITY_SDK
 
 // Helper function to decide the highest shader model supported by the system
@@ -5931,9 +5830,6 @@ inline HRESULT CD3DX12FeatureSupport::QueryHighestRootSignatureVersion()
 
     const D3D_ROOT_SIGNATURE_VERSION allRootSignatureVersions[] =
     {
-#if defined(NTDDI_WIN10_CU) || defined(USING_D3D12_AGILITY_SDK)
-        D3D_ROOT_SIGNATURE_VERSION_1_2,
-#endif
         D3D_ROOT_SIGNATURE_VERSION_1_1,
         D3D_ROOT_SIGNATURE_VERSION_1_0,
         D3D_ROOT_SIGNATURE_VERSION_1,
