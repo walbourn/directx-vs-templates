@@ -93,8 +93,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
     if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-unused-value")
     endif()
-endif()
-if ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
+elseif ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     target_compile_options(${PROJECT_NAME} PRIVATE
          /sdl /permissive- /Zc:__cplusplus
          "/wd4061" "/wd4265" "/wd4297" "/wd4355" "/wd4365" "/wd4371" "/wd4514" "/wd4555"
