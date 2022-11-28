@@ -98,10 +98,17 @@ void Game::Clear()
     m_commandList->ResourceBarrier(1, &barrier);
 
     // Clear the views.
-    const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(
-        m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-        static_cast<INT>(m_backBufferIndex), m_rtvDescriptorSize);
-    CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+#ifdef __MINGW32__
+    D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle, cpuHandleDSV;
+    std::ignore = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
+    std::ignore = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandleDSV);
+#else
+    auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+    auto cpuHandleDSV = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+#endif
+
+    const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(cpuHandle, static_cast<INT>(m_backBufferIndex), m_rtvDescriptorSize);
+    CD3DX12_CPU_DESCRIPTOR_HANDLE dsvDescriptor(cpuHandleDSV);
     m_commandList->OMSetRenderTargets(1, &rtvDescriptor, FALSE, &dsvDescriptor);
     m_commandList->ClearRenderTargetView(rtvDescriptor, Colors::CornflowerBlue, 0, nullptr);
     m_commandList->ClearDepthStencilView(dsvDescriptor, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -207,6 +214,7 @@ void Game::CreateDevice()
             debugController->EnableDebugLayer();
         }
 
+    #ifndef __MINGW32__
         ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
         if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(dxgiInfoQueue.GetAddressOf()))))
         {
@@ -215,6 +223,7 @@ void Game::CreateDevice()
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_ERROR, true);
             dxgiInfoQueue->SetBreakOnSeverity(DXGI_DEBUG_ALL, DXGI_INFO_QUEUE_MESSAGE_SEVERITY_CORRUPTION, true);
         }
+    #endif // __MINGW32__
     }
 #endif
 
@@ -394,9 +403,14 @@ void Game::CreateResources()
         swprintf_s(name, L"Render target %u", n);
         m_renderTargets[n]->SetName(name);
 
-        const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(
-            m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
-            static_cast<INT>(n), m_rtvDescriptorSize);
+    #ifdef __MINGW32__
+        D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
+        std::ignore = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
+    #else
+        auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+    #endif
+
+        const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(cpuHandle, static_cast<INT>(n), m_rtvDescriptorSize);
         m_d3dDevice->CreateRenderTargetView(m_renderTargets[n].Get(), nullptr, rtvDescriptor);
     }
 
@@ -436,7 +450,14 @@ void Game::CreateResources()
     dsvDesc.Format = depthBufferFormat;
     dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
 
-    m_d3dDevice->CreateDepthStencilView(m_depthStencil.Get(), &dsvDesc, m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+    #ifdef __MINGW32__
+        D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
+        std::ignore = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
+    #else
+        auto cpuHandle = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+    #endif
+
+    m_d3dDevice->CreateDepthStencilView(m_depthStencil.Get(), &dsvDesc, cpuHandle);
 
     // TODO: Initialize windows-size dependent objects here.
 }
