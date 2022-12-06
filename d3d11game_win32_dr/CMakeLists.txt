@@ -79,7 +79,7 @@ if(NOT ${DIRECTX_ARCH} MATCHES "^arm")
 endif()
 
 if(MINGW OR VCPKG_TOOLCHAIN)
-    message("INFO: Using VCPKG for DirectXMath.")
+    message(STATUS "Using VCPKG for DirectXMath.")
     find_package(directxmath CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXMath)
 

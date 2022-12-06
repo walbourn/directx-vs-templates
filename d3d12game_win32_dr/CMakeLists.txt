@@ -81,7 +81,7 @@ if(NOT ${DIRECTX_ARCH} MATCHES "^arm")
 endif()
 
 if(MINGW OR VCPKG_TOOLCHAIN)
-    message("INFO: Using VCPKG for DirectX-Headers and DirectXMath.")
+    message(STATUS "Using VCPKG for DirectX-Headers and DirectXMath.")
     find_package(directx-headers CONFIG REQUIRED)
     find_package(directxmath CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX-Headers Microsoft::DirectX-Guids Microsoft::DirectXMath)

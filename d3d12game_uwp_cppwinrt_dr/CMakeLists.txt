@@ -68,7 +68,7 @@ if(MSVC)
 endif()
 
 if (VCPKG_TOOLCHAIN)
-    message("INFO: Using VCPKG for C++/WinRT, DirectX-Headers, and DirectXMath.")
+    message(STATUS "Using VCPKG for C++/WinRT, DirectX-Headers, and DirectXMath.")
     find_package(cppwinrt CONFIG REQUIRED)
     find_package(directx-headers CONFIG REQUIRED)
     find_package(directxmath CONFIG REQUIRED)

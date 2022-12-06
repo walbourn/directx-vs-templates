@@ -67,7 +67,7 @@ if(MSVC)
 endif()
 
 if (VCPKG_TOOLCHAIN)
-    message("INFO: Using VCPKG for C++/WinRT and DirectXMath.")
+    message(STATUS "Using VCPKG for C++/WinRT and DirectXMath.")
     find_package(cppwinrt CONFIG REQUIRED)
     find_package(directxmath CONFIG REQUIRED)
     target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::CppWinRT Microsoft::DirectXMath)
