@@ -78,22 +78,33 @@ if(NOT ${DIRECTX_ARCH} MATCHES "^arm")
     target_compile_options(${PROJECT_NAME} PRIVATE ${ARCH_SSE2})
 endif()
 
-if(MINGW OR VCPKG_TOOLCHAIN)
-    message(STATUS "Using VCPKG for DirectX-Headers and DirectXMath.")
-    find_package(directx-headers CONFIG REQUIRED)
+if(MINGW)
     find_package(directxmath CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX-Headers Microsoft::DirectX-Guids Microsoft::DirectXMath)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
-
-    # Uncomment if using the DirectX Tool Kit
-    # find_package(directxtk12 CONFIG REQUIRED)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK12)
-
-    # Uncomment if using the DXC compiler
-    # find_package(directx-dxc CONFIG REQUIRED)
-    # DIRECTX_DXC_TOOL is the compiler itself
-    # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXShaderCompiler)
+    find_package(directx-headers CONFIG REQUIRED)
+else()
+    find_package(directxmath CONFIG QUIET)
+    find_package(directx-headers CONFIG QUIET)
 endif()
+
+if(directxmath_FOUND)
+    message(STATUS "Using DirectXMath package")
+    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectXMath)
+endif()
+
+if(directx-headers_FOUND)
+    message(STATUS "Using DirectX-Headers package")
+    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectX-Headers Microsoft::DirectX-Guids)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
+endif()
+
+# Uncomment if using the DirectX Tool Kit
+# find_package(directxtk12 CONFIG REQUIRED)
+# target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK12)
+
+# Uncomment if using the DXC compiler
+# find_package(directx-dxc CONFIG REQUIRED)
+# DIRECTX_DXC_TOOL is the compiler itself
+# target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXShaderCompiler)
 
 if( CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM" )
     target_compile_options(${PROJECT_NAME} PRIVATE

@@ -78,15 +78,20 @@ if(NOT ${DIRECTX_ARCH} MATCHES "^arm")
     target_compile_options(${PROJECT_NAME} PRIVATE ${ARCH_SSE2})
 endif()
 
-if(MINGW OR VCPKG_TOOLCHAIN)
-    message(STATUS "Using VCPKG for DirectXMath.")
+if(MINGW)
     find_package(directxmath CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXMath)
-
-    # Uncomment if using the DirectX Tool Kit
-    # find_package(directxtk CONFIG REQUIRED)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK)
+else()
+    find_package(directxmath CONFIG QUIET)
 endif()
+
+if(directxmath_FOUND)
+    message(STATUS "Using DirectXMath package")
+    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectXMath)
+endif()
+
+# Uncomment if using the DirectX Tool Kit
+# find_package(directxtk CONFIG REQUIRED)
+# target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK)
 
 if( CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM" )
     target_compile_options(${PROJECT_NAME} PRIVATE
