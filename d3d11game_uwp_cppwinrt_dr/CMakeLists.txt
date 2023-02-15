@@ -102,6 +102,10 @@ elseif ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
         target_compile_options(${PROJECT_NAME} PRIVATE /analyze)
     endif()
 
+    if(CMAKE_INTERPROCEDURAL_OPTIMIZATION)
+        target_compile_options(${PROJECT_NAME} PRIVATE /Gy /Gw)
+    endif()
+
     if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.24)
         target_compile_options(${PROJECT_NAME} PRIVATE /ZH:SHA_256)
     endif()
@@ -124,6 +128,10 @@ elseif ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
 
     if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.34)
         target_compile_options(${PROJECT_NAME} PRIVATE /wd5262 /wd5264)
+    endif()
+
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.35)
+        target_compile_options(${PROJECT_NAME} PRIVATE /Zc:templateScope /Zc:checkGwOdr)
     endif()
 
     if(BUILD_TEST_TEMPLATE)
