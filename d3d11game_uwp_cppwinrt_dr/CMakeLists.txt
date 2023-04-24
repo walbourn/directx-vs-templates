@@ -54,7 +54,7 @@ if(MSVC)
     target_compile_options(${PROJECT_NAME} PRIVATE /Wall /GR /fp:fast /bigobj "$<$<NOT:$<CONFIG:DEBUG>>:/guard:cf>")
     target_link_options(${PROJECT_NAME} PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>:/guard:cf>" /DYNAMICBASE /NXCOMPAT /APPCONTAINER /MANIFEST:NO)
 
-    if((${CMAKE_SIZEOF_VOID_P} EQUAL 4) AND (NOT ${DIRECTX_ARCH} MATCHES "^arm"))
+    if((CMAKE_SIZEOF_VOID_P EQUAL 4) AND (NOT ${DIRECTX_ARCH} MATCHES "^arm"))
         target_compile_options(${PROJECT_NAME} PRIVATE /arch:SSE2)
         target_link_options(${PROJECT_NAME} PRIVATE /SAFESEH)
     endif()
