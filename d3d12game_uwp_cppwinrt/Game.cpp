@@ -430,7 +430,7 @@ void Game::CreateResources()
         );
     depthStencilDesc.Flags |= D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
-    const CD3DX12_CLEAR_VALUE depthOptimizedClearValue(m_depthBufferFormat, 1.0f, 0u);
+    const CD3DX12_CLEAR_VALUE depthOptimizedClearValue(depthBufferFormat, 1.0f, 0u);
 
     DX::ThrowIfFailed(m_d3dDevice->CreateCommittedResource(
         &depthHeapProperties,
