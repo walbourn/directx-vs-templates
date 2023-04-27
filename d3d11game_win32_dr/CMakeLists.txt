@@ -100,6 +100,10 @@ if( CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM" )
         "-Wno-exit-time-destructors" "-Wno-global-constructors" "-Wno-language-extension-token"
         "-Wno-missing-prototypes" "-Wno-missing-variable-declarations" "-Wno-reserved-id-macro")
 
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 16.0)
+        target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-unsafe-buffer-usage")
+    endif()
+
     if(BUILD_TEST_TEMPLATE)
         target_compile_options(${PROJECT_NAME} PRIVATE "-Wno-unused-value")
     endif()
