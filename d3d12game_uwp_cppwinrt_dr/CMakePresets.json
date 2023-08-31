@@ -34,15 +34,6 @@
       "hidden": true
     },
     {
-      "name": "ARM",
-      "architecture": {
-        "value": "arm",
-        "strategy": "external"
-      },
-      "cacheVariables": { "DIRECTX_ARCH": "arm" },
-      "hidden": true
-    },
-    {
       "name": "ARM64",
       "architecture": {
         "value": "arm64",
@@ -104,8 +95,6 @@
     { "name": "x64-Release"  , "description": "MSVC for x64 (Release)", "inherits": [ "base", "x64", "Release", "MSVC" ] },
     { "name": "x86-Debug"    , "description": "MSVC for x86 (Debug)", "inherits": [ "base", "x86", "Debug", "MSVC" ] },
     { "name": "x86-Release"  , "description": "MSVC for x86 (Release)", "inherits": [ "base", "x86", "Release", "MSVC" ] },
-    { "name": "arm-Debug"    , "description": "MSVC for ARM (Debug)", "inherits": [ "base", "ARM", "Debug", "MSVC" ] },
-    { "name": "arm-Release"  , "description": "MSVC for ARM (Release)", "inherits": [ "base", "ARM", "Release", "MSVC" ] },
     { "name": "arm64-Debug"  , "description": "MSVC for ARM64 (Debug)", "inherits": [ "base", "ARM64", "Debug", "MSVC" ] },
     { "name": "arm64-Release", "description": "MSVC for ARM64 (Release)", "inherits": [ "base", "ARM64", "Release", "MSVC" ] },
 
@@ -120,8 +109,6 @@
     { "name": "x64-Release-VCPKG"  , "description": "MSVC for x64 (Release)", "inherits": [ "base", "x64", "Release", "MSVC", "VCPKG" ] },
     { "name": "x86-Debug-VCPKG"    , "description": "MSVC for x86 (Debug)", "inherits": [ "base", "x86", "Debug", "MSVC", "VCPKG" ] },
     { "name": "x86-Release-VCPKG"  , "description": "MSVC for x86 (Release)", "inherits": [ "base", "x86", "Release", "MSVC", "VCPKG" ] },
-    { "name": "arm-Debug-VCPKG"    , "description": "MSVC for ARM (Debug)", "inherits": [ "base", "ARM", "Debug", "MSVC", "VCPKG" ] },
-    { "name": "arm-Release-VCPKG"  , "description": "MSVC for ARM (Release)", "inherits": [ "base", "ARM", "Release", "MSVC", "VCPKG" ] },
     { "name": "arm64-Debug-VCPKG"  , "description": "MSVC for ARM64 (Debug)", "inherits": [ "base", "ARM64", "Debug", "MSVC", "VCPKG" ] },
     { "name": "arm64-Release-VCPKG", "description": "MSVC for ARM64 (Release)", "inherits": [ "base", "ARM64", "Release", "MSVC", "VCPKG" ] },
 
