@@ -57,7 +57,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     d3d11.lib dxgi.lib dxguid.lib uuid.lib)
 
 if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /Wall /GR /fp:fast /bigobj "$<$<NOT:$<CONFIG:DEBUG>>:/guard:cf>")
+    target_compile_options(${PROJECT_NAME} PRIVATE /Wall /GR /bigobj "$<$<NOT:$<CONFIG:DEBUG>>:/guard:cf>")
     target_link_options(${PROJECT_NAME} PRIVATE "$<$<NOT:$<CONFIG:DEBUG>>:/guard:cf>" /DYNAMICBASE /NXCOMPAT /APPCONTAINER /MANIFEST:NO)
 
     if((CMAKE_SIZEOF_VOID_P EQUAL 4) AND (NOT ${DIRECTX_ARCH} MATCHES "^arm"))
@@ -107,7 +107,7 @@ if ( CMAKE_CXX_COMPILER_ID MATCHES "Clang" )
     endif()
 elseif ( CMAKE_CXX_COMPILER_ID MATCHES "MSVC" )
     target_compile_options(${PROJECT_NAME} PRIVATE
-         /sdl /permissive- /Zc:__cplusplus /Zc:inline
+         /sdl /permissive- /Zc:__cplusplus /Zc:inline /fp:fast
          "/wd4061" "/wd4265" "/wd4297" "/wd4355" "/wd4365" "/wd4371" "/wd4514" "/wd4555"
          "/wd4571" "/wd4623" "/wd4625" "/wd4626" "/wd4668" "/wd4710" "/wd4820" "/wd4946"
          "/wd5026" "/wd5027" "/wd5039" "/wd5045" "/wd5204" "/wd5220")
