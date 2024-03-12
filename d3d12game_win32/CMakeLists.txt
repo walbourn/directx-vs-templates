@@ -95,6 +95,8 @@ else()
     find_package(directx-headers CONFIG QUIET)
 endif()
 
+find_package(directx12-agility CONFIG QUIET)
+
 if(directxmath_FOUND)
     message(STATUS "Using DirectXMath package")
     target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectXMath)
@@ -104,6 +106,12 @@ if(directx-headers_FOUND)
     message(STATUS "Using DirectX-Headers package")
     target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectX-Headers Microsoft::DirectX-Guids)
     target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
+endif()
+
+if(directx12-agility_FOUND)
+    message(STATUS "Using DirectX12 Agility SDK")
+    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectX12-Agility)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USING_D3D12_AGILITY_SDK)
 endif()
 
 # Uncomment if using the DirectX Tool Kit
@@ -186,3 +194,12 @@ if(WIN32)
 endif()
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.21")
+   file(MAKE_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/D3D12")
+   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E $<IF:$<BOOL:$<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>>,copy,true>
+      $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}> $<TARGET_FILE_DIR:${PROJECT_NAME}>/D3D12
+      COMMAND_EXPAND_LISTS
+      )
+endif()
