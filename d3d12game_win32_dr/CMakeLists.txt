@@ -97,6 +97,9 @@ else()
     find_package(directx-headers CONFIG QUIET)
 endif()
 
+find_package(directx12-agility CONFIG QUIET)
+find_package(directx-dxc CONFIG QUIET)
+
 if(directxmath_FOUND)
     message(STATUS "Using DirectXMath package")
     target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectXMath)
@@ -108,14 +111,22 @@ if(directx-headers_FOUND)
     target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
 endif()
 
+if(directx12-agility_FOUND)
+    message(STATUS "Using DirectX12 Agility SDK")
+    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectX12-Agility)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USING_D3D12_AGILITY_SDK)
+endif()
+
+if(directx-dxc_FOUND)
+    message(STATUS "Using DirectXShaderCompiler (DXC)")
+    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectXShaderCompiler)
+else()
+    find_program(DIRECTX_DXC_TOOL DXC.EXE REQUIRED NO_CMAKE_SYSTEM_PATH)
+endif()
+
 # Uncomment if using the DirectX Tool Kit
 # find_package(directxtk12 CONFIG REQUIRED)
 # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK12)
-
-# Uncomment if using the DXC compiler
-# find_package(directx-dxc CONFIG REQUIRED)
-# DIRECTX_DXC_TOOL is the compiler itself
-# target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXShaderCompiler)
 
 if(MINGW)
     target_link_options(${PROJECT_NAME} PRIVATE -municode)
@@ -188,3 +199,22 @@ if(WIN32)
 endif()
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.21")
+   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E $<IF:$<BOOL:$<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>>,copy,true>
+      $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}> $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      COMMAND_EXPAND_LISTS
+      )
+endif()
+
+if(TARGET Microsoft::DirectX12-Agility)
+   file(MAKE_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/D3D12")
+   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_PROPERTY:Microsoft::DirectX12-Core,IMPORTED_LOCATION_RELEASE> $<TARGET_FILE_DIR:${PROJECT_NAME}>/D3D12
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_PROPERTY:Microsoft::DirectX12-Layers,IMPORTED_LOCATION_DEBUG> $<TARGET_FILE_DIR:${PROJECT_NAME}>/D3D12
+      COMMAND ${CMAKE_COMMAND} -E rm -f $<TARGET_FILE_DIR:${PROJECT_NAME}>/D3D12Core.dll
+      COMMAND ${CMAKE_COMMAND} -E rm -f $<TARGET_FILE_DIR:${PROJECT_NAME}>/d3d12SDKLayers.dll
+      COMMAND_EXPAND_LISTS
+      )
+endif()
