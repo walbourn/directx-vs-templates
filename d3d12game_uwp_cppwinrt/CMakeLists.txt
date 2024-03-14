@@ -75,18 +75,30 @@ if(MSVC)
     endif()
 endif()
 
-if(VCPKG_TOOLCHAIN)
-    message(STATUS "Using VCPKG for C++/WinRT, DirectX-Headers, and DirectXMath.")
-    find_package(cppwinrt CONFIG REQUIRED)
-    find_package(directx-headers CONFIG REQUIRED)
-    find_package(directxmath CONFIG REQUIRED)
-    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::CppWinRT Microsoft::DirectX-Headers Microsoft::DirectXMath)
-    target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
+find_package(cppwinrt CONFIG QUIET)
+find_package(directxmath CONFIG QUIET)
+find_package(directx-headers CONFIG QUIET)
 
-    # Uncomment if using the DirectX Tool Kit
-    # find_package(directxtk12 CONFIG REQUIRED)
-    # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK12)
+if(cppwinrt_FOUND)
+    message(STATUS "Using C++/WinRT package")
+    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::CppWinRT)
+    # CPPWINRT_TOOL is the .winmd to header generation tool
 endif()
+
+if(directxmath_FOUND)
+    message(STATUS "Using DirectXMath package")
+    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectXMath)
+endif()
+
+if(directx-headers_FOUND)
+    message(STATUS "Using DirectX-Headers package")
+    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectX-Headers Microsoft::DirectX-Guids)
+    target_compile_definitions(${PROJECT_NAME} PRIVATE USING_DIRECTX_HEADERS)
+endif()
+
+# Uncomment if using the DirectX Tool Kit
+# find_package(directxtk12 CONFIG REQUIRED)
+# target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK12)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM")
     target_compile_options(${PROJECT_NAME} PRIVATE
