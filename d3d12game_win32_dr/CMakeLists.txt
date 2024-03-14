@@ -128,11 +128,6 @@ endif()
 # find_package(directxtk12 CONFIG REQUIRED)
 # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK12)
 
-# Uncomment if using the DXC compiler
-# find_package(directx-dxc CONFIG REQUIRED)
-# DIRECTX_DXC_TOOL is the compiler itself
-# target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXShaderCompiler)
-
 if(MINGW)
     target_link_options(${PROJECT_NAME} PRIVATE -municode)
 endif()
