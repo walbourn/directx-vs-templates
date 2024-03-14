@@ -100,6 +100,10 @@ endif()
 # find_package(directxtk CONFIG REQUIRED)
 # target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXTK)
 
+# Uncomment if using XAudio2Redist (required for MINGW)
+# find_package(xaudio2redist CONFIG REQUIRED)
+# target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::XAudio2Redist)
+
 if(MINGW)
     target_link_options(${PROJECT_NAME} PRIVATE -municode)
 endif()
@@ -175,3 +179,11 @@ if(WIN32)
 endif()
 
 set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.21")
+   add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E $<IF:$<BOOL:$<TARGET_RUNTIME_DLLS:${PROJECT_NAME}>>,copy,true>
+      $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}> $<TARGET_FILE_DIR:${PROJECT_NAME}>
+      COMMAND_EXPAND_LISTS
+      )
+endif()
