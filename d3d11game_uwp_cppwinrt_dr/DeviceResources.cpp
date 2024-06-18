@@ -425,7 +425,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
             m_depthBufferFormat,
             backBufferWidth,
             backBufferHeight,
-            1, // This depth stencil view has only one texture.
+            1, // Use a single array entry.
             1, // Use a single mipmap level.
             D3D11_BIND_DEPTH_STENCIL
             );
