@@ -4,7 +4,7 @@ cmake_minimum_required (VERSION 3.20)
 project(CMakeDirect3D12Game
   DESCRIPTION "CMake example for Direct3D 12 Game (UWP)"
   LANGUAGES CXX
-  VERSION 1.0.0)
+  VERSION 1.0.0.0)
 
 option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 
