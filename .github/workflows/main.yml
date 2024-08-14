@@ -78,3 +78,19 @@ jobs:
     - name: 'Build - Direct3DUWPGame'
       working-directory: ${{ github.workspace }}/Direct3DUWPGame
       run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3DGameDR'
+      working-directory: ${{ github.workspace }}/Direct3DGameDR
+      run: cmake --preset=${{ matrix.build_type }}
+
+    - name: 'Build - Direct3DGameDR'
+      working-directory: ${{ github.workspace }}/Direct3DGameDR
+      run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3DUWPGameDR'
+      working-directory: ${{ github.workspace }}/Direct3DUWPGameDR
+      run: cmake --preset=${{ matrix.build_type }}
+
+    - name: 'Build - Direct3DUWPGameDR'
+      working-directory: ${{ github.workspace }}/Direct3DUWPGameDR
+      run: cmake --build out\build\${{ matrix.build_type }}

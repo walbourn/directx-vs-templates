@@ -78,6 +78,11 @@ param (
     [bool]$makepfx = $false
 )
 
+if (-Not ($platformtoolset -match 'v[0-9][0-9][0-9]'))
+{
+    Write-Error -Message "ERROR: Invalid platform toolset" -ErrorAction Stop
+}
+
 $templatedir = "..\" + $templatedir
 
 $targetdir = $targetdir + "\" + $projectname
