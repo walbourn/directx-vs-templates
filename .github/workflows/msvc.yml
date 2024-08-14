@@ -54,7 +54,7 @@ jobs:
       - if: ${{ contains(matrix.template, 'uwp') }}
         name: 'Configure CMake for UWP'
         working-directory: ${{ github.workspace }}/TestProject
-        run: cmake -B out -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=10.0 -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
+        run: cmake -B out -DCMAKE_SYSTEM_NAME="WindowsStore" -DCMAKE_SYSTEM_VERSION="10.0" -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
 
       - name: Initialize MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@v0.1.1
