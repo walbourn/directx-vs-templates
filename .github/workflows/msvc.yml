@@ -46,9 +46,15 @@ jobs:
         run: |
           .\createcmake.ps1  ${{ matrix.template }} TestProject ${{ github.workspace }}
 
-      - name: Configure CMake
+      - if: ${{ contains(matrix.template, 'win32') }}
+        name: 'Configure CMake for Win32'
         working-directory: ${{ github.workspace }}/TestProject
         run: cmake -B out -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
+
+      - if: ${{ contains(matrix.template, 'uwp') }}
+        name: 'Configure CMake for UWP'
+        working-directory: ${{ github.workspace }}/TestProject
+        run: cmake -B out -DCMAKE_SYSTEM_NAME=WindowsStore -DCMAKE_SYSTEM_VERSION=10 -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
 
       - name: Initialize MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@v0.1.1
