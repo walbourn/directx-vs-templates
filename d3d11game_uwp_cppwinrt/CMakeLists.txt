@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 3.20)
 project(CMakeDirect3DGame
   DESCRIPTION "CMake example for Direct3D 11 Game (UWP)"
   LANGUAGES CXX
-  VERSION 1.0.0.0)
+  VERSION 1.0.0)
 
 option(BUILD_TEST_TEMPLATE "Ignore warnings related to TODOs" OFF)
 
@@ -130,7 +130,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     endif()
 
     if(CMAKE_INTERPROCEDURAL_OPTIMIZATION)
-        target_compile_options(${PROJECT_NAME} PRIVATE /Gy /Gw)
+        target_compile_options(${PROJECT_NAME} PRIVATE $<$<NOT:$<CONFIG:DEBUG>>:/Gy /Gw>)
     endif()
 
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.24)
@@ -158,7 +158,7 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     endif()
 
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.35)
-        target_compile_options(${PROJECT_NAME} PRIVATE /Zc:checkGwOdr $<$<VERSION_GREATER_EQUAL:${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION},10.0.22000>:/Zc:templateScope>)
+        target_compile_options(${PROJECT_NAME} PRIVATE $<$<NOT:$<CONFIG:DEBUG>>:/Zc:checkGwOdr> $<$<VERSION_GREATER_EQUAL:${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION},10.0.22000>:/Zc:templateScope>)
     endif()
 
     if(BUILD_TEST_TEMPLATE)
