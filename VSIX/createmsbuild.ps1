@@ -1,7 +1,7 @@
 <#
 
 .SYNOPSIS
-This script creates a instance of one of the Win32 templates using MSBuild without the VS IDE
+This script creates a instance of one of the Win32 templates using MSBuild without the VS IDE.
 
 .DESCRIPTION
 This script is intended for creating a template instance outside of Visual Studio using MSBuild.
@@ -17,6 +17,9 @@ This is the name of the target directory for the project (must not already exist
 
 .PARAMETER platformtoolset
 This is the VS platform toolset to use in the project (such as "v143").
+
+.PARAMETER makepfx
+This determines for UWP projects if the temporary pfx file is created (defaulst to false).
 
 .EXAMPLE
 This creates a new instance of the Direct3D 11 Game template:
@@ -71,7 +74,8 @@ param (
     [string]$templatedir = "d3d11game_win32",
     [string]$projectname = "Direct3DGame",
     [string]$targetdir = "$Env:USERPROFILE\source",
-    [string]$platformtoolset = "v143"
+    [string]$platformtoolset = "v143",
+    [bool]$makepfx = $false
 )
 
 $templatedir = "..\" + $templatedir
@@ -123,8 +127,16 @@ foreach ($file in $files) {
     $o = $o.Replace("`$currentuiculturename$", $locale)
     $o = $o.Replace("`$XmlEscapedPublisherDistinguishedName$", "CN=$Env:USERNAME")
     $o = $o.Replace("`$XmlEscapedPublisher$", "$Env:USERNAME")
-    $o = $o.Replace("`$if`$(`$includeKeyFile`$==true)","")
-    $o = $o.Replace("`$endif`$","")
+
+    if ($makepfx -eq $true) {
+        $o = $o.Replace("`$if`$(`$includeKeyFile`$==true)","")
+        $o = $o.Replace("`$endif`$","")
+    }
+    else
+    {
+        $o = $o -replace '\$if\$\(\$includeKeyFile\$==true\)\r\n.*<.*\r\n.*\$endif\$\r\n',''
+    }
+
     $o | Set-Content -Path $target -NoNewline
 }
 
@@ -136,12 +148,14 @@ if (Test-Path -Path ($templatedir + "\settings.manifest")) {
     Copy-Item ($templatedir + "\directx.ico") -Destination $targetdir
     Copy-Item ($templatedir + "\settings.manifest") -Destination $targetdir
 }
-else {  
-    $cert = New-SelfSignedCertificate -Type Custom -Subject "CN=$Env:USERNAME" -KeyUsage DigitalSignature -FriendlyName "devcert" -CertStore Cert:\CurrentUser\My\ -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")    
-    [System.Security.SecureString]$rootCertPassword = ConvertTo-SecureString -String "pwd" -Force -AsPlainText
-    Export-PfxCertificate -Cert $cert -FilePath ($targetdir + "\" + $projectname + "_TemporaryKey.pfx") -ProtectTo "$Env:USERNAME" | Out-Null
+else {
+    if ($makepfx -eq $true) {
+        $cert = New-SelfSignedCertificate -Type Custom -Subject "CN=$Env:USERNAME" -KeyUsage DigitalSignature -FriendlyName "devcert" -CertStore Cert:\CurrentUser\My\ -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
+        [System.Security.SecureString]$rootCertPassword = ConvertTo-SecureString -String "pwd" -Force -AsPlainText
+        Export-PfxCertificate -Cert $cert -FilePath ($targetdir + "\" + $projectname + "_TemporaryKey.pfx") -ProtectTo "$Env:USERNAME" | Out-Null
+    }
     New-Item -Path ($targetdir + "\Assets") -ItemType Directory | Out-Null
-    Copy-Item ($templatedir + "\StoreLogo.png") -Destination ($targetdir + "\Assets\StoreLogo.png")    
+    Copy-Item ($templatedir + "\StoreLogo.png") -Destination ($targetdir + "\Assets\StoreLogo.png")
     Copy-Item ($templatedir + "\StoreLogo.png") -Destination ($targetdir + "\Assets\StoreLogo.png")
     Copy-Item ($templatedir + "\Logo.scale-200.png") -Destination ($targetdir + "\Assets\Logo.scale-200.png")
     Copy-Item ($templatedir + "\SmallLogo.scale-200.png") -Destination ($targetdir + "\Assets\SmallLogo.scale-200.png")
