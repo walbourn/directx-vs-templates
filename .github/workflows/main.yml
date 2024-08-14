@@ -58,14 +58,10 @@ jobs:
         .\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
         .\createcmake.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
         .\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
-        .\createcmake.ps1 d3d11game_uwp Direct3DUWPGame ${{ github.workspace }}
-        .\createcmake.ps1 d3d11game_uwp_dr Direct3DUWPGameDR ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_uwp Direct3DUWP12Game ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_uwp_dr Direct3DUWP12GameDR ${{ github.workspace }}
-        .\createcmake.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGameCPP ${{ github.workspace }}
-        .\createcmake.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDRCPP ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12GameCPP ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDRCPP ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGame ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12Game ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDR ${{ github.workspace }}
 
     - name: 'Configure CMake - Direct3DGame'
       working-directory: ${{ github.workspace }}/Direct3DGame
@@ -81,12 +77,4 @@ jobs:
 
     - name: 'Build - Direct3DUWPGame'
       working-directory: ${{ github.workspace }}/Direct3DUWPGame
-      run: cmake --build out\build\${{ matrix.build_type }}
-
-    - name: 'Configure CMake - Direct3DUWPGameCPP'
-      working-directory: ${{ github.workspace }}/Direct3DUWPGameCPP
-      run: cmake --preset=${{ matrix.build_type }}
-
-    - name: 'Build - Direct3DUWPGameCPP'
-      working-directory: ${{ github.workspace }}/Direct3DUWPGameCPP
       run: cmake --build out\build\${{ matrix.build_type }}
