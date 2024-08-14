@@ -54,18 +54,18 @@ jobs:
       shell: pwsh
       working-directory: ${{ github.workspace }}/VSIX
       run: |
-        .\createmsbuild.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_uwp Direct3DUWPGame ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_uwp_dr Direct3DUWPGameDR ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_uwp Direct3DUWP12Game ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_uwp_dr Direct3DUWP12GameDR ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGameCPP ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDRCPP ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12GameCPP ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDRCPP ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp Direct3DUWPGame ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_dr Direct3DUWPGameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp Direct3DUWP12Game ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_dr Direct3DUWP12GameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGameCPP ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDRCPP ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12GameCPP ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDRCPP ${{ github.workspace }}
 
     - name: 'Configure CMake - Direct3DGame'
       working-directory: ${{ github.workspace }}/Direct3DGame
