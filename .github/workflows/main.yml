@@ -1,0 +1,128 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+
+name: 'CMake (Windows)'
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - '*.md'
+      - LICENSE
+
+jobs:
+  build:
+    runs-on: 'windows-2022'
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        build_type: [x64-Debug, x64-Release, x64-Debug-Clang, x64-Release-Clang]
+        arch: [amd64]
+        include:
+          - build_type: x86-Debug
+            arch: amd64_x86
+          - build_type: x86-Release
+            arch: amd64_x86
+          - build_type: x86-Debug-Clang
+            arch: amd64_x86
+          - build_type: x86-Release-Clang
+            arch: amd64_x86
+          - build_type: arm64-Debug
+            arch: amd64_arm64
+          - build_type: arm64-Release
+            arch: amd64_arm64
+          - build_type: arm64ec-Debug
+            arch: amd64_arm64
+          - build_type: arm64ec-Release
+            arch: amd64_arm64
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: 'Install Ninja'
+      run: choco install ninja
+
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.arch }}
+
+    - name: 'Instance templates'
+      shell: pwsh
+      working-directory: ${{ github.workspace }}/VSIX
+      run: |
+        .\createcmake.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGame ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12Game ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDR ${{ github.workspace }}
+
+    - name: 'Configure CMake - Direct3DGame (DX11)'
+      working-directory: ${{ github.workspace }}/Direct3DGame
+      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3DGame (DX11)'
+      working-directory: ${{ github.workspace }}/Direct3DGame
+      run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3DUWPGame (DX11)'
+      working-directory: ${{ github.workspace }}/Direct3DUWPGame
+      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3DUWPGame (DX11)'
+      working-directory: ${{ github.workspace }}/Direct3DUWPGame
+      run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3DGameDR (DX11)'
+      working-directory: ${{ github.workspace }}/Direct3DGameDR
+      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3DGameDR (DX11)'
+      working-directory: ${{ github.workspace }}/Direct3DGameDR
+      run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3DUWPGameDR (DX11)'
+      working-directory: ${{ github.workspace }}/Direct3DUWPGameDR
+      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3DUWPGameDR (DX11)'
+      working-directory: ${{ github.workspace }}/Direct3DUWPGameDR
+      run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3D12Game (DX12)'
+      working-directory: ${{ github.workspace }}/Direct3D12Game
+      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3D12Game (DX12)'
+      working-directory: ${{ github.workspace }}/Direct3D12Game
+      run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3DUWP12Game (DX12)'
+      working-directory: ${{ github.workspace }}/Direct3DUWP12Game
+      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3DUWP12Game (DX12)'
+      working-directory: ${{ github.workspace }}/Direct3DUWP12Game
+      run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3D12GameDR (DX12)'
+      working-directory: ${{ github.workspace }}/Direct3D12GameDR
+      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3D12GameDR (DX12)'
+      working-directory: ${{ github.workspace }}/Direct3D12GameDR
+      run: cmake --build out\build\${{ matrix.build_type }}
+
+    - name: 'Configure CMake - Direct3DUWP12GameDR (DX12)'
+      working-directory: ${{ github.workspace }}/Direct3DUWP12GameDR
+      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3DUWP12GameDR (DX12)'
+      working-directory: ${{ github.workspace }}/Direct3DUWP12GameDR
+      run: cmake --build out\build\${{ matrix.build_type }}
