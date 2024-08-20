@@ -122,7 +122,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|IntelLLVM")
     endif()
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     target_compile_options(${PROJECT_NAME} PRIVATE
-         /sdl /permissive- /Zc:__cplusplus /Zc:inline /fp:fast
+         /sdl /Zc:inline /fp:fast
          "/wd4061" "/wd4265" "/wd4297" "/wd4355" "/wd4365" "/wd4371" "/wd4514" "/wd4555"
          "/wd4571" "/wd4623" "/wd4625" "/wd4626" "/wd4668" "/wd4710" "/wd4820" "/wd4946"
          "/wd5026" "/wd5027" "/wd5039" "/wd5045" "/wd5204" "/wd5220")
@@ -135,6 +135,14 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 
     if(CMAKE_INTERPROCEDURAL_OPTIMIZATION)
         target_compile_options(${PROJECT_NAME} PRIVATE $<$<NOT:$<CONFIG:DEBUG>>:/Gy /Gw>)
+    endif()
+
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.10)
+        target_compile_options(${PROJECT_NAME} PRIVATE /permissive-)
+    endif()
+
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.14)
+        target_compile_options(${PROJECT_NAME} PRIVATE /Zc:__cplusplus)
     endif()
 
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.24)
@@ -151,6 +159,10 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.28)
         target_compile_options(${PROJECT_NAME} PRIVATE /Zc:lambda)
+    endif()
+
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.29)
+        target_compile_options(${PROJECT_NAME} PRIVATE /external:W4)
     endif()
 
     if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 19.32)
