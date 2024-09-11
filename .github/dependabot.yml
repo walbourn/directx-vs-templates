@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+
+  - package-ecosystem: nuget
+    directory: /VSIX/src/Direct3DGame
+    schedule:
+      interval: daily
+
+  - package-ecosystem: nuget
+    directory: /VSIX/src/Wizards
+    schedule:
+      interval: daily

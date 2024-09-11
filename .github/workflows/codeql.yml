@@ -30,12 +30,12 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
     - name: 'Install Ninja'
       run: choco install ninja
 
-    - uses: ilammy/msvc-dev-cmd@v1
+    - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
 
     - name: 'Instance templates'
       shell: pwsh
@@ -51,7 +51,7 @@ jobs:
         .\createcmake.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDR ${{ github.workspace }}
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
       with:
         languages: c-cpp
         build-mode: manual
@@ -121,6 +121,6 @@ jobs:
       run: cmake --build out\build\x64-Debug
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@4dd16135b69a43b6c8efb853346f8437d92d3c93 # v3.26.6
       with:
         category: "/language:c-cpp"
