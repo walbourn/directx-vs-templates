@@ -12,6 +12,9 @@ on:
       - '*.md'
       - LICENSE
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: 'windows-2022'
