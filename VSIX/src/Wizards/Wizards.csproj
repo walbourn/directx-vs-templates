@@ -58,6 +58,10 @@
       <HintPath>..\packages\EnvDTE80.16.10.31320.204\lib\net45\EnvDTE80.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Interop, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\Microsoft.VisualStudio.Interop.17.11.40262\lib\net472\Microsoft.VisualStudio.Interop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\packages\Microsoft.VisualStudio.OLE.Interop.16.10.31320.204\lib\net45\Microsoft.VisualStudio.OLE.Interop.dll</HintPath>
     </Reference>
@@ -71,9 +75,9 @@
       <HintPath>..\packages\Microsoft.VisualStudio.TextManager.Interop.16.10.31320.204\lib\net45\Microsoft.VisualStudio.TextManager.Interop.dll</HintPath>
     </Reference>
     <Reference Include="netstandard" />
-    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\stdole.16.10.31320.204\lib\net45\stdole.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Reference Include="stdole, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\stdole.17.11.40262\lib\net472\stdole.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Forms" />
