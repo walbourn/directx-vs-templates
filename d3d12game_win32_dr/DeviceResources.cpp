@@ -379,12 +379,10 @@ void DeviceResources::CreateWindowSizeDependentResources()
         D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
         std::ignore = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
     #else
-        auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+        const auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
     #endif
 
-        const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(
-            cpuHandle,
-            static_cast<INT>(n), m_rtvDescriptorSize);
+        const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(cpuHandle, static_cast<INT>(n), m_rtvDescriptorSize);
         m_d3dDevice->CreateRenderTargetView(m_renderTargets[n].Get(), &rtvDesc, rtvDescriptor);
     }
 
@@ -427,7 +425,7 @@ void DeviceResources::CreateWindowSizeDependentResources()
         D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
         std::ignore = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
     #else
-        auto cpuHandle = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+        const auto cpuHandle = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
     #endif
 
         m_d3dDevice->CreateDepthStencilView(m_depthStencil.Get(), &dsvDesc, cpuHandle);

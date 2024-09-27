@@ -78,7 +78,7 @@ namespace DX
             D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
             std::ignore = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
         #else
-            auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+            const auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
         #endif
 
             return CD3DX12_CPU_DESCRIPTOR_HANDLE(cpuHandle, static_cast<INT>(m_backBufferIndex), m_rtvDescriptorSize);
@@ -89,7 +89,7 @@ namespace DX
             D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
             std::ignore = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
         #else
-            auto cpuHandle = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+            const auto cpuHandle = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
         #endif
 
             return CD3DX12_CPU_DESCRIPTOR_HANDLE(cpuHandle);

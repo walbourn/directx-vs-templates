@@ -103,8 +103,8 @@ void Game::Clear()
     std::ignore = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
     std::ignore = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandleDSV);
 #else
-    auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
-    auto cpuHandleDSV = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+    const auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+    const auto cpuHandleDSV = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 #endif
 
     const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(cpuHandle, static_cast<INT>(m_backBufferIndex), m_rtvDescriptorSize);
@@ -407,7 +407,7 @@ void Game::CreateResources()
         D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
         std::ignore = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
     #else
-        auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+        const auto cpuHandle = m_rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
     #endif
 
         const CD3DX12_CPU_DESCRIPTOR_HANDLE rtvDescriptor(cpuHandle, static_cast<INT>(n), m_rtvDescriptorSize);
@@ -451,7 +451,7 @@ void Game::CreateResources()
         D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
         std::ignore = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(&cpuHandle);
     #else
-        auto cpuHandle = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+        const auto cpuHandle = m_dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
     #endif
 
     m_d3dDevice->CreateDepthStencilView(m_depthStencil.Get(), &dsvDesc, cpuHandle);
