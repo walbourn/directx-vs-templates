@@ -30,10 +30,6 @@ jobs:
             arch: amd64_x86
           - build_type: x86-Release
             arch: amd64_x86
-          - build_type: x86-Debug-Clang
-            arch: amd64_x86
-          - build_type: x86-Release-Clang
-            arch: amd64_x86
           - build_type: arm64-Debug
             arch: amd64_arm64
           - build_type: arm64-Release
@@ -41,6 +37,14 @@ jobs:
           - build_type: arm64ec-Debug
             arch: amd64_arm64
           - build_type: arm64ec-Release
+            arch: amd64_arm64
+          - build_type: x86-Debug-Clang
+            arch: amd64_x86
+          - build_type: x86-Release-Clang
+            arch: amd64_x86
+          - build_type: arm64-Debug-Clang
+            arch: amd64_arm64
+          - build_type: arm64-Release-Clang
             arch: amd64_arm64
 
     steps:
