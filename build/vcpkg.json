@@ -1,0 +1,19 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "dependencies": [
+      {
+        "name": "cppwinrt",
+        "platform": "uwp"
+      },
+      "directxmath",
+      {
+        "name": "directx-dxc",
+        "host": true
+      },
+      "directx-headers",
+      {
+        "name": "directx12-agility",
+        "platform": "windows & !uwp"
+      }
+    ]
+}
