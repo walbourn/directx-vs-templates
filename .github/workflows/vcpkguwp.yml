@@ -30,8 +30,6 @@ jobs:
             arch: amd64_x86
           - build_type: arm64-Debug-VCPKG
             arch: amd64_arm64
-          - build_type: arm64ec-Debug-VCPKG
-            arch: amd64_arm64
           - build_type: arm64-Debug-Clang-VCPKG
             arch: amd64_arm64
 
