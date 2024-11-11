@@ -76,10 +76,10 @@ jobs:
       shell: pwsh
       working-directory: ${{ github.workspace }}/VSIX
       run: |
-        .\createcmake.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
-        .\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGame ${{ github.workspace }}
+        .\createcmake.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12Game ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDR ${{ github.workspace }}
 
     - name: 'Configure CMake - Direct3DUWPGame (DX11)'
       working-directory: ${{ github.workspace }}/Direct3DUWPGame
