@@ -122,6 +122,7 @@ foreach ($file in $files) {
     $o | Set-Content -Path $target -NoNewline
 }
     
+Copy-Item ($reporoot + "\build\CompilerAndLinker.cmake") -Destination $targetdir
 Copy-Item ($templatedir + "\CMakeLists.txt") -Destination $targetdir
 Copy-Item ($templatedir + "\*.json") -Destination $targetdir
 if (Test-Path -Path ($templatedir + "\settings.manifest")) {
