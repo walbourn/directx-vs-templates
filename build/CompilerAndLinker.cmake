@@ -45,7 +45,7 @@ if(WIN32)
 endif()
 
 if(MINGW)
-    list(APPEND LINKER_SWITCHES -municode)
+  list(APPEND LINKER_SWITCHES -municode)
 endif()
 
 #--- General MSVC-like SDL options
