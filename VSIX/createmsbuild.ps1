@@ -83,9 +83,11 @@ if (-Not ($platformtoolset -match 'v[0-9][0-9][0-9]'))
     Write-Error -Message "ERROR: Invalid platform toolset" -ErrorAction Stop
 }
 
-$templatedir = "..\" + $templatedir
+$reporoot = Split-Path -Path $PSScriptRoot -Parent
 
-$targetdir = $targetdir + "\" + $projectname
+$templatedir = Join-Path -Path $reporoot -ChildPath $templatedir
+
+$targetdir = Join-Path -Path $targetdir -ChildPath $projectname
 
 if (Test-Path $targetdir) {
     Write-Error -Message "ERROR: Project directory already exists" -ErrorAction Stop

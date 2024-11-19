@@ -66,7 +66,9 @@ param (
     [string]$targetdir = "$Env:USERPROFILE\source"
 )
 
-$templatedir = "..\" + $templatedir
+$reporoot = Split-Path -Path $PSScriptRoot -Parent
+
+$templatedir = Join-Path -Path $reporoot -ChildPath $templatedir
 
 $cmake = $templatedir + "\CMakeLists.txt"
 
@@ -74,7 +76,7 @@ if (-not (Test-Path -Path $cmake)) {
     Write-Error -Message "ERROR: $templatedir does not contain a CMake" -ErrorAction Stop
 }
 
-$targetdir = $targetdir + "\" + $projectname
+$targetdir = Join-Path -Path $targetdir -ChildPath $projectname
 
 if (Test-Path $targetdir) {
     Write-Error -Message "ERROR: Project directory already exists" -ErrorAction Stop
