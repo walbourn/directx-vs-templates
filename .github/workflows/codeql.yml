@@ -51,7 +51,7 @@ jobs:
         .\createcmake.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDR ${{ github.workspace }}
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.4
+      uses: github/codeql-action/init@aa578102511db1f4524ed59b8cc2bae4f6e88195 # v3.27.6
       with:
         languages: c-cpp
         build-mode: manual
@@ -121,6 +121,6 @@ jobs:
       run: cmake --build out\build\x64-Debug
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.4
+      uses: github/codeql-action/analyze@aa578102511db1f4524ed59b8cc2bae4f6e88195 # v3.27.6
       with:
         category: "/language:c-cpp"
