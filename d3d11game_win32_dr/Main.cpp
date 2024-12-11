@@ -105,8 +105,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     g_game.reset();
 
-    CoUninitialize();
-
     return static_cast<int>(msg.wParam);
 }
 
