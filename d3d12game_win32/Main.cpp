@@ -46,7 +46,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
     if (FAILED(CoInitializeEx(nullptr, COINITBASE_MULTITHREADED)))
         return 1;
 #else
-    if (FAILED(RoInitialize(COINITBASE_MULTITHREADED)))
+    if (FAILED(RoInitialize(RO_INIT_MULTITHREADED)))
         return 1;
 #endif
 
