@@ -505,7 +505,7 @@ void DeviceResources::Present()
 
 void DeviceResources::CreateFactory()
 {
-#if defined(_DEBUG) && (_WIN32_WINNT >= 0x0603 /*_WIN32_WINNT_WINBLUE*/) && !defined(__MINGW32__)
+#if defined(_DEBUG) && !defined(__MINGW32__)
     bool debugDXGI = false;
     {
         ComPtr<IDXGIInfoQueue> dxgiInfoQueue;
