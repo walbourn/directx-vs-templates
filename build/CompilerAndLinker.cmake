@@ -30,6 +30,12 @@ elseif(CMAKE_VS_PLATFORM_NAME_DEFAULT MATCHES "^[Aa][Rr][Mm]64$")
     set(DIRECTX_ARCH arm64)
 elseif(CMAKE_VS_PLATFORM_NAME_DEFAULT MATCHES "^[Aa][Rr][Mm]64EC$")
     set(DIRECTX_ARCH arm64ec)
+elseif(NOT (DEFINED DIRECTX_ARCH))
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "[Aa][Rr][Mm]64|aarch64|arm64")
+        set(DIRECTX_ARCH arm64)
+    else()
+        set(DIRECTX_ARCH x64)
+    endif()
 endif()
 
 #--- Determines host architecture
