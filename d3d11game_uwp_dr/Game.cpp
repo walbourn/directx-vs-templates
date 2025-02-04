@@ -105,7 +105,7 @@ void Game::Clear()
     context->OMSetRenderTargets(1, &renderTarget, depthStencil);
 
     // Set the viewport.
-    auto const viewport = m_deviceResources->GetScreenViewport();
+    const auto viewport = m_deviceResources->GetScreenViewport();
     context->RSSetViewports(1, &viewport);
 
     PIXEndEvent(context);
