@@ -16,4 +16,5 @@ Write-Host "Updating .ZIP files..."
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d11game_uwp_cppwinrt_dr", $vsix + "Direct3DUWPGameCppWinRTDR.zip")
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d12game_uwp_cppwinrt", $vsix + "Direct3D12UWPGameCppWinRT.zip")
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d12game_uwp_cppwinrt_dr", $vsix + "Direct3D12UWPGameCppWinRTDR.zip")
+[IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d12game_vcpkg", $vsix + "Direct3D12Win32GameVCPKG.zip")
 Write-Host "Completed."
