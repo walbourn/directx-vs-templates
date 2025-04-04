@@ -1,0 +1,44 @@
+<VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
+  <TemplateData>
+    <Name>Direct3D12 Win32 Game VCPKG</Name>
+    <Description>A project for a Win32 desktop game that uses Direct3D 12 with DeviceResources abstraction using VCPKG</Description>
+    <ProjectType>VC</ProjectType>
+    <TemplateID>Microsoft.DirectX.Direct3D12Win32GameVCPKG</TemplateID>
+    <SortOrder>1000</SortOrder>
+    <CreateNewFolder>true</CreateNewFolder>
+    <DefaultName>Direct3D Win32 Game</DefaultName>
+    <ProvideDefaultName>true</ProvideDefaultName>
+    <LocationField>Enabled</LocationField>
+    <EnableLocationBrowseButton>true</EnableLocationBrowseButton>
+    <Icon>__TemplateIcon.ico</Icon>
+    <PreviewImage>preview.png</PreviewImage>
+    <LanguageTag>cpp</LanguageTag>
+    <PlatformTag>windows</PlatformTag>
+    <ProjectTypeTag>games</ProjectTypeTag>
+    <ProjectTypeTag>desktop</ProjectTypeTag>
+    <ProjectTypeTag>DeviceResources</ProjectTypeTag>
+  </TemplateData>
+  <TemplateContent>
+    <Project ReplaceParameters="true" File="Direct3DWin32Game.vcxproj">
+      <ProjectItem ReplaceParameters="true" TargetFileName="$projectname$.vcxproj.filters">Direct3DWin32Game.vcxproj.filters</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="Game.cpp" OpenInEditor="true">Game.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="Main.cpp">Main.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="pch.cpp">pch.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="Game.h">Game.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="DeviceResources.h">DeviceResources.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="DeviceResources.cpp">DeviceResources.cpp</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="pch.h">pch.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="StepTimer.h">StepTimer.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="d3dx12.h">d3dx12.h</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="resource.rc">resource.rc</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="directx.ico">directx.ico</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="settings.manifest">settings.manifest</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="vcpkg-configuration.json">vcpkg-configuration.json</ProjectItem>
+      <ProjectItem ReplaceParameters="false" TargetFileName="vcpkg.json">vcpkg.json</ProjectItem>
+    </Project>
+  </TemplateContent>
+  <WizardExtension>
+    <Assembly>Wizards, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6ec6932595dd21ee</Assembly>
+    <FullClassName>Wizards.MyPlatformToolset</FullClassName>
+  </WizardExtension>
+</VSTemplate>
