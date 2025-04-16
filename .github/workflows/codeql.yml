@@ -114,7 +114,7 @@ jobs:
       run: cmake --build out\build\x64-Debug
 
     - name: 'Configure CMake - Direct3DUWP12GameDR (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3DUWP12Ga7meDR
+      working-directory: ${{ github.workspace }}/Direct3DUWP12GameDR
       run: cmake --preset=x64-Debug -DBUILD_TEST_TEMPLATE=ON
 
     - name: 'Build - Direct3DUWP12GameDR (DX12)'
