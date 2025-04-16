@@ -112,6 +112,7 @@ jobs:
         .\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
         .\createcmake.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
         .\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_vcpkg Direct3D12GameVCPKG ${{ github.workspace }}
 
     - name: 'Configure CMake - Direct3DGame (DX11)'
       working-directory: ${{ github.workspace }}/Direct3DGame
@@ -157,3 +158,14 @@ jobs:
       working-directory: ${{ github.workspace }}/Direct3D12GameDR
       run: cmake --build out\build\${{ matrix.build_type }}
 
+    - name: 'Configure CMake - Direct3D12GameVCPKG'
+      working-directory: ${{ github.workspace }}/Direct3D12GameVCPKG
+      run: >
+        cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+        -DVCPKG_MANIFEST_MODE=ON -DVCPKG_MANIFEST_DIR="${{ github.workspace }}/Direct3D12GameVCPKG"
+        -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        -DVCPKG_TARGET_TRIPLET="${env:VCPKG_DEFAULT_TRIPLET}"
+
+    - name: 'Build - Direct3D12GameVCPKG'
+      working-directory: ${{ github.workspace }}/Direct3D12GameVCPKG
+      run: cmake --build out\build\${{ matrix.build_type }}

@@ -68,6 +68,7 @@ jobs:
         .\createmsbuild.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDRCPP ${{ github.workspace }}
         .\createmsbuild.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12GameCPP ${{ github.workspace }}
         .\createmsbuild.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDRCPP ${{ github.workspace }}
+        .\createmsbuild.ps1 d3d12game_vcpkg Direct3DUWP12GameVCPKG ${{ github.workspace }}
 
     - if: matrix.platform !='ARM64'
       name: 'Build - Direct3DGame (DX11)'
@@ -120,3 +121,8 @@ jobs:
     - name: 'Build - Direct3DUWP12GameDRCPP (DX12)'
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameDRCPP
       run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameDRCPP.vcxproj
+
+    - if: matrix.vs == '2022'
+      name: 'Build - Direct3DUWP12GameVCPKG'
+      working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
+      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameVCPKG.vcxproj
