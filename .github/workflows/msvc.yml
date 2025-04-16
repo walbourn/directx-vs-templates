@@ -30,7 +30,7 @@ jobs:
       fail-fast: false
 
       matrix:
-        template: [d3d11game_win32, d3d11game_win32_dr, d3d12game_win32, d3d12game_win32_dr, d3d11game_uwp_cppwinrt, d3d11game_uwp_cppwinrt_dr, d3d12game_uwp_cppwinrt, d3d12game_uwp_cppwinrt_dr]
+        template: [d3d11game_win32, d3d11game_win32_dr, d3d12game_win32, d3d12game_win32_dr, d3d11game_uwp_cppwinrt, d3d11game_uwp_cppwinrt_dr, d3d12game_uwp_cppwinrt, d3d12game_uwp_cppwinrt_dr, d3d12game_vcpkg]
 
     steps:
       - name: Checkout repository
@@ -55,6 +55,14 @@ jobs:
         name: 'Configure CMake for UWP'
         working-directory: ${{ github.workspace }}/TestProject
         run: cmake -B out -DCMAKE_SYSTEM_NAME="WindowsStore" -DCMAKE_SYSTEM_VERSION="10.0" -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
+
+      - if: ${{ contains(matrix.template, 'vcpkg') }}
+        name: 'Configure CMake for VCPKG'
+        working-directory: ${{ github.workspace }}/TestProject
+        run: >
+          cmake -B out -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
+          -DVCPKG_MANIFEST_MODE=ON -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/TestProject
+          -DCMAKE_TOOLCHAIN_FILE=$VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake
 
       - name: Initialize MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@24c285ab36952c9e9182f4b78dfafbac38a7e5ee # v0.1.1
