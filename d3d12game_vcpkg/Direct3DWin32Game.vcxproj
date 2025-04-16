@@ -128,9 +128,9 @@
       <AdditionalOptions>/Fd "$(OutDir)%(Filename).pdb" %(AdditionalOptions)</AdditionalOptions>
     </FXCompile>
     <CustomBuildStep>
-      <Command>md $(OutDir)D3D12
-copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll "$(OutDir)D3D12"
-copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\bin\d3d12SDKLayers.dll "$(OutDir)D3D12"</Command>
+      <Command>md &quot;$(OutDir)D3D12&quot;
+copy &quot;$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll&quot; &quot;$(OutDir)D3D12&quot;
+copy &quot;$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\bin\d3d12SDKLayers.dll&quot; &quot;$(OutDir)D3D12&quot;</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll</Outputs>
     </CustomBuildStep>
@@ -162,9 +162,9 @@ copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\
       <AdditionalOptions>/Fd "$(OutDir)%(Filename).pdb" %(AdditionalOptions)</AdditionalOptions>
     </FXCompile>
     <CustomBuildStep>
-      <Command>md $(OutDir)D3D12
-copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll "$(OutDir)D3D12"
-copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\bin\d3d12SDKLayers.dll "$(OutDir)D3D12"</Command>
+      <Command>md &quot;$(OutDir)D3D12&quot;
+copy &quot;$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll&quot; &quot;$(OutDir)D3D12&quot;
+copy &quot;$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\bin\d3d12SDKLayers.dll&quot; &quot;$(OutDir)D3D12&quot;</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll</Outputs>
     </CustomBuildStep>
@@ -201,8 +201,8 @@ copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\debug\
       <AdditionalOptions>/Fd "$(OutDir)%(Filename).pdb" %(AdditionalOptions)</AdditionalOptions>
     </FXCompile>
     <CustomBuildStep>
-      <Command>md $(OutDir)D3D12
-copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll "$(OutDir)D3D12"</Command>
+      <Command>md &quot;$(OutDir)D3D12&quot;
+copy &quot;$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll&quot; &quot;$(OutDir)D3D12&quot;</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll</Outputs>
     </CustomBuildStep>
@@ -239,8 +239,8 @@ copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3
       <AdditionalOptions>/Fd "$(OutDir)%(Filename).pdb" %(AdditionalOptions)</AdditionalOptions>
     </FXCompile>
     <CustomBuildStep>
-      <Command>md $(OutDir)D3D12
-copy $(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll "$(OutDir)D3D12"</Command>
+      <Command>md &quot;$(OutDir)D3D12&quot;
+copy &quot;$(VcpkgManifestRoot)\vcpkg_installed\$(VcpkgTriplet)\$(VcpkgTriplet)\bin\D3D12Core.dll&quot; &quot;$(OutDir)D3D12&quot;</Command>
       <Message>Copy DirectX 12 Agility SDK Binaries</Message>
       <Outputs>$(OutDir)D3D12\D3D12Core.dll</Outputs>
     </CustomBuildStep>

@@ -29,16 +29,19 @@
       <ProjectItem ReplaceParameters="false" TargetFileName="DeviceResources.cpp">DeviceResources.cpp</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="pch.h">pch.h</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="StepTimer.h">StepTimer.h</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="d3dx12.h">d3dx12.h</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="resource.rc">resource.rc</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="directx.ico">directx.ico</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="settings.manifest">settings.manifest</ProjectItem>
-      <ProjectItem ReplaceParameters="false" TargetFileName="vcpkg-configuration.json">vcpkg-configuration.json</ProjectItem>
+      <ProjectItem ReplaceParameters="true" TargetFileName="vcpkg-configuration.json">vcpkg-configuration.json</ProjectItem>
       <ProjectItem ReplaceParameters="false" TargetFileName="vcpkg.json">vcpkg.json</ProjectItem>
     </Project>
   </TemplateContent>
   <WizardExtension>
     <Assembly>Wizards, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6ec6932595dd21ee</Assembly>
     <FullClassName>Wizards.MyPlatformToolset</FullClassName>
+  </WizardExtension>
+  <WizardExtension>
+    <Assembly>Wizards, Version=1.0.0.0, Culture=neutral, PublicKeyToken=6ec6932595dd21ee</Assembly>
+    <FullClassName>Wizards.VCPKGHash</FullClassName>
   </WizardExtension>
 </VSTemplate>
