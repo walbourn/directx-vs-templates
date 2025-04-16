@@ -62,7 +62,7 @@ jobs:
         run: >
           cmake -B out -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
           -DVCPKG_MANIFEST_MODE=ON -DVCPKG_MANIFEST_DIR=${{ github.workspace }}/TestProject
-          -DCMAKE_TOOLCHAIN_FILE=$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+          -DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
         env:
           VCPKG_ROOT: $(VCPKG_INSTALLATION_ROOT)
 
