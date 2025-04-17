@@ -122,7 +122,8 @@ jobs:
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameDRCPP
       run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameDRCPP.vcxproj
 
-    - if: matrix.vs == '2022' && matrix.platform !='x86'
+    - if: matrix.vs == '2022' && matrix.platform =='x64'
+    # ARM64 is failing due to long paths issues
       name: 'Build - Direct3DUWP12GameVCPKG'
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
       run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameVCPKG.vcxproj
