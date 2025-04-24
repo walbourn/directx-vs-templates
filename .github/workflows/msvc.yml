@@ -59,10 +59,9 @@ jobs:
       - if: ${{ contains(matrix.template, 'vcpkg') }}
         name: 'Configure CMake for VCPKG'
         working-directory: ${{ github.workspace }}/TestProject
-        run: >
-          cmake -B out -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
-          -DVCPKG_MANIFEST_MODE=ON -DVCPKG_MANIFEST_DIR=${{ github.workspace }}\TestProject
-          -DCMAKE_TOOLCHAIN_FILE=${env:VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake
+        run: |
+          $toolchain = "$env:VCPKG_ROOT\scripts\buildsystems\vcpkg.cmake" -replace '\\','/'
+          Start-Process "cmake.exe" -ArgumentList "-B","out","-DBUILD_TEST_TEMPLATE=ON","-DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON","-DVCPKG_MANIFEST_MODE=ON","-DVCPKG_MANIFEST_DIR=${{ github.workspace }}\TestProject","-DCMAKE_TOOLCHAIN_FILE=$toolchain"
 
       - name: Initialize MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@24c285ab36952c9e9182f4b78dfafbac38a7e5ee # v0.1.1
