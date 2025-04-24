@@ -22,6 +22,7 @@
     <RootNamespace>$safeprojectname$</RootNamespace>
     <ProjectGuid>{$guid1$}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
     <WindowsTargetPlatformVersion>$targetplatformversion$</WindowsTargetPlatformVersion>
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>

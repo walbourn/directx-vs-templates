@@ -31,7 +31,7 @@
     <Keyword>DirectXApp</Keyword>
     <RootNamespace>$safeprojectname$</RootNamespace>
     <DefaultLanguage>$currentuiculturename$</DefaultLanguage>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
     <AppContainerApplication>true</AppContainerApplication>
     <ApplicationType>Windows Store</ApplicationType>
     <WindowsTargetPlatformVersion>$targetplatformversion$</WindowsTargetPlatformVersion>
