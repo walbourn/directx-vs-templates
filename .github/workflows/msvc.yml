@@ -67,7 +67,7 @@ jobs:
         uses: microsoft/msvc-code-analysis-action@24c285ab36952c9e9182f4b78dfafbac38a7e5ee # v0.1.1
         id: run-analysis
         with:
-          cmakeBuildDirectory: ./TestProject/out
+          cmakeBuildDirectory: ./TestProject
           buildConfiguration: Debug
           ruleset: NativeRecommendedRules.ruleset
 
