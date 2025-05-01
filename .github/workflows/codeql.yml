@@ -125,8 +125,6 @@ jobs:
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
       run: >
         cmake --preset=x64-Debug -DBUILD_TEST_TEMPLATE=ON
-      env:
-        VCPKG_ROOT: $(VCPKG_INSTALLATION_ROOT)
 
     - name: 'Build - Direct3DUWP12GameVCPKG'
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
