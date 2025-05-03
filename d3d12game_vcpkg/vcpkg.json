@@ -5,6 +5,7 @@
       "name": "directx-dxc",
       "host": true
     },
+    "directx-dxc",
     "directx-headers",
     "directx12-agility",
     "directxmath",
