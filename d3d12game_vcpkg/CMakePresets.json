@@ -34,7 +34,11 @@
         "value": "arm64",
         "strategy": "external"
       },
-      "cacheVariables": { "DIRECTX_ARCH": "arm64" },
+      "cacheVariables": {
+        "DIRECTX_ARCH": "arm64",
+        "VCPKG_TARGET_TRIPLET": "arm64-windows",
+        "VCPKG_HOST_TRIPLET": "x64-windows"
+      },
       "hidden": true
     },
     {
@@ -43,7 +47,11 @@
         "value": "arm64ec",
         "strategy": "external"
       },
-      "cacheVariables": { "DIRECTX_ARCH": "arm64ec" },
+      "cacheVariables": {
+        "DIRECTX_ARCH": "arm64ec",
+        "VCPKG_TARGET_TRIPLET": "arm64ec-windows",
+        "VCPKG_HOST_TRIPLET": "x64-windows"
+      },
       "environment": {
         "CFLAGS": "/arm64EC",
         "CXXFLAGS": "/arm64EC"
