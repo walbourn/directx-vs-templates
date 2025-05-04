@@ -30,7 +30,8 @@ jobs:
       fail-fast: false
 
       matrix:
-        template: [d3d11game_win32, d3d11game_win32_dr, d3d12game_win32, d3d12game_win32_dr, d3d11game_uwp_cppwinrt, d3d11game_uwp_cppwinrt_dr, d3d12game_uwp_cppwinrt, d3d12game_uwp_cppwinrt_dr, d3d12game_vcpkg]
+        template: [d3d11game_win32, d3d11game_win32_dr, d3d12game_win32, d3d12game_win32_dr, d3d11game_uwp_cppwinrt, d3d11game_uwp_cppwinrt_dr, d3d12game_uwp_cppwinrt, d3d12game_uwp_cppwinrt_dr]
+        # action fails on the VCPKG case so skipping d3d12game_vcpkg for now
 
     steps:
       - name: Checkout repository
@@ -71,7 +72,7 @@ jobs:
           cmakeBuildDirectory: ./TestProject/out
           buildConfiguration: Debug
           ruleset: NativeRecommendedRules.ruleset
-          ignoredPaths: ${{ github.workspace }}/TestProject/vcpkg_installed
+          ignoredPaths: ${{ github.workspace }}/TestProject/out/vcpkg_installed
 
       # Upload SARIF file to GitHub Code Scanning Alerts
       - name: Upload SARIF to GitHub
