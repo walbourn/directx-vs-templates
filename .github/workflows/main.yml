@@ -104,7 +104,7 @@ jobs:
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
       run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
 
-    - if: ${{ startsWith(matrix.build_type, 'x64-') || startsWith(matrix.build_type, 'arm64-') }}
+    - if: ${{ !contains(matrix.build_type, 'x86') && !contains(matrix.build_type, 'arm64ec') }}
       name: 'Build - Direct3D12GameDR (VCPKG)'
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
       run: cmake --build out\build\${{ matrix.build_type }}
