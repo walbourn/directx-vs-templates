@@ -99,7 +99,7 @@ jobs:
       working-directory: ${{ github.workspace }}/Direct3D12GameDR
       run: cmake --build out\build\${{ matrix.build_type }}
 
-    - if: matrix.arch != 'amd64_x86'
+    - if: ${{ startsWith(matrix.build_type, 'x64-') || startsWith(matrix.build_type, 'arm64-') }}
       name: 'Configure CMake - Direct3D12GameDR (VCPKG)'
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
       run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
