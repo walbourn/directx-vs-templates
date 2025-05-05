@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "dependencies": [
+    {
+      "name": "directx-dxc",
+      "host": true
+    },
+    "directx-dxc",
+    "directx-headers",
+    "directx12-agility",
+    "directxmath",
+    "winpixevent"
+  ]
+}

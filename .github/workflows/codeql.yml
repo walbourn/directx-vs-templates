@@ -49,6 +49,7 @@ jobs:
         .\createcmake.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDR ${{ github.workspace }}
         .\createcmake.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12Game ${{ github.workspace }}
         .\createcmake.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDR ${{ github.workspace }}
+        .\createcmake.ps1 d3d12game_vcpkg Direct3DUWP12GameVCPKG ${{ github.workspace }}
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@28deaeda66b76a05916b6923827895f2b14ab387 # v3.28.16
@@ -118,6 +119,15 @@ jobs:
 
     - name: 'Build - Direct3DUWP12GameDR (DX12)'
       working-directory: ${{ github.workspace }}/Direct3DUWP12GameDR
+      run: cmake --build out\build\x64-Debug
+
+    - name: 'Configure CMake - Direct3DUWP12GameVCPKG'
+      working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
+      run: >
+        cmake --preset=x64-Debug -DBUILD_TEST_TEMPLATE=ON
+
+    - name: 'Build - Direct3DUWP12GameVCPKG'
+      working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
       run: cmake --build out\build\x64-Debug
 
     - name: Perform CodeQL Analysis

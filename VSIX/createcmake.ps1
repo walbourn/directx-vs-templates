@@ -6,13 +6,13 @@ This script creates a instance of one of the Win32 templates using CMake
 .DESCRIPTION
 This script is intended for creating a template instance outside of Visual Studio using CMake for building instead.
 
-.PARAMETER templatedir
+.PARAMETER TemplateDir
 Provides the directory to read for the source template (d3d11game_win32, etc.)
 
-.PARAMETER projectname
+.PARAMETER ProjectName
 This is name of the project (such as "Direct3DGame")
 
-.PARAMETER targetdir
+.PARAMETER TargetDir
 This is the name of the target directory for the project (must not already exist). Defaults to the user's source directory.
 
 .EXAMPLE
@@ -61,46 +61,59 @@ https://github.com/walbourn/directx-vs-templates/wiki
 #>
 
 param (
-    [string]$templatedir = "d3d11game_win32",
-    [string]$projectname = "Direct3DGame",
-    [string]$targetdir = "$Env:USERPROFILE\source"
+    [Parameter(
+        Mandatory,
+        Position = 0
+    )]
+    [string]$TemplateDir,
+    [Parameter(
+        Position = 1
+    )]
+    [string]$ProjectName = "Direct3DGameCMake",
+    [Parameter(
+        Position = 2
+    )]
+    [string]$TargetDir = "$Env:USERPROFILE\source"
 )
+
+$vcpkgBaseline = "670f6dddaafc59c5dfe0587a130d59a35c48ea38"
 
 $reporoot = Split-Path -Path $PSScriptRoot -Parent
 
-$templatedir = Join-Path -Path $reporoot -ChildPath $templatedir
+$TemplateDir = Join-Path -Path $reporoot -ChildPath $TemplateDir
 
-$cmake = $templatedir + "\CMakeLists.txt"
+$cmake = $TemplateDir + "\CMakeLists.txt"
 
 if (-not (Test-Path -Path $cmake)) {
-    Write-Error -Message "ERROR: $templatedir does not contain a CMake" -ErrorAction Stop
+    Write-Error -Message "ERROR: $TemplateDir does not contain a CMake" -ErrorAction Stop
 }
 
-$targetdir = Join-Path -Path $targetdir -ChildPath $projectname
+$TargetDir = Join-Path -Path $TargetDir -ChildPath $ProjectName
 
-if (Test-Path $targetdir) {
+if (Test-Path $TargetDir) {
     Write-Error -Message "ERROR: Project directory already exists" -ErrorAction Stop
 }
 
 try {
-    New-Item -Path $targetdir -ItemType Directory -ErrorAction Stop | Out-Null
+    New-Item -Path $TargetDir -ItemType Directory -ErrorAction Stop | Out-Null
 }
 catch {
-    Write-Error -Message "Unable to create project directory '$targetdir'`n $_" -ErrorAction Stop
+    Write-Error -Message "Unable to create project directory '$TargetDir'`n $_" -ErrorAction Stop
 }
 
-$files = Get-ChildItem $templatedir | Where {$_.extension -eq ".cpp"} | % { $_.FullName }
-$files += Get-ChildItem $templatedir | Where {$_.extension -eq ".h"} | % { $_.FullName }
+$files = Get-ChildItem $TemplateDir | Where {$_.extension -eq ".cpp"} | % { $_.FullName }
+$files += Get-ChildItem $TemplateDir | Where {$_.extension -eq ".h"} | % { $_.FullName }
 
-if (Test-Path -Path ($templatedir + "\Package.appxmanifest")) {
-    $files += Get-ChildItem $templatedir | Where {$_.extension -eq ".appxmanifest"} | % { $_.FullName }
+if (Test-Path -Path ($TemplateDir + "\Package.appxmanifest")) {
+    $files += Get-ChildItem $TemplateDir | Where {$_.extension -eq ".appxmanifest"} | % { $_.FullName }
 }
 
 $guid = New-Guid
 $locale = Get-WinSystemLocale
+$safeprojectname = $ProjectName -replace '[ :`\/`*`?"<>|]','_'
 
 foreach ($file in $files) {
-    $target = $targetdir + "\" + [System.IO.Path]::GetFileName($file)
+    $target = $TargetDir + "\" + [System.IO.Path]::GetFileName($file)
     $i = Get-Content $file -Raw
     $o = $i.Replace("Version=`"1.0.0.0`" />", "Version=`"@CMAKE_PROJECT_VERSION@`" `
     ProcessorArchitecture=`"@DIRECTX_ARCH@`" />")
@@ -108,8 +121,8 @@ foreach ($file in $files) {
     $o = $o.Replace("DisplayName=`"`$projectname$`"", "DisplayName=`"@PROJECT_NAME@`"")
     $o = $o.Replace("Description=`"`$projectname$`"", "Description=`"@CMAKE_PROJECT_DESCRIPTION@`"")
     $o = $o.Replace("EntryPoint=`"`$safeprojectname$.App`"", "EntryPoint=`"@PROJECT_NAME@.App`"")
-    $o = $o.Replace("`$projectname$", $projectname)
-    $o = $o.Replace("`$safeprojectname$", $projectname)
+    $o = $o.Replace("`$projectname$", $ProjectName)
+    $o = $o.Replace("`$safeprojectname$", $safeprojectname)
     $o = $o.Replace("`$guid9$", $guid)
     $o = $o.Replace("`$XmlEscapedPublisherDistinguishedName$", "CN=$Env:USERNAME")
     $o = $o.Replace("`$XmlEscapedPublisher$", "$Env:USERNAME")
@@ -121,22 +134,34 @@ foreach ($file in $files) {
 
     $o | Set-Content -Path $target -NoNewline
 }
-    
-Copy-Item ($reporoot + "\build\CompilerAndLinker.cmake") -Destination $targetdir
-Copy-Item ($templatedir + "\CMakeLists.txt") -Destination $targetdir
-Copy-Item ($templatedir + "\*.json") -Destination $targetdir
-if (Test-Path -Path ($templatedir + "\settings.manifest")) {
-    Copy-Item ($templatedir + "\*.rc") -Destination $targetdir
-    Copy-Item ($templatedir + "\directx.ico") -Destination $targetdir
-    Copy-Item ($templatedir + "\settings.manifest") -Destination $targetdir
-}
-else {
-    New-Item -Path ($targetdir + "\Assets") -ItemType Directory | Out-Null
-    Copy-Item ($templatedir + "\StoreLogo.png") -Destination ($targetdir + "\Assets\StoreLogo.png")
-    Copy-Item ($templatedir + "\Logo.scale-200.png") -Destination ($targetdir + "\Assets\Logo.png")
-    Copy-Item ($templatedir + "\SmallLogo.scale-200.png") -Destination ($targetdir + "\Assets\SmallLogo.png")
-    Copy-Item ($templatedir + "\SplashScreen.scale-200.png") -Destination ($targetdir + "\Assets\SplashScreen.png")
-    Copy-Item ($templatedir + "\WideLogo.scale-200.png") -Destination ($targetdir + "\Assets\WideLogo.png")
+
+Copy-Item ($reporoot + "\build\CompilerAndLinker.cmake") -Destination $TargetDir
+Copy-Item ($TemplateDir + "\CMakeLists.txt") -Destination $TargetDir
+Copy-Item ($TemplateDir + "\CMake*.json") -Destination $TargetDir
+
+if (Test-Path -Path ($TemplateDir + "\vcpkg.json")) {
+    Copy-Item ($TemplateDir + "\vcpkg*.json") -Destination $TargetDir
+
+    $vcpkgConfig = $TargetDir + "\vcpkg-configuration.json"
+    if (Test-Path $vcpkgConfig) {
+        $i = Get-Content $vcpkgConfig -Raw
+        $o = $i.Replace("`$vcpkghash$", $vcpkgBaseline)
+        $o | Set-Content -Path $vcpkgConfig -NoNewline
+    }
 }
 
-Write-Host "New project in $targetdir"
+if (Test-Path -Path ($TemplateDir + "\settings.manifest")) {
+    Copy-Item ($TemplateDir + "\*.rc") -Destination $TargetDir
+    Copy-Item ($TemplateDir + "\directx.ico") -Destination $TargetDir
+    Copy-Item ($TemplateDir + "\settings.manifest") -Destination $TargetDir
+}
+else {
+    New-Item -Path ($TargetDir + "\Assets") -ItemType Directory | Out-Null
+    Copy-Item ($TemplateDir + "\StoreLogo.png") -Destination ($TargetDir + "\Assets\StoreLogo.png")
+    Copy-Item ($TemplateDir + "\Logo.scale-200.png") -Destination ($TargetDir + "\Assets\Logo.png")
+    Copy-Item ($TemplateDir + "\SmallLogo.scale-200.png") -Destination ($TargetDir + "\Assets\SmallLogo.png")
+    Copy-Item ($TemplateDir + "\SplashScreen.scale-200.png") -Destination ($TargetDir + "\Assets\SplashScreen.png")
+    Copy-Item ($TemplateDir + "\WideLogo.scale-200.png") -Destination ($TargetDir + "\Assets\WideLogo.png")
+}
+
+Write-Host "New project in $TargetDir"
