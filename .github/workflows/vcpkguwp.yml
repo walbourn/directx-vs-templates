@@ -5,9 +5,9 @@ name: 'CMake (UWP using VCPKG)'
 
 on:
   push:
-    branches: [ "main" ]
+    branches: "main"
   pull_request:
-    branches: [ "main" ]
+    branches: "main"
     paths-ignore:
       - '*.md'
       - LICENSE
