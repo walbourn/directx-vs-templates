@@ -187,7 +187,6 @@ if (Test-Path -Path ($TemplateDir + "\settings.manifest")) {
 else {
     if ($makepfx -eq $true) {
         $cert = New-SelfSignedCertificate -Type Custom -Subject "CN=$Env:USERNAME" -KeyUsage DigitalSignature -FriendlyName "devcert" -CertStore Cert:\CurrentUser\My\ -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
-        [System.Security.SecureString]$rootCertPassword = ConvertTo-SecureString -String "pwd" -Force -AsPlainText
         Export-PfxCertificate -Cert $cert -FilePath ($TargetDir + "\" + $ProjectName + "_TemporaryKey.pfx") -ProtectTo "$Env:USERNAME" | Out-Null
     }
     New-Item -Path ($TargetDir + "\Assets") -ItemType Directory | Out-Null

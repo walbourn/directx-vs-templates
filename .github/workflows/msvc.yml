@@ -40,7 +40,7 @@ jobs:
           d3d11game_uwp_cppwinrt_dr,
           d3d12game_uwp_cppwinrt,
           d3d12game_uwp_cppwinrt_dr
-          ]
+        ]
 
     steps:
       - name: Checkout repository
