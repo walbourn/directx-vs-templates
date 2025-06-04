@@ -2,6 +2,7 @@
     "Format": "github-actions",
     "exclude": [
         ".git",
-        "LICENSE"
+        "LICENSE",
+        "*/d3dx12.h"
     ]
 }
