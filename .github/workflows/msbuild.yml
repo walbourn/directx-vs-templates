@@ -26,104 +26,107 @@ jobs:
         vs: [2019, 2022]
         build_type: [Debug, Release]
         platform: [x86, x64, ARM64]
+      exclude:
+        - vs: 2019
+          platform: ARM64
 
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-    - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2.0.0
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2.0.0
 
-    - if: matrix.vs == '2019'
-      name: 'Instance templates for v142'
-      shell: pwsh
-      working-directory: ${{ github.workspace }}/VSIX
-      run: |
-        .\createmsbuild.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d11game_uwp Direct3DUWPGame ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d11game_uwp_dr Direct3DUWPGameDR ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d12game_uwp Direct3DUWP12Game ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d12game_uwp_dr Direct3DUWP12GameDR ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGameCPP ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDRCPP ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12GameCPP ${{ github.workspace }} v142
-        .\createmsbuild.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDRCPP ${{ github.workspace }} v142
+      - if: matrix.vs == '2019'
+        name: 'Instance templates for v142'
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/VSIX
+        run: |
+          .\createmsbuild.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d11game_uwp Direct3DUWPGame ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d11game_uwp_dr Direct3DUWPGameDR ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d12game_uwp Direct3DUWP12Game ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d12game_uwp_dr Direct3DUWP12GameDR ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGameCPP ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDRCPP ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12GameCPP ${{ github.workspace }} v142
+          .\createmsbuild.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDRCPP ${{ github.workspace }} v142
 
-    - if: matrix.vs == '2022'
-      name: 'Instance templates for v143'
-      shell: pwsh
-      working-directory: ${{ github.workspace }}/VSIX
-      run: |
-        .\createmsbuild.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_uwp Direct3DUWPGame ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_uwp_dr Direct3DUWPGameDR ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_uwp Direct3DUWP12Game ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_uwp_dr Direct3DUWP12GameDR ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGameCPP ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDRCPP ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12GameCPP ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDRCPP ${{ github.workspace }}
-        .\createmsbuild.ps1 d3d12game_vcpkg Direct3DUWP12GameVCPKG ${{ github.workspace }}
+      - if: matrix.vs == '2022'
+        name: 'Instance templates for v143'
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/VSIX
+        run: |
+          .\createmsbuild.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d11game_uwp Direct3DUWPGame ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d11game_uwp_dr Direct3DUWPGameDR ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d12game_uwp Direct3DUWP12Game ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d12game_uwp_dr Direct3DUWP12GameDR ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d11game_uwp_cppwinrt Direct3DUWPGameCPP ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d11game_uwp_cppwinrt_dr Direct3DUWPGameDRCPP ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d12game_uwp_cppwinrt Direct3DUWP12GameCPP ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d12game_uwp_cppwinrt_dr Direct3DUWP12GameDRCPP ${{ github.workspace }}
+          .\createmsbuild.ps1 d3d12game_vcpkg Direct3DUWP12GameVCPKG ${{ github.workspace }}
 
-    - if: matrix.platform !='ARM64'
-      name: 'Build - Direct3DGame (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DGame
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DGame.vcxproj
+      - if: matrix.platform !='ARM64'
+        name: 'Build - Direct3DGame (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DGame
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DGame.vcxproj
 
-    - name: 'Build - Direct3DUWPGame (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DUWPGame
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWPGame.vcxproj
+      - name: 'Build - Direct3DUWPGame (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DUWPGame
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWPGame.vcxproj
 
-    - name: 'Build - Direct3DUWPGameCPP (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DUWPGameCPP
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWPGameCPP.vcxproj
+      - name: 'Build - Direct3DUWPGameCPP (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DUWPGameCPP
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWPGameCPP.vcxproj
 
-    - if: matrix.platform !='ARM64'
-      name: 'Build - Direct3DGameDR (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DGameDR
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DGameDR.vcxproj
+      - if: matrix.platform !='ARM64'
+        name: 'Build - Direct3DGameDR (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DGameDR
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DGameDR.vcxproj
 
-    - name: 'Build - Direct3DUWPGameDR (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DUWPGameDR
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWPGameDR.vcxproj
+      - name: 'Build - Direct3DUWPGameDR (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DUWPGameDR
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWPGameDR.vcxproj
 
-    - name: 'Build - Direct3DUWPGameDRCPP (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DUWPGameDRCPP
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWPGameDRCPP.vcxproj
+      - name: 'Build - Direct3DUWPGameDRCPP (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DUWPGameDRCPP
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWPGameDRCPP.vcxproj
 
-    - if: matrix.platform !='ARM64'
-      name: 'Build - Direct3D12Game (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3D12Game
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3D12Game.vcxproj
+      - if: matrix.platform !='ARM64'
+        name: 'Build - Direct3D12Game (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3D12Game
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3D12Game.vcxproj
 
-    - name: 'Build - Direct3DUWP12Game (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3DUWP12Game
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12Game.vcxproj
+      - name: 'Build - Direct3DUWP12Game (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3DUWP12Game
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12Game.vcxproj
 
-    - name: 'Build - Direct3DUWP12GameCPP (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3DUWP12GameCPP
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameCPP.vcxproj
+      - name: 'Build - Direct3DUWP12GameCPP (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3DUWP12GameCPP
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameCPP.vcxproj
 
-    - if: matrix.platform !='ARM64'
-      name: 'Build - Direct3D12GameDR (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3D12GameDR
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3D12GameDR.vcxproj
+      - if: matrix.platform !='ARM64'
+        name: 'Build - Direct3D12GameDR (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3D12GameDR
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3D12GameDR.vcxproj
 
-    - name: 'Build - Direct3DUWP12GameDR (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3DUWP12GameDR
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameDR.vcxproj
+      - name: 'Build - Direct3DUWP12GameDR (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3DUWP12GameDR
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameDR.vcxproj
 
-    - name: 'Build - Direct3DUWP12GameDRCPP (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3DUWP12GameDRCPP
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameDRCPP.vcxproj
+      - name: 'Build - Direct3DUWP12GameDRCPP (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3DUWP12GameDRCPP
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameDRCPP.vcxproj
 
-    - if: matrix.vs == '2022' && matrix.platform =='x64'
-    # ARM64 is failing due to long paths issues
-      name: 'Build - Direct3DUWP12GameVCPKG'
-      working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
-      run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameVCPKG.vcxproj
+      - if: matrix.vs == '2022' && matrix.platform =='x64'
+      # ARM64 is failing due to long paths issues
+        name: 'Build - Direct3DUWP12GameVCPKG'
+        working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
+        run: msbuild /m /p:Configuration=${{ matrix.build_type }} /p:Platform=${{ matrix.platform }} Direct3DUWP12GameVCPKG.vcxproj
