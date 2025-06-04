@@ -30,7 +30,14 @@ jobs:
       fail-fast: false
 
       matrix:
-        template: [d3d11game_win32, d3d11game_win32_dr, d3d12game_win32, d3d12game_win32_dr, d3d11game_uwp_cppwinrt, d3d11game_uwp_cppwinrt_dr, d3d12game_uwp_cppwinrt, d3d12game_uwp_cppwinrt_dr]
+        template: [ d3d11game_win32,
+                    d3d11game_win32_dr,
+                    d3d12game_win32,
+                    d3d12game_win32_dr,
+                    d3d11game_uwp_cppwinrt,
+                    d3d11game_uwp_cppwinrt_dr,
+                    d3d12game_uwp_cppwinrt,
+                    d3d12game_uwp_cppwinrt_dr ]
         # action fails on the VCPKG case so skipping d3d12game_vcpkg for now
 
     steps:
@@ -55,7 +62,9 @@ jobs:
       - if: ${{ contains(matrix.template, 'uwp') }}
         name: 'Configure CMake for UWP'
         working-directory: ${{ github.workspace }}/TestProject
-        run: cmake -B out -DCMAKE_SYSTEM_NAME="WindowsStore" -DCMAKE_SYSTEM_VERSION="10.0" -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
+        run: >
+          cmake -B out -DCMAKE_SYSTEM_NAME="WindowsStore" -DCMAKE_SYSTEM_VERSION="10.0"
+          -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
 
       - if: ${{ contains(matrix.template, 'vcpkg') }}
         name: 'Configure CMake for VCPKG'
