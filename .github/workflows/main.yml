@@ -5,9 +5,9 @@ name: 'CMake (Windows)'
 
 on:
   push:
-    branches: [ "main" ]
+    branches: "main"
   pull_request:
-    branches: [ "main" ]
+    branches: "main"
     paths-ignore:
       - '*.md'
       - LICENSE
@@ -48,63 +48,63 @@ jobs:
             arch: amd64_arm64
 
     steps:
-    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-    - name: 'Install Ninja'
-      run: choco install ninja
+      - name: 'Install Ninja'
+        run: choco install ninja
 
-    - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
-      with:
-        arch: ${{ matrix.arch }}
+      - uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+        with:
+          arch: ${{ matrix.arch }}
 
-    - name: 'Instance templates'
-      shell: pwsh
-      working-directory: ${{ github.workspace }}/VSIX
-      run: |
-        .\createcmake.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
-        .\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
-        .\createcmake.ps1 d3d12game_vcpkg Direct3DUWP12GameVCPKG ${{ github.workspace }}
+      - name: 'Instance templates'
+        shell: pwsh
+        working-directory: ${{ github.workspace }}/VSIX
+        run: |
+          .\createcmake.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
+          .\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
+          .\createcmake.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
+          .\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
+          .\createcmake.ps1 d3d12game_vcpkg Direct3DUWP12GameVCPKG ${{ github.workspace }}
 
-    - name: 'Configure CMake - Direct3DGame (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DGame
-      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+      - name: 'Configure CMake - Direct3DGame (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DGame
+        run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
 
-    - name: 'Build - Direct3DGame (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DGame
-      run: cmake --build out\build\${{ matrix.build_type }}
+      - name: 'Build - Direct3DGame (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DGame
+        run: cmake --build out\build\${{ matrix.build_type }}
 
-    - name: 'Configure CMake - Direct3DGameDR (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DGameDR
-      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+      - name: 'Configure CMake - Direct3DGameDR (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DGameDR
+        run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
 
-    - name: 'Build - Direct3DGameDR (DX11)'
-      working-directory: ${{ github.workspace }}/Direct3DGameDR
-      run: cmake --build out\build\${{ matrix.build_type }}
+      - name: 'Build - Direct3DGameDR (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DGameDR
+        run: cmake --build out\build\${{ matrix.build_type }}
 
-    - name: 'Configure CMake - Direct3D12Game (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3D12Game
-      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+      - name: 'Configure CMake - Direct3D12Game (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3D12Game
+        run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
 
-    - name: 'Build - Direct3D12Game (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3D12Game
-      run: cmake --build out\build\${{ matrix.build_type }}
+      - name: 'Build - Direct3D12Game (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3D12Game
+        run: cmake --build out\build\${{ matrix.build_type }}
 
-    - name: 'Configure CMake - Direct3D12GameDR (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3D12GameDR
-      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+      - name: 'Configure CMake - Direct3D12GameDR (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3D12GameDR
+        run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
 
-    - name: 'Build - Direct3D12GameDR (DX12)'
-      working-directory: ${{ github.workspace }}/Direct3D12GameDR
-      run: cmake --build out\build\${{ matrix.build_type }}
+      - name: 'Build - Direct3D12GameDR (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3D12GameDR
+        run: cmake --build out\build\${{ matrix.build_type }}
 
-    - if: ${{ startsWith(matrix.build_type, 'x64-') || startsWith(matrix.build_type, 'arm64-') }}
-      name: 'Configure CMake - Direct3D12GameDR (VCPKG)'
-      working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
-      run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+      - if: ${{ startsWith(matrix.build_type, 'x64-') || startsWith(matrix.build_type, 'arm64-') }}
+        name: 'Configure CMake - Direct3D12GameDR (VCPKG)'
+        working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
+        run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
 
-    - if: ${{ startsWith(matrix.build_type, 'x64-') || startsWith(matrix.build_type, 'arm64-') }}
-      name: 'Build - Direct3D12GameDR (VCPKG)'
-      working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
-      run: cmake --build out\build\${{ matrix.build_type }}
+      - if: ${{ startsWith(matrix.build_type, 'x64-') || startsWith(matrix.build_type, 'arm64-') }}
+        name: 'Build - Direct3D12GameDR (VCPKG)'
+        working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
+        run: cmake --build out\build\${{ matrix.build_type }}

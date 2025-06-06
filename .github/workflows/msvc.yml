@@ -5,9 +5,9 @@ name: Microsoft C++ Code Analysis
 
 on:
   push:
-    branches: [ "main" ]
+    branches: "main"
   pull_request:
-    branches: [ "main" ]
+    branches: "main"
     paths-ignore:
       - '*.md'
       - LICENSE
@@ -30,8 +30,17 @@ jobs:
       fail-fast: false
 
       matrix:
-        template: [d3d11game_win32, d3d11game_win32_dr, d3d12game_win32, d3d12game_win32_dr, d3d11game_uwp_cppwinrt, d3d11game_uwp_cppwinrt_dr, d3d12game_uwp_cppwinrt, d3d12game_uwp_cppwinrt_dr]
         # action fails on the VCPKG case so skipping d3d12game_vcpkg for now
+        template: [
+          d3d11game_win32,
+          d3d11game_win32_dr,
+          d3d12game_win32,
+          d3d12game_win32_dr,
+          d3d11game_uwp_cppwinrt,
+          d3d11game_uwp_cppwinrt_dr,
+          d3d12game_uwp_cppwinrt,
+          d3d12game_uwp_cppwinrt_dr
+        ]
 
     steps:
       - name: Checkout repository
@@ -55,15 +64,27 @@ jobs:
       - if: ${{ contains(matrix.template, 'uwp') }}
         name: 'Configure CMake for UWP'
         working-directory: ${{ github.workspace }}/TestProject
-        run: cmake -B out -DCMAKE_SYSTEM_NAME="WindowsStore" -DCMAKE_SYSTEM_VERSION="10.0" -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
+        run: >
+          cmake -B out -DCMAKE_SYSTEM_NAME="WindowsStore" -DCMAKE_SYSTEM_VERSION="10.0"
+          -DBUILD_TEST_TEMPLATE=ON -DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON
 
       - if: ${{ contains(matrix.template, 'vcpkg') }}
         name: 'Configure CMake for VCPKG'
         working-directory: ${{ github.workspace }}/TestProject
         run: |
           $toolchain = "$env:VCPKG_ROOT\scripts\buildsystems\vcpkg.cmake" -replace '\\','/'
-          Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList "/c","echo","-B","out","-DBUILD_TEST_TEMPLATE=ON","-DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON","-DVCPKG_MANIFEST_MODE=ON","-DVCPKG_MANIFEST_DIR=${{ github.workspace }}\TestProject","-DCMAKE_TOOLCHAIN_FILE=`"${toolchain}`""
-          Start-Process -NoNewWindow -FilePath "cmake.exe" -ArgumentList "-B","out","-DBUILD_TEST_TEMPLATE=ON","-DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON","-DVCPKG_MANIFEST_MODE=ON","-DVCPKG_MANIFEST_DIR=${{ github.workspace }}\TestProject","-DCMAKE_TOOLCHAIN_FILE=`"${toolchain}`""
+          $args = @(
+            '-B'
+            'out'
+            '-DBUILD_TEST_TEMPLATE=ON'
+            '-DCMAKE_DISABLE_PRECOMPILE_HEADERS=ON'
+            '-DVCPKG_MANIFEST_MODE=ON'
+            '-DVCPKG_MANIFEST_DIR=${{ github.workspace }}\TestProject'
+            '-DCMAKE_TOOLCHAIN_FILE="${toolchain}"'
+          )
+          $echoargs = @("/c", "echo")
+          Start-Process -NoNewWindow -FilePath "cmd.exe" -ArgumentList ($echoargs + $args)
+          Start-Process -NoNewWindow -FilePath "cmake.exe" -ArgumentList $args
 
       - name: Initialize MSVC Code Analysis
         uses: microsoft/msvc-code-analysis-action@24c285ab36952c9e9182f4b78dfafbac38a7e5ee # v0.1.1
