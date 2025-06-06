@@ -3,6 +3,10 @@
     "exclude": [
         ".git",
         "LICENSE",
-        "*/d3dx12.h"
-    ]
+        "**/d3dx12.h"
+    ],
+    "Disable": {
+        "Indentation": true,
+        "IndentSize": true
+    }
 }
