@@ -32,9 +32,6 @@
     <CustomBuildBeforeTargets>Link</CustomBuildBeforeTargets>
     <FxCompileAfterTargets>VcpkgInstallManifestDependencies</FxCompileAfterTargets>
   </PropertyGroup>
-  <PropertyGroup>
-    <VcpkgPageSchema>$(VSInstallDir)vc\vcpkg\scripts\buildsystems\msbuild\vcpkg-general.xml</VcpkgPageSchema>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -71,6 +68,9 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Condition="Exists('$(VCInstallDir)vcpkg\scripts\buildsystems\msbuild\vcpkg.props')" Project="$(VCInstallDir)vcpkg\scripts\buildsystems\msbuild\vcpkg.props" />
+  <PropertyGroup>
+    <VcpkgPageSchema>$(VCInstallDir)vcpkg\scripts\buildsystems\msbuild\vcpkg-general.xml</VcpkgPageSchema>
+  </PropertyGroup>
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
