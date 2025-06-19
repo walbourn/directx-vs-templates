@@ -52,7 +52,7 @@ jobs:
           .\createcmake.ps1 d3d12game_vcpkg Direct3DUWP12GameVCPKG ${{ github.workspace }}
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@28deaeda66b76a05916b6923827895f2b14ab387 # v3.28.16
+        uses: github/codeql-action/init@ce28f5bb42b7a9f2c824e633a3f6ee835bab6858 # v3.29.0
         with:
           languages: c-cpp
           build-mode: manual
@@ -131,6 +131,6 @@ jobs:
         run: cmake --build out\build\x64-Debug
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@28deaeda66b76a05916b6923827895f2b14ab387 # v3.28.16
+        uses: github/codeql-action/analyze@ce28f5bb42b7a9f2c824e633a3f6ee835bab6858 # v3.29.0
         with:
           category: "/language:c-cpp"
