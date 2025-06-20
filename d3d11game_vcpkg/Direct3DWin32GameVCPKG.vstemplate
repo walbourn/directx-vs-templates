@@ -1,9 +1,9 @@
 <VSTemplate Version="3.0.0" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" Type="Project">
   <TemplateData>
-    <Name>Direct3D12 Win32 Game VCPKG</Name>
-    <Description>A project for a Win32 desktop game that uses Direct3D 12 with DeviceResources abstraction using VCPKG</Description>
+    <Name>Direct3D Win32 Game VCPKG</Name>
+    <Description>A project for a Win32 desktop game that uses Direct3D 11 with DeviceResources abstraction using VCPKG</Description>
     <ProjectType>VC</ProjectType>
-    <TemplateID>Microsoft.DirectX.Direct3D12Win32GameVCPKG</TemplateID>
+    <TemplateID>Microsoft.DirectX.Direct3DWin32GameVCPKG</TemplateID>
     <SortOrder>1000</SortOrder>
     <CreateNewFolder>true</CreateNewFolder>
     <DefaultName>Direct3D Win32 Game</DefaultName>

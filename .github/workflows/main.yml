@@ -63,9 +63,10 @@ jobs:
         run: |
           .\createcmake.ps1 d3d11game_win32 Direct3DGame ${{ github.workspace }}
           .\createcmake.ps1 d3d11game_win32_dr Direct3DGameDR ${{ github.workspace }}
+          .\createcmake.ps1 d3d11game_vcpkg Direct3DGameVCPKG ${{ github.workspace }}
           .\createcmake.ps1 d3d12game_win32 Direct3D12Game ${{ github.workspace }}
           .\createcmake.ps1 d3d12game_win32_dr Direct3D12GameDR ${{ github.workspace }}
-          .\createcmake.ps1 d3d12game_vcpkg Direct3DUWP12GameVCPKG ${{ github.workspace }}
+          .\createcmake.ps1 d3d12game_vcpkg Direct3D12GameVCPKG ${{ github.workspace }}
 
       - name: 'Configure CMake - Direct3DGame (DX11)'
         working-directory: ${{ github.workspace }}/Direct3DGame
@@ -99,12 +100,22 @@ jobs:
         working-directory: ${{ github.workspace }}/Direct3D12GameDR
         run: cmake --build out\build\${{ matrix.build_type }}
 
+      - if: ${{ startsWith(matrix.build_type, 'x64-') }}
+        name: 'Configure CMake - Direct3DGameVCPKG (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DGameVCPKG
+        run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
+
+      - if: ${{ startsWith(matrix.build_type, 'x64-') }}
+        name: 'Build - Direct3DGameVCPKG (DX11)'
+        working-directory: ${{ github.workspace }}/Direct3DGameVCPKG
+        run: cmake --build out\build\${{ matrix.build_type }}
+
       - if: ${{ startsWith(matrix.build_type, 'x64-') || startsWith(matrix.build_type, 'arm64-') }}
-        name: 'Configure CMake - Direct3D12GameDR (VCPKG)'
-        working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
+        name: 'Configure CMake - Direct3D12GameVCPKG (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3D12GameVCPKG
         run: cmake --preset=${{ matrix.build_type }} -DBUILD_TEST_TEMPLATE=ON
 
       - if: ${{ startsWith(matrix.build_type, 'x64-') || startsWith(matrix.build_type, 'arm64-') }}
-        name: 'Build - Direct3D12GameDR (VCPKG)'
-        working-directory: ${{ github.workspace }}/Direct3DUWP12GameVCPKG
+        name: 'Build - Direct3D12GameVCPKG (DX12)'
+        working-directory: ${{ github.workspace }}/Direct3D12GameVCPKG
         run: cmake --build out\build\${{ matrix.build_type }}
