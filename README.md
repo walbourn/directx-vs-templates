@@ -21,7 +21,7 @@ The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2022.
 
 The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows SDK (22000) or later.
 
-The "Direct3D12 Win32 Game VCPKG" template also requires *vcpkg Package Manager* (``Microsoft.VisualStudio.Component.Vcpkg``).
+The "Direct3D Win32 Game VCPKG" and "Direct3D12 Win32 Game VCPKG" templates require *vcpkg Package Manager* (``Microsoft.VisualStudio.Component.Vcpkg``).
 
 ## Rebuilding the VSIX
 

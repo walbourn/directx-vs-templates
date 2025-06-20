@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Direct3DUWPGame-1" Version="8.2" Language="en-US" Publisher="Microsoft" />
+        <Identity Id="Direct3DUWPGame-1" Version="8.3" Language="en-US" Publisher="Microsoft" />
         <DisplayName>Direct3DUWPGame</DisplayName>
         <Description xml:space="preserve">Win32 desktop and Universal Windows Platform (UWP) app C++ game templates for Direct3D 11 and Direct3D 12.</Description>
         <MoreInfo>https://walbourn.github.io/direct3d-game-visual-studio-templates-redux/</MoreInfo>
