@@ -8,6 +8,7 @@ Write-Host "Updating .ZIP files..."
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d11game_uwp_dr", $vsix + "Direct3DUWPGameDR.zip")
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d11game_win32", $vsix + "Direct3DWin32Game.zip")
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d11game_win32_dr", $vsix + "Direct3DWin32GameDR.zip")
+[IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d11game_vcpkg", $vsix + "Direct3DWin32GameVCPKG.zip")
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d12game_uwp", $vsix + "Direct3D12UWPGame.zip")
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d12game_uwp_dr", $vsix + "Direct3D12UWPGameDR.zip")
 [IO.Compression.ZipFile]::CreateFromDirectory($src + "d3d12game_win32", $vsix + "Direct3D12Win32Game.zip")
