@@ -1,13 +1,17 @@
 # Direct3D Game VS project templates
 This repo contains simplified Visual C++ project templates. They are primarily intended for developer education, samples, and tutorials.
 
-See [this blog post](https://walbourn.github.io/direct3d-win32-game-visual-studio-template/) and [this one](https://walbourn.github.io/direct3d-game-visual-studio-templates-redux/).
+See [Direct3D Game Visual Studio templates](https://walbourn.github.io/direct3d-win32-game-visual-studio-template/), [Direct3D Game Visual Studio templates (Redux)](https://walbourn.github.io/direct3d-game-visual-studio-templates-redux/), and [Direct3D Game Visual Studio templates (VCPKG edition)](https://walbourn.github.io/direct3d-game-visual-studio-templates-(vcpkg-edition)/).
 
 Documentation is available on [GitHub](https://github.com/walbourn/directx-vs-templates/wiki).
+
+The templates in this repository have to be 'instanced' before use. This can be done using Visual Studio and the VSIX package, or by running the PowerShell scripts `createcmake.ps1` or `createmsbuild.ps1`.
 
 There are two versions of each template. The DR version adds a ``DeviceResources`` ([DX11](https://github.com/Microsoft/DirectXTK/wiki/DeviceResources) or [DX12](https://github.com/Microsoft/DirectXTK12/wiki/DeviceResources)) abstraction to isolate the device and swapchain code into it's own helper class.
 
 For the UWP templates, there are C++/WinRT variants that use [C++ Windows Runtime language projections](https://docs.microsoft.com/en-us/windows/uwp/cpp-and-winrt-apis/) rather than the C++/CX language extensions (``/ZW``).
+
+There are two variants of the Direct3D desktop templates with DeviceResources that use the *vcpkg C++ Package Manager*.
 
 ## VS 2019
 
