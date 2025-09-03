@@ -52,7 +52,7 @@ find_package(directx-headers CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX-Headers Microsoft::DirectX-Guids)
 
 find_package(directx12-agility CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX12-Agility)
+target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX12-Core Microsoft::DirectX12-Layers)
 
 find_package(directx-dxc CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectXShaderCompiler)

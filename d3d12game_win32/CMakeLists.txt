@@ -68,7 +68,7 @@ endif()
 
 if(directx12-agility_FOUND)
     message(STATUS "Using DirectX12 Agility SDK")
-    target_link_libraries(${PROJECT_NAME} PUBLIC Microsoft::DirectX12-Agility)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Microsoft::DirectX12-Core Microsoft::DirectX12-Layers)
     target_compile_definitions(${PROJECT_NAME} PRIVATE USING_D3D12_AGILITY_SDK)
 endif()
 
