@@ -72,7 +72,7 @@
     },
     {
       "name": "VCPKG",
-      "toolchainFile": "${env.VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
       "hidden": true
     },
 
