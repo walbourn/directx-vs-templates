@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.20)
+cmake_minimum_required (VERSION 3.21)
 
 project(CMakeDirect3D12Game
   DESCRIPTION "CMake example for Direct3D 12 Game (UWP)"

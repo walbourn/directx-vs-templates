@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.20)
+cmake_minimum_required (VERSION 3.21)
 
 project(CMakeDirect3D12GameDR
   DESCRIPTION "CMake example for Direct3D 12 Game (UWP) w/ DeviceResources"
