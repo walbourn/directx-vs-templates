@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TemplateWizard;
 
 namespace Wizards
 {
-    class MyPlatformToolset : IWizard
+    public class MyPlatformToolset : IWizard
     {
         public void RunStarted(object automationObject, Dictionary<string, string> replacementsDictionary, WizardRunKind runKind, object[] customParams)
         {
@@ -13,7 +13,12 @@ namespace Wizards
 
             string regRoot = dte2.RegistryRoot.ToUpperInvariant();
 
-            if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\17.0"))
+            if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\18.0"))
+            {
+                replacementsDictionary["$platformtoolset$"] = "v145";
+                replacementsDictionary["$targetplatformversion$"] = "10.0";
+            }
+            else if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\17.0"))
             {
                 replacementsDictionary["$platformtoolset$"] = "v143";
                 replacementsDictionary["$targetplatformversion$"] = "10.0";
@@ -49,4 +54,3 @@ namespace Wizards
         }
     }
 }
-
