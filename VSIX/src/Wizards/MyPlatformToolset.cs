@@ -23,11 +23,6 @@ namespace Wizards
                 replacementsDictionary["$platformtoolset$"] = "v143";
                 replacementsDictionary["$targetplatformversion$"] = "10.0";
             }
-            else if (regRoot.StartsWith(@"SOFTWARE\MICROSOFT\VISUALSTUDIO\16.0"))
-            {
-                replacementsDictionary["$platformtoolset$"] = "v142";
-                replacementsDictionary["$targetplatformversion$"] = "10.0";
-            }
             else
             {
                 MessageBox.Show(string.Format("ERROR: Unrecognized Visual Studio version\n{0}\n{1}", dte2.Version, regRoot),
