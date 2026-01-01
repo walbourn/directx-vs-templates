@@ -3,7 +3,12 @@
     "exclude": [
         ".git",
         "LICENSE",
-        "**/d3dx12.h"
+        "d3d12game_uwp/d3dx12.h",
+        "d3d12game_uwp_cppwinrt/d3dx12.h",
+        "d3d12game_uwp_cppwinrt_dr/d3dx12.h",
+        "d3d12game_uwp_dr/d3dx12.h",
+        "d3d12game_win32/d3dx12.h",
+        "d3d12game_win32_dr/d3dx12.h"
     ],
     "Disable": {
         "Indentation": true,
