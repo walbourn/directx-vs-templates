@@ -1,5 +1,9 @@
 cmake_minimum_required (VERSION 3.21)
 
+if(POLICY CMP0162)
+   cmake_policy(SET CMP0162 NEW)
+endif()
+
 project (CMakeDirect3DGameVCPKG
   DESCRIPTION "CMake example for Direct3D 11 Game (Win32) w/ DeviceResources using VCPKG"
   LANGUAGES CXX

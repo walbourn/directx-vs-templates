@@ -1,5 +1,9 @@
 cmake_minimum_required (VERSION 3.21)
 
+if(POLICY CMP0162)
+   cmake_policy(SET CMP0162 NEW)
+endif()
+
 project(CMakeDirect3D12Game
   DESCRIPTION "CMake example for Direct3D 12 Game (UWP)"
   LANGUAGES CXX
