@@ -27,15 +27,18 @@ if(NOT WINDOWS_STORE)
     message(FATAL_ERROR "ERROR: Must be built for WindowsStore")
 endif()
 
-add_executable(${PROJECT_NAME} WIN32
-    Game.cpp
-    Game.h
-    DeviceResources.cpp
-    DeviceResources.h
-    Main.cpp
-    StepTimer.h
-    pch.h
-    d3dx12.h
+add_executable(${PROJECT_NAME} WIN32)
+
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        Game.cpp
+        Game.h
+        DeviceResources.cpp
+        DeviceResources.h
+        Main.cpp
+        StepTimer.h
+        pch.h
+        d3dx12.h
 )
 
 target_precompile_headers(${PROJECT_NAME} PRIVATE pch.h)
