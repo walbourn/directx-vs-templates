@@ -20,7 +20,7 @@ permissions:
 jobs:
   analyze:
     name: Analyze (C++))
-    runs-on: windows-latest
+    runs-on: windows-2022
     timeout-minutes: 360
     permissions:
       actions: read  # for github/codeql-action/init to get workflow details
