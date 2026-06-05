@@ -94,7 +94,7 @@ param (
     [bool]$makepfx = $false
 )
 
-$vcpkgBaseline = "670f6dddaafc59c5dfe0587a130d59a35c48ea38"
+$vcpkgBaseline = "f3e10653cc27d62a37a3763cd84b38bca07c6075"
 
 if (-Not ($PlatformToolset -match 'v[0-9][0-9][0-9]'))
 {
@@ -169,6 +169,17 @@ Rename-Item -Path ($TargetDir + "\" + $projfile) -NewName ($ProjectName + ".vcxp
 Rename-Item -Path ($TargetDir + "\" + $filterfile) -NewName ($ProjectName + ".vcxproj.filters")
 
 if (Test-Path -Path ($TemplateDir + "\vcpkg.json")) {
+
+    try {
+        $response = Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/vcpkg/commits/master" `
+            -Headers @{ "User-Agent" = "PowerShell" } -ErrorAction Stop
+        $vcpkgBaseline = $response.sha
+        Write-Host "vcpkg baseline: $vcpkgBaseline"
+    }
+    catch {
+        Write-Warning "Failed to fetch latest vcpkg commit; using hard-coded baseline."
+    }
+
     Copy-Item ($TemplateDir + "\vcpkg*.json") -Destination $TargetDir
 
     $vcpkgConfig = $TargetDir + "\vcpkg-configuration.json"

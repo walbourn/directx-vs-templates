@@ -76,7 +76,7 @@ param (
     [string]$TargetDir = "$Env:USERPROFILE\source"
 )
 
-$vcpkgBaseline = "670f6dddaafc59c5dfe0587a130d59a35c48ea38"
+$vcpkgBaseline = "f3e10653cc27d62a37a3763cd84b38bca07c6075"
 
 $reporoot = Split-Path -Path $PSScriptRoot -Parent
 
@@ -140,6 +140,17 @@ Copy-Item ($TemplateDir + "\CMakeLists.txt") -Destination $TargetDir
 Copy-Item ($TemplateDir + "\CMake*.json") -Destination $TargetDir
 
 if (Test-Path -Path ($TemplateDir + "\vcpkg.json")) {
+
+    try {
+        $response = Invoke-RestMethod -Uri "https://api.github.com/repos/microsoft/vcpkg/commits/master" `
+            -Headers @{ "User-Agent" = "PowerShell" } -ErrorAction Stop
+        $vcpkgBaseline = $response.sha
+        Write-Host "vcpkg baseline: $vcpkgBaseline"
+    }
+    catch {
+        Write-Warning "Failed to fetch latest vcpkg commit; using hard-coded baseline."
+    }
+
     Copy-Item ($TemplateDir + "\vcpkg*.json") -Destination $TargetDir
 
     $vcpkgConfig = $TargetDir + "\vcpkg-configuration.json"
