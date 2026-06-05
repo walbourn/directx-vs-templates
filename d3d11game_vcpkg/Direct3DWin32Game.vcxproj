@@ -16,6 +16,8 @@
     <Keyword>Win32Proj</Keyword>
     <MinimumVisualStudioVersion>17.0</MinimumVisualStudioVersion>
     <WindowsTargetPlatformVersion>$targetplatformversion$</WindowsTargetPlatformVersion>
+    <VcpkgRoot Condition="'$(VcpkgRoot)'==''">$(VsInstallRoot)\vc\vcpkg\</VcpkgRoot>
+    <VcpkgRoot Condition="!HasTrailingSlash('$(VcpkgRoot)')">$(VcpkgRoot)\</VcpkgRoot>
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -37,9 +39,9 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <Import Condition="Exists('$(VCInstallDir)vcpkg\scripts\buildsystems\msbuild\vcpkg.props')" Project="$(VCInstallDir)vcpkg\scripts\buildsystems\msbuild\vcpkg.props" />
+  <Import Condition="Exists('$(VcpkgRoot)scripts\buildsystems\msbuild\vcpkg.props')" Project="$(VcpkgRoot)scripts\buildsystems\msbuild\vcpkg.props" />
   <PropertyGroup>
-    <VcpkgPageSchema>$(VCInstallDir)vcpkg\scripts\buildsystems\msbuild\vcpkg-general.xml</VcpkgPageSchema>
+    <VcpkgPageSchema>$(VcpkgRoot)scripts\buildsystems\msbuild\vcpkg-general.xml</VcpkgPageSchema>
   </PropertyGroup>
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -136,13 +138,13 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <Import Condition="Exists('$(VCInstallDir)vcpkg\scripts\buildsystems\msbuild\vcpkg.targets')" Project="$(VCInstallDir)vcpkg\scripts\buildsystems\msbuild\vcpkg.targets" />
+  <Import Condition="Exists('$(VcpkgRoot)scripts\buildsystems\msbuild\vcpkg.targets')" Project="$(VcpkgRoot)scripts\buildsystems\msbuild\vcpkg.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <Target Name="EnsureVCPKG" BeforeTargets="_CheckForInvalidConfigurationAndPlatform">
     <PropertyGroup>
       <ErrorText>This project requires the VCPKG integration support in Visual Studio. Add the Microsoft.VisualStudio.Component.Vcpkg component to your install.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('$(VCInstallDir)vcpkg')" Text="$(ErrorText)" />
+    <Error Condition="!Exists('$(VcpkgRoot)')" Text="$(ErrorText)" />
   </Target>
 </Project>
