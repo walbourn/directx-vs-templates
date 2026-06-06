@@ -1,13 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.17.14.2120\build\Microsoft.VSSDK.BuildTools.props" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.17.14.2120\build\Microsoft.VSSDK.BuildTools.props')" />
-  <Import Project="..\packages\Microsoft.VsSDK.CompatibilityAnalyzer.17.14.2120\build\Microsoft.VsSDK.CompatibilityAnalyzer.props" Condition="Exists('..\packages\Microsoft.VsSDK.CompatibilityAnalyzer.17.14.2120\build\Microsoft.VsSDK.CompatibilityAnalyzer.props')" />
   <PropertyGroup>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <OldToolsVersion>14.0</OldToolsVersion>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
@@ -24,7 +20,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Direct3DGame</RootNamespace>
     <AssemblyName>Direct3DUWPGame</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>
     <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
@@ -105,7 +101,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <None Include="packages.config" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -129,9 +124,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.17.14.15\analyzers\cs\Microsoft.VisualStudio.Threading.Analyzers.CSharp.dll" />
-    <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.17.14.15\analyzers\vb\Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll" />
-    <Analyzer Include="..\packages\Microsoft.VisualStudio.Threading.Analyzers.17.14.15\analyzers\vb\Microsoft.VisualStudio.Threading.Analyzers.VisualBasic.dll" />
+    <PackageReference Include="Microsoft.VisualStudio.SDK.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VSSDK.BuildTools">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VsSDK.CompatibilityAnalyzer">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Win32.Primitives" />
@@ -150,17 +158,4 @@
   <Target Name="MSFTEnsureZIPs" BeforeTargets="PrepareForBuild">
     <Error Condition="!Exists('ProjectTemplates/Direct3DWin32Game.zip')" Text="First run the updatetemplates.ps1 powershell script!" />
   </Target>
-  <Import Project="..\packages\Microsoft.VisualStudio.SDK.Analyzers.17.7.79\build\Microsoft.VisualStudio.SDK.Analyzers.targets" Condition="Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.17.7.79\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.VisualStudio.SDK.Analyzers.17.7.79\build\Microsoft.VisualStudio.SDK.Analyzers.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VisualStudio.SDK.Analyzers.17.7.79\build\Microsoft.VisualStudio.SDK.Analyzers.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VsSDK.CompatibilityAnalyzer.17.14.2120\build\Microsoft.VsSDK.CompatibilityAnalyzer.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VsSDK.CompatibilityAnalyzer.17.14.2120\build\Microsoft.VsSDK.CompatibilityAnalyzer.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VsSDK.CompatibilityAnalyzer.17.14.2120\build\Microsoft.VsSDK.CompatibilityAnalyzer.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VsSDK.CompatibilityAnalyzer.17.14.2120\build\Microsoft.VsSDK.CompatibilityAnalyzer.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.17.14.2120\build\Microsoft.VSSDK.BuildTools.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.17.14.2120\build\Microsoft.VSSDK.BuildTools.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.VSSDK.BuildTools.17.14.2120\build\Microsoft.VSSDK.BuildTools.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.VSSDK.BuildTools.17.14.2120\build\Microsoft.VSSDK.BuildTools.targets'))" />
-  </Target>
-  <Import Project="..\packages\Microsoft.VsSDK.CompatibilityAnalyzer.17.14.2120\build\Microsoft.VsSDK.CompatibilityAnalyzer.targets" Condition="Exists('..\packages\Microsoft.VsSDK.CompatibilityAnalyzer.17.14.2120\build\Microsoft.VsSDK.CompatibilityAnalyzer.targets')" />
-  <Import Project="..\packages\Microsoft.VSSDK.BuildTools.17.14.2120\build\Microsoft.VSSDK.BuildTools.targets" Condition="Exists('..\packages\Microsoft.VSSDK.BuildTools.17.14.2120\build\Microsoft.VSSDK.BuildTools.targets')" />
 </Project>
