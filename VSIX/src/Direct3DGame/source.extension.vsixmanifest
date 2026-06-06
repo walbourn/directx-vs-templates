@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="Direct3DUWPGame-1" Version="8.3" Language="en-US" Publisher="Microsoft" />
+        <Identity Id="Direct3DUWPGame-1" Version="8.4" Language="en-US" Publisher="Microsoft" />
         <DisplayName>Direct3DUWPGame</DisplayName>
         <Description xml:space="preserve">Win32 desktop and Universal Windows Platform (UWP) app C++ game templates for Direct3D 11 and Direct3D 12.</Description>
         <MoreInfo>https://walbourn.github.io/direct3d-game-visual-studio-templates-redux/</MoreInfo>
@@ -53,9 +53,8 @@
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="Project" d:ProjectName="Wizards" Path="|Wizards|" AssemblyName="|Wizards;AssemblyName|" />
     </Assets>
     <Prerequisites>
-        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[16.0,18.0)" DisplayName="Visual Studio core editor" />
-        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.CoreIde" Version="[16.0,18.0)" DisplayName="C++ core features" />
-        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.Tools.x86.x64" Version="[16.0,18.0)" DisplayName="Visual C++ x86/x64 Compiler Toolset" />
-        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.UWP.VC" Version="[16.0,18.0)"  DisplayName="Visual C++ UWP Toolset" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,18.0)" DisplayName="Visual Studio core editor" />
+        <Prerequisite Id="Microsoft.VisualStudio.Component.VC.CoreIde" Version="[17.0,18.0)" DisplayName="C++ core features" />
+        <Prerequisite Id="Microsoft.VisualStudio.ComponentGroup.UWP.VC" Version="[17.0,18.0)"  DisplayName="Visual C++ UWP Toolset" />
     </Prerequisites>
 </PackageManifest>
