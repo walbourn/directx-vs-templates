@@ -1,3 +1,4 @@
+
 # Direct3D Game VS project templates
 This repo contains simplified Visual C++ project templates. They are primarily intended for developer education, samples, and tutorials.
 
@@ -13,15 +14,9 @@ For the UWP templates, there are C++/WinRT variants that use [C++ Windows Runtim
 
 There are two variants of the Direct3D desktop templates with DeviceResources that use the *vcpkg C++ Package Manager*.
 
-## VS 2019
-
-The ``VSIX\Direct3DUWPGame.vsix`` suports VS 2019. Use of Visual Studio 2019 16.11 update is recommended.
-
-The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows 10 SDK (19041) or later.
-
 ## VS 2022
 
-The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2022.
+The ``VSIX\Direct3DUWPGame.vsix`` also works for VS 2026.
 
 The package requires the *Universal Windows Platform development* workload (``Microsoft.VisualStudio.Workload.Universal``) with the *C++ Universal Windows Platform tools* (``Microsoft.VisualStudio.ComponentGroup.UWP.VC``). The Win32 templates require the *Desktop development with C++* workload (``Microsoft.VisualStudio.Workload.NativeDesktop``). It is recommended you make use of the Windows SDK (22000) or later.
 
@@ -29,7 +24,7 @@ The "Direct3D Win32 Game VCPKG" and "Direct3D12 Win32 Game VCPKG" templates requ
 
 ## Rebuilding the VSIX
 
-Building the VSIX project requires VS 2019 with the *.NET desktop development* (``Microsoft.VisualStudio.Workload.ManagedDesktop``) and *Visual Studio extension development* (``Microsoft.VisualStudio.Workload.VisualStudioExtension``)  workloads.
+Building the VSIX project requires VS 2022 with the *.NET desktop development* (``Microsoft.VisualStudio.Workload.ManagedDesktop``) and *Visual Studio extension development* (``Microsoft.VisualStudio.Workload.VisualStudioExtension``)  workloads.
 
 Before loading the `VSIX.sln`, run **VSIX\src\updatetemplates.cmd/.ps1** which creates the ZIPs of the individual templates.
 
