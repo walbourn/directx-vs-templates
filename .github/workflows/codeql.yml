@@ -53,7 +53,7 @@ jobs:
           .\createcmake.ps1 d3d12game_vcpkg Direct3D12GameVCPKG ${{ github.workspace }}
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v3.29.5
+        uses: github/codeql-action/init@8aad20d150bbac5944a9f9d289da16a4b0d87c1e # v4.36.2
         with:
           languages: c-cpp
           build-mode: manual
