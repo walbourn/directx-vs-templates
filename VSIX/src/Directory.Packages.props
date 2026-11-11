@@ -5,7 +5,7 @@
   <ItemGroup>
     <PackageVersion Include="envdte" Version="17.14.40260" />
     <PackageVersion Include="envdte80" Version="17.14.40260" />
-    <PackageVersion Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="17.14.40254" />
+    <PackageVersion Include="Microsoft.VisualStudio.Imaging.Interop.14.0.DesignTime" Version="18.12.1583" />
     <PackageVersion Include="Microsoft.VisualStudio.Interop" Version="17.14.40260" />
     <PackageVersion Include="Microsoft.VisualStudio.OLE.Interop" Version="17.14.40260" />
     <PackageVersion Include="Microsoft.VisualStudio.SDK.Analyzers" Version="17.7.113" />
